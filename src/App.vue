@@ -9,5 +9,6 @@ import SideNav from '@/components/SideNav.vue'
     <div class="flex-1">
       <RouterView />
     </div>
+    <SideNav />
   </div>
 </template>
