@@ -6,7 +6,7 @@ import MobileNav from '@/components/Mobile/MobileNav.vue'
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
+  <div class="flex flex-col items-center w-full">
     <MobileNav />
     <Category />
     <NewPostTextArea />
