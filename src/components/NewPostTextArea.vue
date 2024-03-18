@@ -13,8 +13,7 @@ function updatePost() {
     },
     body: JSON.stringify({
       content: postContent.value,
-      imageSrc:
-        'https://i.ytimg.com/vi/ToDVsggNZ_Q/hq720.jpg?sqp=-oaymwEXCNUGEOADIAQqCwjVARCqCBh4INgESFo&rs=AMzJL3kg2R-xJd99BHFP703ik3MeaZzJOg'
+      authorId: 1
     })
   }
 
@@ -27,8 +26,7 @@ function updatePost() {
       return response.json()
     })
     .then((data) => {
-      // Handle the response data
-      console.log(data)
+      postContent.value = ''
     })
     .catch((error) => {
       // Handle errors
@@ -45,25 +43,39 @@ function handleChange(event: Event) {
 </script>
 
 <template>
-  <div class="w-full">
-    <div class="flex flex-shrink-0 p-4 pb-0">
+  <div class="hidden sm:block w-full">
+    <div class="flex flex-shrink-0 p-4 pb-0 relative">
       <div class="w-12 flex items-top">
         <img
           class="inline-block h-10 w-10 rounded-full"
-          src="https://pbs.twimg.com/profile_images/1308769664240160770/AfgzWVE7_normal.jpg"
+          src="https://pbs.twimg.com/profile_images/1757698978060374016/arhSr8o2_400x400.jpg"
           alt=""
         />
       </div>
       <div class="w-full p-2">
         <textarea
           class="placeholder-gray-400 w-full bg-transparent border-0 focus:outline-none resize-none"
-          placeholder="What's happening?"
+          placeholder="有什麼新鮮事？！"
           :rows="numberOfLineBreaks"
           v-model="postContent"
           @input="handleChange"
         ></textarea>
+        <div class="flex border-t-[1px] border-gray-700 pt-4">
+          <div class="flex">
+            <div>svg1</div>
+            <div>1</div>
+            <div>1</div>
+          </div>
+          <div class="flex-1 flex justify-end">
+            <button
+              class="bg-blue-400 hover:bg-blue-500 rounded-full py-1 px-4"
+              @click="updatePost"
+            >
+              發佈
+            </button>
+          </div>
+        </div>
       </div>
-      <button @click="updatePost">Sumbit</button>
     </div>
   </div>
 </template>

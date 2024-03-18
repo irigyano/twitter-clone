@@ -11,15 +11,7 @@ defineProps<{
 <template>
   <div class="flex gap-2">
     <div>
-      <img
-        alt="avatar"
-        class="min-w-10 h-10 rounded-full"
-        width="40"
-        height="40"
-        :src="
-          avatar || 'https://pbs.twimg.com/profile_images/1757698978060374016/arhSr8o2_400x400.jpg'
-        "
-      />
+      <img alt="avatar" class="min-w-10 h-10 rounded-full" width="40" height="40" :src="avatar" />
     </div>
     <div class="flex-1">
       <div>{{ author }} @{{ tag }}</div>
