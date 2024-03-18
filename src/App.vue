@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
+import SideNav from '@/components/SideNav.vue'
 </script>
 
 <template>
-  <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-  <!-- <nav>
-    <RouterLink to="/">Home</RouterLink>
-  </nav> -->
-  <RouterView />
+  <div class="min-h-screen bg-zinc-900 text-gray-300 flex justify-center px-[20%] pt-10">
+    <SideNav />
+    <div class="flex-1">
+      <RouterView />
+    </div>
+  </div>
 </template>
