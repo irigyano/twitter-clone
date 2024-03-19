@@ -22,7 +22,7 @@ const {
 <template>
   <div v-if="isLoading">Loading!</div>
   <div v-else-if="isError">{{ error }}</div>
-  <div v-else-if="posts" class="w-full flex flex-col gap-2 p-2">
+  <div v-else-if="posts" class="w-full flex flex-col gap-2">
     <Post
       v-for="post in posts"
       :content="post.content"
