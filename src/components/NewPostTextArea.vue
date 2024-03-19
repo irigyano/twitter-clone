@@ -1,38 +1,24 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useQueryClient, useMutation } from '@tanstack/vue-query'
+import axios from 'axios'
+
+const queryClient = useQueryClient()
+
 const postContent = defineModel<string>()
 const numberOfLineBreaks = ref(5)
 
-function updatePost() {
-  const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/posts`
+const { error, mutate, reset } = useMutation({
+  mutationFn: (newPost: { content?: string; authorId: number }) => {
+    const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/posts`
 
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      content: postContent.value,
-      authorId: 1
-    })
+    return axios.post(endpoint, newPost)
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['posts'] })
+    postContent.value = ''
   }
-
-  // Make the POST request
-  fetch(endpoint, options)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      return response.json()
-    })
-    .then((data) => {
-      postContent.value = ''
-    })
-    .catch((error) => {
-      // Handle errors
-      console.error('There was a problem with the fetch operation:', error)
-    })
-}
+})
 
 function handleChange(event: Event) {
   // https://vuejs.org/guide/typescript/composition-api.html#typing-event-handlers
@@ -68,8 +54,16 @@ function handleChange(event: Event) {
           </div>
           <div class="flex-1 flex justify-end">
             <button
-              class="bg-blue-400 hover:bg-blue-500 rounded-full py-1 px-4"
-              @click="updatePost"
+              :disabled="!postContent"
+              class="bg-blue-400 hover:bg-blue-500 rounded-full py-1 px-4 disabled:pointer-events-none"
+              @click="
+                () => {
+                  mutate({
+                    content: postContent,
+                    authorId: 1
+                  })
+                }
+              "
             >
               發佈
             </button>
