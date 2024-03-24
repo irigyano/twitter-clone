@@ -1,37 +1,11 @@
 <script setup lang="ts">
-import { ref, defineModel } from 'vue'
+import { ref } from 'vue'
 import SubmitButton from './SubmitButton.vue'
 import UploadButton from './UploadButton.vue'
-const numberOfLineBreaks = ref(1)
-const isDragOver = ref(false)
+import PostTextArea from './PostTextArea.vue'
 const postContent = defineModel<string>()
 const imageBase64 = ref('')
-
-function shrinkTextareaRows(event: Event) {
-  const inputText = (event.target as HTMLInputElement).value
-  const lineBreaks = (inputText.match(/\n/g) || []).length
-  numberOfLineBreaks.value = lineBreaks + 1
-}
-
-function handleImageDrop(e: DragEvent) {
-  if (!e.dataTransfer) return
-  readInputToBase64(e.dataTransfer.files)
-}
-
-function readInputToBase64(imageFileList: FileList | null) {
-  if (!imageFileList) return
-  const inputImage = imageFileList[0]
-  if (typeof inputImage === 'undefined') return
-
-  const fileReader = new FileReader()
-
-  fileReader.onloadend = function () {
-    const baseString = fileReader.result as string
-    imageBase64.value = baseString
-  }
-
-  fileReader.readAsDataURL(inputImage)
-}
+// const postContent = ref('')
 
 function resetInput() {
   postContent.value = ''
@@ -49,23 +23,12 @@ function resetInput() {
         alt="avatar"
       />
       <div class="flex-1 p-2">
-        <textarea
-          placeholder="有什麼新鮮事？！"
-          :class="`placeholder-gray-400 w-full bg-transparent focus:outline-none border-dashed rounded-md p-2 resize-none border-2 ${isDragOver ? 'border-blue-500' : 'border-transparent'}`"
-          :rows="numberOfLineBreaks"
+        <PostTextArea
           v-model="postContent"
-          @drop.prevent="handleImageDrop"
-          @dragover="isDragOver = true"
-          @dragleave="isDragOver = false"
-          @drop="isDragOver = false"
-          @input="shrinkTextareaRows"
-        >
-        </textarea>
-        <img
-          class="rounded-xl w-full p-2"
-          v-if="imageBase64"
-          :src="imageBase64"
-          @click="imageBase64 = ''"
+          :imageBase64="imageBase64"
+          @post-text="(e) => (postContent = e)"
+          @postImage="(e) => (imageBase64 = e)"
+          @remove-image="imageBase64 = ''"
         />
         <div class="flex pt-2">
           <UploadButton :onImageBase64Loaded="(image) => (imageBase64 = image)" />
