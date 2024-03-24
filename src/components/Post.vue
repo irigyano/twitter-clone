@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex gap-2">
+  <div class="flex gap-2 px-4 pt-2 border-b-[1px] border-gray-700">
     <div>
       <img
         alt="avatar"
@@ -22,7 +22,7 @@ defineProps<{
     <div class="flex-1">
       <div>{{ author }} @{{ tag }}</div>
       <pre class="text-wrap break-all">{{ content }}</pre>
-      <img class="rounded-xl w-full p-2" v-if="true" :src="imageSrc" />
+      <img class="rounded-3xl w-full pt-2" v-if="true" :src="imageSrc" />
     </div>
   </div>
 </template>

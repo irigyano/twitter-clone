@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div
     class="flex relative w-full h-14 justify-center items-center font-bold border-b-[1px] border-gray-700"

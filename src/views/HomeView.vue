@@ -9,9 +9,7 @@ import MobileNav from '@/components/Mobile/MobileNav.vue'
   <div class="flex flex-col items-center w-full">
     <MobileNav />
     <Category />
-    <div class="pt-6 p-4">
-      <NewPostTextArea />
-      <PostFeed />
-    </div>
+    <NewPostTextArea />
+    <PostFeed />
   </div>
 </template>
