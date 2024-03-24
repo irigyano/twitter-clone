@@ -2,12 +2,13 @@
 import { ref, defineModel } from 'vue'
 import { useQueryClient, useMutation } from '@tanstack/vue-query'
 import axios from 'axios'
+import { ImageUp } from 'lucide-vue-next'
 const numberOfLineBreaks = ref(1)
 const isDragOver = ref(false)
 const postContent = defineModel<string>()
 const queryClient = useQueryClient()
-const imageInput = ref<HTMLInputElement | null>(null)
-const imgSrc = ref('')
+const uploadImageButton = ref<HTMLInputElement | null>(null)
+const imageBase64 = ref('')
 
 const { mutate } = useMutation({
   mutationFn: (newPost: { content?: string; authorId: number; imageSrc: string }) => {
@@ -15,10 +16,10 @@ const { mutate } = useMutation({
     return axios.post(endpoint, newPost)
   },
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['posts'] })
     // manually reset is bad
+    queryClient.invalidateQueries({ queryKey: ['posts'] })
     postContent.value = ''
-    imgSrc.value = ''
+    imageBase64.value = ''
   }
 })
 
@@ -47,7 +48,7 @@ function readInputToBase64(imageFileList: FileList | null) {
 
   fileReader.onloadend = function () {
     const baseString = fileReader.result as string
-    imgSrc.value = baseString
+    imageBase64.value = baseString
   }
 
   fileReader.readAsDataURL(inputImage)
@@ -55,7 +56,7 @@ function readInputToBase64(imageFileList: FileList | null) {
 </script>
 
 <template>
-  <div class="hidden sm:block w-full px-4 pt-4 border-b-[1px] border-gray-700">
+  <div class="w-full px-4 pt-4 border-b-[1px] border-gray-700">
     <div class="flex relative">
       <!-- TBA src based on Cookie -->
       <img
@@ -76,22 +77,30 @@ function readInputToBase64(imageFileList: FileList | null) {
           @input="shrinkTextareaRows"
         >
         </textarea>
-        <img class="rounded-xl w-full p-2" v-if="imgSrc" :src="imgSrc" @click="imgSrc = ''" />
-        <div class="flex border-t-[1px] border-gray-700 pt-2">
-          <div class="flex items-center">
-            <div>
-              <div @click="imageInput?.click()" class="cursor-pointer">Upload SVG</div>
-              <input ref="imageInput" class="w-0 h-0" type="file" @change="sumbitPost" />
+        <img
+          class="rounded-xl w-full p-2"
+          v-if="imageBase64"
+          :src="imageBase64"
+          @click="imageBase64 = ''"
+        />
+        <div class="flex pt-2">
+          <div
+            @click="uploadImageButton?.click()"
+            class="cursor-pointer flex items-center justify-center"
+          >
+            <div class="hover:bg-blue-500 bg-opacity-20 duration-200 rounded-full p-2">
+              <ImageUp :size="20" />
             </div>
+            <input ref="uploadImageButton" class="w-0 h-0" type="file" @change="sumbitPost" />
           </div>
           <div class="flex-1 flex justify-end items-center">
             <button
-              :disabled="!postContent && !imgSrc"
-              :class="`${!postContent && !imgSrc ? 'bg-blue-400 opacity-50' : 'bg-blue-500 opacity-100'} hover:bg-blue-600 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
+              :disabled="!postContent && !imageBase64"
+              :class="`${!postContent && !imageBase64 ? 'bg-blue-400 opacity-50' : 'bg-blue-500 opacity-100'} hover:bg-blue-600 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
               @click="
                 mutate({
                   content: postContent,
-                  imageSrc: imgSrc,
+                  imageSrc: imageBase64,
                   authorId: 1
                 })
               "
