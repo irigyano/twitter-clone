@@ -1,27 +1,12 @@
 <script setup lang="ts">
 import { ref, defineModel } from 'vue'
-import { useQueryClient, useMutation } from '@tanstack/vue-query'
-import axios from 'axios'
 import { ImageUp } from 'lucide-vue-next'
+import SubmitButton from './SubmitButton.vue'
 const numberOfLineBreaks = ref(1)
 const isDragOver = ref(false)
 const postContent = defineModel<string>()
-const queryClient = useQueryClient()
 const uploadImageButton = ref<HTMLInputElement | null>(null)
 const imageBase64 = ref('')
-
-const { mutate } = useMutation({
-  mutationFn: (newPost: { content?: string; authorId: number; imageSrc: string }) => {
-    const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/posts`
-    return axios.post(endpoint, newPost)
-  },
-  onSuccess: () => {
-    // manually reset is bad
-    queryClient.invalidateQueries({ queryKey: ['posts'] })
-    postContent.value = ''
-    imageBase64.value = ''
-  }
-})
 
 function shrinkTextareaRows(event: Event) {
   const inputText = (event.target as HTMLInputElement).value
@@ -52,6 +37,11 @@ function readInputToBase64(imageFileList: FileList | null) {
   }
 
   fileReader.readAsDataURL(inputImage)
+}
+
+function resetInput() {
+  postContent.value = ''
+  imageBase64.value = ''
 }
 </script>
 
@@ -94,19 +84,11 @@ function readInputToBase64(imageFileList: FileList | null) {
             <input ref="uploadImageButton" class="w-0 h-0" type="file" @change="sumbitPost" />
           </div>
           <div class="flex-1 flex justify-end items-center">
-            <button
-              :disabled="!postContent && !imageBase64"
-              :class="`${!postContent && !imageBase64 ? 'bg-blue-400 opacity-50' : 'bg-blue-500 opacity-100'} hover:bg-blue-600 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
-              @click="
-                mutate({
-                  content: postContent,
-                  imageSrc: imageBase64,
-                  authorId: 1
-                })
-              "
-            >
-              發佈
-            </button>
+            <SubmitButton
+              @submit="resetInput"
+              :postContent="postContent"
+              :imageBase64="imageBase64"
+            />
           </div>
         </div>
       </div>
