@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref, defineModel } from 'vue'
-import { ImageUp } from 'lucide-vue-next'
 import SubmitButton from './SubmitButton.vue'
+import UploadButton from './UploadButton.vue'
 const numberOfLineBreaks = ref(1)
 const isDragOver = ref(false)
 const postContent = defineModel<string>()
-const uploadImageButton = ref<HTMLInputElement | null>(null)
 const imageBase64 = ref('')
 
 function shrinkTextareaRows(event: Event) {
@@ -17,11 +16,6 @@ function shrinkTextareaRows(event: Event) {
 function handleImageDrop(e: DragEvent) {
   if (!e.dataTransfer) return
   readInputToBase64(e.dataTransfer.files)
-}
-
-function sumbitPost(e: Event) {
-  if (!e.target) return
-  readInputToBase64((e.target as HTMLInputElement).files)
 }
 
 function readInputToBase64(imageFileList: FileList | null) {
@@ -74,15 +68,7 @@ function resetInput() {
           @click="imageBase64 = ''"
         />
         <div class="flex pt-2">
-          <div
-            @click="uploadImageButton?.click()"
-            class="cursor-pointer flex items-center justify-center"
-          >
-            <div class="hover:bg-blue-500 bg-opacity-20 duration-200 rounded-full p-2">
-              <ImageUp :size="20" />
-            </div>
-            <input ref="uploadImageButton" class="w-0 h-0" type="file" @change="sumbitPost" />
-          </div>
+          <UploadButton :onImageBase64Loaded="(image) => (imageBase64 = image)" />
           <div class="flex-1 flex justify-end items-center">
             <SubmitButton
               @submit="resetInput"
