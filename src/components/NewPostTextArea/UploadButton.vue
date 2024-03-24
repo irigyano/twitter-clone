@@ -2,24 +2,20 @@
 import { ref } from 'vue'
 import { ImageUp } from 'lucide-vue-next'
 const uploadImageButton = ref<HTMLInputElement | null>(null)
-const emit = defineEmits(['imageBase64Loaded'])
+const imageBase64 = defineModel<string>('imageBase64')
 
 function sumbitPost(e: Event) {
   if (!e.target) return
-
   const imageFileList = (e.target as HTMLInputElement).files
-
   if (!imageFileList) return
   const inputImage = imageFileList[0]
   if (typeof inputImage === 'undefined') return
 
   const fileReader = new FileReader()
-
   fileReader.onloadend = function () {
     const baseString = fileReader.result as string
-    emit('imageBase64Loaded', baseString)
+    imageBase64.value = baseString
   }
-
   fileReader.readAsDataURL(inputImage)
 }
 </script>

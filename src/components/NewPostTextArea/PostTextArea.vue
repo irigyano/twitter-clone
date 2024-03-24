@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-defineProps<{ imageBase64?: string }>()
 const numberOfLineBreaks = ref(1)
 const isDragOver = ref(false)
-const postContent = defineModel<string>()
-const emit = defineEmits(['postText', 'postImage', 'removeImage'])
+const postContent = defineModel<string>('postContent')
+const imageBase64 = defineModel<string>('imageBase64')
 
 function shrinkTextareaRows(event: Event) {
   const inputText = (event.target as HTMLInputElement).value
@@ -26,7 +25,7 @@ function readInputToBase64(imageFileList: FileList | null) {
 
   fileReader.onloadend = function () {
     const baseString = fileReader.result as string
-    emit('postImage', baseString)
+    imageBase64.value = baseString
   }
 
   fileReader.readAsDataURL(inputImage)
@@ -49,6 +48,6 @@ function readInputToBase64(imageFileList: FileList | null) {
     class="rounded-xl w-full p-2"
     v-if="imageBase64"
     :src="imageBase64"
-    @click="emit('removeImage')"
+    @click="imageBase64 = ''"
   />
 </template>

@@ -2,7 +2,8 @@
 import { useQueryClient, useMutation } from '@tanstack/vue-query'
 import axios from 'axios'
 const queryClient = useQueryClient()
-defineProps<{ postContent?: string; imageBase64: string }>()
+const postContent = defineModel<string>('postContent')
+const imageBase64 = defineModel<string>('imageBase64')
 
 const emit = defineEmits(['submit'])
 
@@ -13,7 +14,8 @@ const { mutate } = useMutation({
   },
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['posts'] })
-    emit('submit')
+    postContent.value = ''
+    imageBase64.value = ''
   }
 })
 </script>
@@ -25,7 +27,7 @@ const { mutate } = useMutation({
     @click="
       mutate({
         content: postContent,
-        imageSrc: imageBase64,
+        imageSrc: imageBase64 || '',
         authorId: 1
       })
     "
