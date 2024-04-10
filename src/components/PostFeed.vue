@@ -15,14 +15,17 @@ const {
   error
 } = useQuery({
   queryKey: ['posts'],
-  queryFn: getPosts
+  queryFn: getPosts,
+  retry: false
 })
 </script>
 
 <template>
+  <!-- TODO: spinner for UX -->
   <div v-if="isLoading">Loading!</div>
-  <div v-else-if="isError">{{ error }}</div>
-  <div v-else-if="posts" class="w-full flex flex-col gap-2">
+  <!-- <div v-else-if="isError">{{ error }}</div> -->
+  <div v-else-if="isError">Add a new post!</div>
+  <div v-else-if="posts.length > 0" class="w-full flex flex-col gap-2">
     <Post
       v-for="post in posts"
       :content="post.content"
@@ -32,4 +35,5 @@ const {
       :avatar="post.author.avatar"
     />
   </div>
+  <div v-else>no post</div>
 </template>

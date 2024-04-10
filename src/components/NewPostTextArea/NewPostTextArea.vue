@@ -17,7 +17,6 @@ const imageBase64 = defineModel<string>('imageBase64')
       />
       <div class="flex-1 p-2">
         <PostTextArea v-model:postContent="postContent" v-model:imageBase64="imageBase64" />
-
         <div class="flex pt-2">
           <UploadButton v-model:imageBase64="imageBase64" />
           <div class="flex-1 flex justify-end items-center">
