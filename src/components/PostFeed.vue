@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import axios from 'axios'
 import Post from '@/components/Post.vue'
+import { supabase } from '@/utils/supabase'
 
-async function getPosts() {
-  const res = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/posts`)
-  return res.data
+async function getPostsFromSupabase() {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, users(*)')
+    .order('created_at', { ascending: false })
+  return data
 }
 
 const {
@@ -15,7 +18,7 @@ const {
   error
 } = useQuery({
   queryKey: ['posts'],
-  queryFn: getPosts,
+  queryFn: getPostsFromSupabase,
   retry: false
 })
 </script>
@@ -23,17 +26,16 @@ const {
 <template>
   <!-- TODO: spinner for UX -->
   <div v-if="isLoading">Loading!</div>
-  <!-- <div v-else-if="isError">{{ error }}</div> -->
-  <div v-else-if="isError">Add a new post!</div>
-  <div v-else-if="posts.length > 0" class="w-full flex flex-col gap-2">
+  <div v-else-if="isError">{{ error }}</div>
+  <div v-else-if="posts!.length > 0" class="w-full flex flex-col gap-2">
     <Post
       v-for="post in posts"
       :content="post.content"
       :imageSrc="post.imageSrc"
-      :author="post.author.name"
-      :tag="post.author.tag"
-      :avatar="post.author.avatar"
+      :author="post.users!.name"
+      :tag="post.users!.tag"
+      :avatar="post.users!.avatar"
     />
   </div>
-  <div v-else>no post</div>
+  <div v-else>Add a new post!</div>
 </template>

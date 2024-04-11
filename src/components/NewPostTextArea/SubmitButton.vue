@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { useQueryClient, useMutation } from '@tanstack/vue-query'
-import axios from 'axios'
 const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
 const imageBase64 = defineModel<string>('imageBase64')
-
 const emit = defineEmits(['submit'])
 
+import { supabase } from '@/utils/supabase'
+
+async function sumbitPost(newPost: { content?: string; authorId: number; imageSrc: string }) {
+  const { error } = await supabase.from('posts').insert(newPost)
+  if (!error) return Promise.resolve()
+}
+
 const { mutate } = useMutation({
-  mutationFn: (newPost: { content?: string; authorId: number; imageSrc: string }) => {
-    const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/posts`
-    return axios.post(endpoint, newPost)
-  },
+  mutationFn: sumbitPost,
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['posts'] })
     postContent.value = ''

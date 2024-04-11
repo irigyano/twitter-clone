@@ -1,10 +1,11 @@
 <script setup lang="ts">
+// https://github.com/supabase/supabase-js/issues/244
 defineProps<{
-  content?: string
-  imageSrc?: string
+  content: string | null
+  imageSrc: string | null
   author: string
   tag: string
-  avatar?: string
+  avatar: string | null
 }>()
 </script>
 
@@ -16,13 +17,13 @@ defineProps<{
         class="min-w-10 h-10 rounded-full object-cover"
         width="40"
         height="40"
-        :src="avatar"
+        :src="avatar || ''"
       />
     </div>
     <div class="flex-1">
       <div>{{ author }} @{{ tag }}</div>
       <pre class="text-wrap break-all">{{ content }}</pre>
-      <img class="rounded-3xl w-full pt-2" v-if="true" :src="imageSrc" />
+      <img class="rounded-3xl w-full pt-2" v-if="imageSrc" :src="imageSrc" />
     </div>
   </div>
 </template>
