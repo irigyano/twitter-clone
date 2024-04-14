@@ -2,27 +2,28 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import { supabase } from '@/utils/supabase'
-import SideNav from '@/components/SideNav.vue'
-import SideFeed from '@/components/SideFeed.vue'
+import MainLayout from '@/components/MainLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  // Q: how to reduce verbose import components for name routes?
   routes: [
     {
       path: '/',
-      name: 'home',
-      components: {
-        default: HomeView,
-        SideNav,
-        SideFeed
-      }
-    },
-    {
-      // lazy loading example
-      path: '/:user',
-      name: 'about',
-      components: { default: () => import('../views/UserView.vue'), SideNav, SideFeed }
+      name: 'layout',
+      component: MainLayout,
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: HomeView
+        },
+        {
+          // lazy loading example
+          path: '/:user',
+          name: 'about',
+          component: () => import('../views/UserView.vue')
+        }
+      ]
     },
     {
       path: '/login',

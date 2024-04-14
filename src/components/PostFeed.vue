@@ -2,8 +2,14 @@
 import { useQuery } from '@tanstack/vue-query'
 import Post from '@/components/Post.vue'
 import { supabase } from '@/utils/supabase'
+import Loading from '@/components/Loading.vue'
 
 async function getPostsFromSupabase() {
+  // https://www.reddit.com/r/Supabase/comments/12ti2ay/how_do_i_throw_an_error_for_selects/
+  // If we want avoid fetching with anon key which returns 200 with empty array
+  // we have to 'getUser' here to make sure every request made by query is authorized
+  // but seems redundant..?
+
   const { data, error } = await supabase
     .from('posts')
     .select('*, users(*)')
@@ -24,8 +30,9 @@ const {
 </script>
 
 <template>
-  <!-- TODO: spinner for UX -->
-  <div v-if="isLoading">Loading!</div>
+  <div v-if="isLoading" class="fixed top-[50%]">
+    <Loading />
+  </div>
   <div v-else-if="isError">{{ error }}</div>
   <div v-else-if="posts!.length > 0" class="w-full flex flex-col gap-2">
     <Post
