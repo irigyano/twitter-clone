@@ -1,29 +1,16 @@
 <script setup lang="ts">
 import SideNavItem from '@/components/SideNavItem.vue'
-import { supabase } from '@/utils/supabase'
 import { Home, UserRound } from 'lucide-vue-next'
-import { onBeforeMount } from 'vue'
+import { supabase } from '@/utils/supabase'
+import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
 const router = useRouter()
-async function SignOut() {
-  const { error } = await supabase.auth.signOut()
+const { user } = useUserStore()
+
+async function signOut() {
+  await supabase.auth.signOut()
   router.go(0)
 }
-
-const username = ref<string>()
-// we can call this as soon as have access to localStorage.
-onBeforeMount(async () => {
-  // we get session from pinia in the future
-  const {
-    data: { session }
-  } = await supabase.auth.getSession()
-
-  // is `Session` possibly null?
-  const { user } = session!
-  const { data } = await supabase.from('users').select(`name , tag`).eq('id', user.id).single()
-  username.value = data!.name
-})
 </script>
 
 <template>
@@ -40,9 +27,9 @@ onBeforeMount(async () => {
           <UserRound :size="24" />
         </SideNavItem>
       </div>
-      <div v-if="username" class="w-1/2 flex flex-col gap-2">
-        <div>{{ username }}</div>
-        <button @click="SignOut()">登出</button>
+      <div class="w-1/2 flex flex-col gap-2">
+        <div>{{ user.name }}</div>
+        <button @click="signOut()">登出</button>
       </div>
     </div>
   </header>

@@ -4,18 +4,12 @@ const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
 const imageBase64 = defineModel<string>('imageBase64')
 const emit = defineEmits(['submit'])
-
 import { supabase } from '@/utils/supabase'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
 
 async function sumbitPost(newPost: { content?: string; imageSrc?: string }) {
-  // we get session from pinia in the future
-  const {
-    data: { session }
-  } = await supabase.auth.getSession()
-
-  const { user } = session!
-  const insertion = { ...newPost, userId: user.id }
-  const { error } = await supabase.from('posts').insert(insertion)
+  const { error } = await supabase.from('posts').insert({ ...newPost, userId: userStore.user.id })
   if (error) return Promise.reject()
 }
 

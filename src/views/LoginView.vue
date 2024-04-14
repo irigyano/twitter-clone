@@ -4,11 +4,12 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 async function SignIn() {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email: 'test@example.com',
     password: 'test'
   })
-  router.go(0)
+
+  if (!error) router.replace('/')
 }
 </script>
 
