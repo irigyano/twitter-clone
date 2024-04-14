@@ -7,9 +7,16 @@ const emit = defineEmits(['submit'])
 
 import { supabase } from '@/utils/supabase'
 
-async function sumbitPost(newPost: { content?: string; authorId: number; imageSrc: string }) {
-  const { error } = await supabase.from('posts').insert(newPost)
-  if (!error) return Promise.resolve()
+async function sumbitPost(newPost: { content?: string; imageSrc?: string }) {
+  // we get session from pinia in the future
+  const {
+    data: { session }
+  } = await supabase.auth.getSession()
+
+  const { user } = session!
+  const insertion = { ...newPost, userId: user.id }
+  const { error } = await supabase.from('posts').insert(insertion)
+  if (error) return Promise.reject()
 }
 
 const { mutate } = useMutation({
@@ -18,6 +25,10 @@ const { mutate } = useMutation({
     queryClient.invalidateQueries({ queryKey: ['posts'] })
     postContent.value = ''
     imageBase64.value = ''
+  },
+  onError: () => {
+    // pop up
+    console.log('failed')
   }
 })
 </script>
@@ -29,8 +40,7 @@ const { mutate } = useMutation({
     @click="
       mutate({
         content: postContent,
-        imageSrc: imageBase64 || '',
-        authorId: 1
+        imageSrc: imageBase64
       })
     "
   >

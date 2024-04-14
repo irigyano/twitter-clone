@@ -5,21 +5,24 @@ import { Home, UserRound } from 'lucide-vue-next'
 import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import type { User } from '@supabase/supabase-js'
 const router = useRouter()
 async function SignOut() {
   const { error } = await supabase.auth.signOut()
   router.go(0)
 }
 
-const currentUser = ref<User | null>()
+const username = ref<string>()
 // we can call this as soon as have access to localStorage.
 onBeforeMount(async () => {
+  // we get session from pinia in the future
   const {
-    data: { user }
-  } = await supabase.auth.getUser()
+    data: { session }
+  } = await supabase.auth.getSession()
 
-  currentUser.value = user
+  // is `Session` possibly null?
+  const { user } = session!
+  const { data } = await supabase.from('users').select(`name , tag`).eq('id', user.id).single()
+  username.value = data!.name
 })
 </script>
 
@@ -37,8 +40,8 @@ onBeforeMount(async () => {
           <UserRound :size="24" />
         </SideNavItem>
       </div>
-      <div v-if="currentUser" class="w-1/2 flex flex-col gap-2">
-        <div>{{ currentUser.email }}</div>
+      <div v-if="username" class="w-1/2 flex flex-col gap-2">
+        <div>{{ username }}</div>
         <button @click="SignOut()">登出</button>
       </div>
     </div>
