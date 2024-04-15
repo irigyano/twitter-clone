@@ -4,6 +4,7 @@ import { Home, UserRound } from 'lucide-vue-next'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 const router = useRouter()
 const { user } = useUserStore()
 
@@ -19,7 +20,12 @@ async function signOut() {
       class="flex w-full flex-col items-end pr-8 border-r-[1px] border-gray-700 pt-4 justify-between h-[100dvh] sticky top-0"
     >
       <div class="w-1/2 flex flex-col gap-2">
-        <div>Logo</div>
+        <RouterLink
+          to="/"
+          class="hover:bg-gray-400 p-1 rounded-full duration-300 hover:bg-opacity-50 self-start"
+        >
+          <img class="w-10 rounded-full" src="/src/assets//images/garf.webp" />
+        </RouterLink>
         <SideNavItem location="/" title="首頁">
           <Home :size="24" />
         </SideNavItem>
