@@ -8,8 +8,10 @@ import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
 
-async function sumbitPost(newPost: { content?: string; imageSrc?: string }) {
-  const { error } = await supabase.from('posts').insert({ ...newPost, userId: userStore.user.id })
+async function sumbitPost({ content, imageSrc }: { content?: string; imageSrc?: string }) {
+  const { error } = await supabase
+    .from('posts')
+    .insert({ content, imageSrc, userId: userStore.user.id })
   if (error) return Promise.reject()
 }
 

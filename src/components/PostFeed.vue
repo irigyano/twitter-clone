@@ -37,6 +37,7 @@ const {
   <div v-else-if="posts!.length > 0" class="w-full flex flex-col gap-2">
     <Post
       v-for="post in posts"
+      :id="post.id"
       :content="post.content"
       :imageSrc="post.imageSrc"
       :author="post.users!.name"
