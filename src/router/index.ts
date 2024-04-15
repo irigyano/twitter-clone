@@ -16,6 +16,7 @@ const router = createRouter({
         {
           path: '',
           name: 'home',
+          meta: { title: '首頁' },
           component: HomeView
         },
         {
@@ -28,12 +29,15 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
+      meta: { title: '登入' },
       component: LoginView
     }
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
+  document.title = ((to.meta.title as string) && `${to.meta.title} / Webber`) || 'Webber'
+
   const userStore = useUserStore()
   // init the session on app enter
   if (!userStore.session) {
