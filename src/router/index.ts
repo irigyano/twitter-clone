@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import { supabase } from '@/utils/supabase'
 import MainLayout from '@/components/MainLayout.vue'
 import { useUserStore } from '@/stores/user'
+import SignView from '../views/SignView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +32,12 @@ const router = createRouter({
       name: 'login',
       meta: { title: '登入' },
       component: LoginView
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      meta: { title: '註冊' },
+      component: SignView
     }
   ]
 })
@@ -49,8 +56,13 @@ router.beforeEach(async (to, from, next) => {
     userStore.session = session
   }
 
+  // temp fix
   // allow login page only
-  if (!userStore.session && to.path !== '/login') return next('/login')
+  if (!userStore.session) {
+    if (to.path === '/signup') return next()
+    if (to.path !== '/login') return next('/login')
+  }
+  // if (!userStore.session && to.path !== '/login') return next('/login')
 
   // init the user on app enter
   if (userStore.session && !userStore.user) {
@@ -62,8 +74,10 @@ router.beforeEach(async (to, from, next) => {
       .single()
     if (data) userStore.user = data
 
+    // temp fix
     // redirect from login page
     if (to.path === '/login') return next('/')
+    if (to.path === '/signup') return next('/')
   }
 
   return next()
