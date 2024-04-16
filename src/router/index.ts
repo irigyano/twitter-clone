@@ -36,7 +36,9 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  document.title = ((to.meta.title as string) && `${to.meta.title} / Webber`) || 'Webber'
+  if (!to.params.user) {
+    document.title = ((to.meta.title as string) && `${to.meta.title} / Webber`) || 'Webber'
+  }
 
   const userStore = useUserStore()
   // init the session on app enter
