@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { supabase } from '@/utils/supabase'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-const queryClient = useQueryClient()
-// https://github.com/supabase/supabase-js/issues/244
-defineProps<{
-  id: number
-  content: string | null
-  imageSrc: string | null
-  author: string
-  tag: string
-  avatar: string | null
-}>()
+import { computed, toRefs } from 'vue'
+import type { Post } from '@/components/PostFeed.vue'
 
-async function deletePost({ id }: { id: number }) {
+const queryClient = useQueryClient()
+const props = defineProps<{ post: Post }>()
+
+const { post } = toRefs(props)
+const user = computed(() => post.value.user)
+const commnents = computed(() => post.value.comments)
+const likes = computed(() => post.value.likes)
+
+async function deletePost({ id }: { id: string }) {
   const { error } = await supabase.from('posts').delete().eq('id', id)
   if (error) return Promise.reject()
 }
@@ -36,18 +36,18 @@ const { mutate } = useMutation({
       class="min-w-10 h-10 rounded-full object-cover"
       width="40"
       height="40"
-      :src="avatar || ''"
+      :src="user!.avatar || ''"
     />
     <div class="flex-1">
       <div class="flex justify-between">
-        <div>{{ author }} @{{ tag }}</div>
-        <button @click="mutate({ id })">刪除</button>
+        <div>{{ user!.name }} @{{ user!.tag }}</div>
+        <button @click="mutate({ id: post.id })">刪除</button>
       </div>
-      <pre class="text-wrap break-all">{{ content }}</pre>
-      <img class="rounded-3xl w-full pt-2" v-if="imageSrc" :src="imageSrc" />
+      <pre class="text-wrap break-all">{{ post.content }}</pre>
+      <img class="rounded-3xl w-full pt-2" v-if="post.imageSrc" :src="post.imageSrc" />
       <div class="flex justify-evenly gap-1">
-        <div class="bg-blue-500 flex-1">Comments</div>
-        <div class="bg-blue-500 flex-1">Likes</div>
+        <div class="flex-1">{{ commnents.length }}</div>
+        <div class="flex-1">{{ likes.length }}</div>
       </div>
     </div>
   </div>

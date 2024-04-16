@@ -9,25 +9,100 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      comments: {
+        Row: {
+          comment: string
+          created_at: string
+          id: string
+          postId: string
+          userId: string
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          id?: string
+          postId?: string
+          userId?: string
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          id?: string
+          postId?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_comments_postId_fkey"
+            columns: ["postId"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_comments_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      likes: {
+        Row: {
+          created_at: string
+          id: string
+          postId: string
+          userId: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          postId: string
+          userId: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          postId?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_likes_postId_fkey"
+            columns: ["postId"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_likes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           content: string | null
           created_at: string
-          id: number
+          id: string
           imageSrc: string | null
           userId: string
         }
         Insert: {
           content?: string | null
           created_at?: string
-          id?: number
+          id?: string
           imageSrc?: string | null
           userId: string
         }
         Update: {
           content?: string | null
           created_at?: string
-          id?: number
+          id?: string
           imageSrc?: string | null
           userId?: string
         }

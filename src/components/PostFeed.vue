@@ -4,15 +4,14 @@ import Post from '@/components/Post.vue'
 import { supabase } from '@/utils/supabase'
 import Loading from '@/components/Loading.vue'
 
-async function getPostsFromSupabase() {
-  // https://www.reddit.com/r/Supabase/comments/12ti2ay/how_do_i_throw_an_error_for_selects/
-  // If we want avoid fetching with anon key which returns 200 with empty array
-  // we have to 'getUser' here to make sure every request made by query is authorized
-  // but seems redundant..?
+type ExcludeNull<T> = T extends null ? never : T
+export type Post = ExcludeNull<Awaited<ReturnType<typeof getPostsFromSupabase>>>[number]
 
+// TODO: fix user type can be null
+async function getPostsFromSupabase() {
   const { data, error } = await supabase
     .from('posts')
-    .select('*, users(*)')
+    .select('*, user:users(*), comments(*), likes(*)')
     .order('created_at', { ascending: false })
   return data
 }
@@ -35,15 +34,7 @@ const {
   </div>
   <div v-else-if="isError">{{ error }}</div>
   <div v-else-if="posts!.length > 0" class="w-full flex flex-col gap-2">
-    <Post
-      v-for="post in posts"
-      :id="post.id"
-      :content="post.content"
-      :imageSrc="post.imageSrc"
-      :author="post.users!.name"
-      :tag="post.users!.tag"
-      :avatar="post.users!.avatar"
-    />
+    <Post v-for="post in posts" :post="post" />
   </div>
   <div v-else>Add a new post!</div>
 </template>
