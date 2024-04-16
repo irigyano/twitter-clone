@@ -119,18 +119,24 @@ export type Database = {
       users: {
         Row: {
           avatar: string | null
+          bio: string | null
+          created_at: string
           id: string
           name: string
           tag: string
         }
         Insert: {
           avatar?: string | null
+          bio?: string | null
+          created_at?: string
           id: string
           name: string
           tag: string
         }
         Update: {
           avatar?: string | null
+          bio?: string | null
+          created_at?: string
           id?: string
           name?: string
           tag?: string
