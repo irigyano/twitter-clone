@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { supabase } from '@/utils/supabase'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import type { Post } from '@/components/PostFeed.vue'
+import type { Post } from '@/utils/query'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
 const queryClient = useQueryClient()
@@ -16,7 +16,9 @@ async function deletePost({ id }: { id: string }) {
 const { mutate } = useMutation({
   mutationFn: deletePost,
   onSuccess: () => {
+    // TODO: optimazation
     queryClient.invalidateQueries({ queryKey: ['posts'] })
+    queryClient.invalidateQueries({ queryKey: ['userPosts'] })
   },
   onError: () => {
     // pop up
@@ -36,7 +38,7 @@ const { mutate } = useMutation({
     />
     <div class="flex-1">
       <div class="flex justify-between">
-        <div>{{ author!.name }} @{{ author!.tag }}</div>
+        <div>{{ author.name }} @{{ author.tag }} {{ post.created_at }}</div>
         <!-- TODO: test with other user -->
         <button v-if="author.id === userStore.user?.id" @click="mutate({ id: post.id })">
           刪除

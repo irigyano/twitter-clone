@@ -1,26 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import Post from '@/components/Post.vue'
-import { supabase } from '@/utils/supabase'
 import Loading from '@/components/Loading.vue'
-export type Post = Awaited<ReturnType<typeof getPostsFromSupabase>>[number]
-
-async function getPostsFromSupabase() {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*, user:users(*), comments(*), likes(*)')
-    .order('created_at', { ascending: false })
-
-  const trimmed = data?.map((post) => {
-    const { user, ...rest } = post
-    return {
-      author: user!,
-      post: rest
-    }
-  })
-
-  return trimmed || []
-}
+import { getPosts } from '@/utils/query'
 
 const {
   isLoading,
@@ -29,7 +11,7 @@ const {
   error
 } = useQuery({
   queryKey: ['posts'],
-  queryFn: getPostsFromSupabase,
+  queryFn: getPosts,
   retry: false
 })
 </script>

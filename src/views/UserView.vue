@@ -1,34 +1,38 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { supabase } from '@/utils/supabase'
 import { useHead } from 'unhead'
-import { onBeforeMount, ref, toRefs } from 'vue'
 import Post from '@/components/Post.vue'
+import Loading from '@/components/Loading.vue'
+import { useQuery } from '@tanstack/vue-query'
+import { getUserWithTag } from '@/utils/query'
 const route = useRoute()
-const user = ref<User>(null)
 
-type User = Awaited<ReturnType<typeof getUserFromSupabase>>
-async function getUserFromSupabase() {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*, posts(*, comments(*), likes(*))')
-    .eq('tag', route.params.user)
-    .single()
-
-  return data
-}
-
-onBeforeMount(async () => {
-  const data = await getUserFromSupabase()
-  if (!data) return
-  useHead({
-    title: `${data.name} (@${data.tag}) / Webber`
-  })
-  user.value = data
+const {
+  isLoading,
+  isError,
+  data: user,
+  error
+} = useQuery({
+  queryKey: ['userPosts'],
+  queryFn: async () => {
+    const data = await getUserWithTag(route.params.user as string)
+    useHead({
+      title: `${data.name} (@${data.tag}) / Webber`
+    })
+    return data
+  },
+  retry: false
 })
 </script>
 
 <template>
+  <div
+    v-if="isLoading"
+    class="fixed top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <Loading />
+  </div>
+  <div v-if="isError">{{ error }}</div>
   <!-- Q: better approach than w-full? -->
   <div v-if="user" class="g-red-500 w-full">
     <div>{{ user.name }}</div>
@@ -49,5 +53,6 @@ onBeforeMount(async () => {
     <div v-for="n in user.posts.length">
       <Post :author="user" :post="user.posts[n - 1]" />
     </div>
+    <div v-if="user.posts.length === 0">The user has no posts yet.</div>
   </div>
 </template>
