@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import SideNav from '@/components/SideNav.vue'
-import RightSideFeed from '@/components/RightSideFeed.vue'
+import { supabase } from '@/utils/supabase'
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const userStore = useUserStore()
+
+supabase.auth.onAuthStateChange((event, session) => {
+  // reload the page if current session expired
+  if (userStore.session && !session) return router.go(0)
+
+  // update the session
+  userStore.session = session
+  // for better ux, we can also refetch and update user here,
+  // so changing avatar, username would reflect immediately.
+  // ...
+})
 </script>
 
 <template>
   <div class="min-h-screen bg-slate-800 text-gray-300 flex justify-center">
-    <header class="hidden sm:flex flex-[0.25]">
-      <SideNav />
-    </header>
-    <main class="flex flex-1 max-w-[600px]">
-      <RouterView />
-    </main>
-    <footer class="hidden sm:flex flex-[0.25]">
-      <RightSideFeed />
-    </footer>
+    <RouterView />
   </div>
 </template>

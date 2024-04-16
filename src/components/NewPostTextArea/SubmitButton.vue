@@ -1,21 +1,30 @@
 <script setup lang="ts">
 import { useQueryClient, useMutation } from '@tanstack/vue-query'
-import axios from 'axios'
 const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
 const imageBase64 = defineModel<string>('imageBase64')
-
 const emit = defineEmits(['submit'])
+import { supabase } from '@/utils/supabase'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+
+async function sumbitPost({ content, imageSrc }: { content?: string; imageSrc?: string }) {
+  const { error } = await supabase
+    .from('posts')
+    .insert({ content, imageSrc, userId: userStore.user.id })
+  if (error) return Promise.reject()
+}
 
 const { mutate } = useMutation({
-  mutationFn: (newPost: { content?: string; authorId: number; imageSrc: string }) => {
-    const endpoint = `${import.meta.env.VITE_API_ENDPOINT}/posts`
-    return axios.post(endpoint, newPost)
-  },
+  mutationFn: sumbitPost,
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['posts'] })
     postContent.value = ''
     imageBase64.value = ''
+  },
+  onError: () => {
+    // pop up
+    console.log('failed')
   }
 })
 </script>
@@ -27,8 +36,7 @@ const { mutate } = useMutation({
     @click="
       mutate({
         content: postContent,
-        imageSrc: imageBase64 || '',
-        authorId: 1
+        imageSrc: imageBase64
       })
     "
   >

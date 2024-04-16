@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import axios from 'axios'
 import Post from '@/components/Post.vue'
+import { supabase } from '@/utils/supabase'
+import Loading from '@/components/Loading.vue'
 
-async function getPosts() {
-  const res = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}/posts`)
-  return res.data
+type ExcludeNull<T> = T extends null ? never : T
+export type Post = ExcludeNull<Awaited<ReturnType<typeof getPostsFromSupabase>>>[number]
+
+// TODO: fix user type can be null
+async function getPostsFromSupabase() {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, user:users(*), comments(*), likes(*)')
+    .order('created_at', { ascending: false })
+  return data
 }
 
 const {
@@ -15,21 +23,18 @@ const {
   error
 } = useQuery({
   queryKey: ['posts'],
-  queryFn: getPosts
+  queryFn: getPostsFromSupabase,
+  retry: false
 })
 </script>
 
 <template>
-  <div v-if="isLoading">Loading!</div>
-  <div v-else-if="isError">{{ error }}</div>
-  <div v-else-if="posts" class="w-full flex flex-col gap-2">
-    <Post
-      v-for="post in posts"
-      :content="post.content"
-      :imageSrc="post.imageSrc"
-      :author="post.author.name"
-      :tag="post.author.tag"
-      :avatar="post.author.avatar"
-    />
+  <div v-if="isLoading" class="fixed top-[50%]">
+    <Loading />
   </div>
+  <div v-else-if="isError">{{ error }}</div>
+  <div v-else-if="posts!.length > 0" class="w-full flex flex-col gap-2">
+    <Post v-for="post in posts" :post="post" />
+  </div>
+  <div v-else>Add a new post!</div>
 </template>
