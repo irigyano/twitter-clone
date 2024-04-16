@@ -29,7 +29,7 @@ async function signOut() {
         <SideNavItem location="/" title="首頁">
           <Home :size="24" />
         </SideNavItem>
-        <SideNavItem :location="`/${user.name}`" title="個人資料">
+        <SideNavItem :location="`/${user.tag}`" title="個人資料">
           <UserRound :size="24" />
         </SideNavItem>
       </div>
