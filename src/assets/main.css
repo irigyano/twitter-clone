@@ -4,36 +4,25 @@
 
 @layer base {
   :root {
-    --gradient: linear-gradient(to top left, #ed4264, #ffedbc);
-
-    --background: -13 53.949999999999996% 4.8%;
-    --foreground: -13 8.299999999999999% 98%;
-
-    --muted: -13 41.5% 18%;
-    --muted-foreground: -13 8.299999999999999% 56%;
-
-    --popover: -13 48.400000000000006% 7.8%;
-    --popover-foreground: -13 8.299999999999999% 98%;
-
-    --card: -13 48.400000000000006% 7.8%;
-    --card-foreground: -13 8.299999999999999% 98%;
-
-    --border: -13 41.5% 18%;
-    --input: -13 41.5% 18%;
-
-    --primary: -13 83% 60%;
-    --primary-foreground: -13 8.299999999999999% 6%;
-
-    --secondary: -13 41.5% 18%;
-    --secondary-foreground: -13 8.299999999999999% 98%;
-
-    --accent: -13 41.5% 18%;
-    --accent-foreground: -13 8.299999999999999% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: -13 8.299999999999999% 98%;
-
-    --ring: -13 83% 60%;
+    --background: 338 10% 10%;
+    --foreground: 338 0% 90%;
+    --card: 338 0% 10%;
+    --card-foreground: 338 0% 90%;
+    --popover: 338 10% 5%;
+    --popover-foreground: 338 0% 90%;
+    --primary: 338 100% 75%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 338 10% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 300 10% 25%;
+    --muted-foreground: 338 0% 60%;
+    --accent: 300 10% 25%;
+    --accent-foreground: 338 0% 90%;
+    --destructive: 0 50% 30%;
+    --destructive-foreground: 338 0% 90%;
+    --border: 338 20% 28%;
+    --input: 338 20% 28%;
+    --ring: 338 100% 75%;
     --radius: 0.5rem;
   }
 }

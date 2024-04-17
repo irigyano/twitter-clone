@@ -36,7 +36,7 @@ function readInputToBase64(imageFileList: FileList | null) {
   <textarea
     v-model="postContent"
     placeholder="有什麼新鮮事？！"
-    :class="`placeholder-gray-400 w-full bg-transparent focus:outline-none border-dashed rounded-md p-2 resize-none border-2 ${isDragOver ? 'border-blue-500' : 'border-transparent'}`"
+    :class="`placeholder-muted-foreground w-full bg-transparent focus:outline-none border-dashed rounded-md px-2 resize-none border-2 ${isDragOver ? 'border-primary' : 'border-transparent'}`"
     :rows="numberOfLineBreaks"
     @drop.prevent="handleImageDrop"
     @dragover="isDragOver = true"

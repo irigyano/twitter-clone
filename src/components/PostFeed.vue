@@ -20,7 +20,7 @@ const {
   <div v-if="isLoading" class="fixed top-[50%]">
     <Loading />
   </div>
-  <div v-else-if="posts?.length" class="w-full flex flex-col gap-2">
+  <div v-else-if="posts?.length" class="w-full flex flex-col">
     <Post v-for="post in posts" :author="post.author" :post="post.post" :key="post.post.id" />
   </div>
   <div v-else-if="isError">Error: {{ error }}</div>

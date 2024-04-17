@@ -45,11 +45,11 @@ const {
     <div>@{{ user.tag }}</div>
     <pre>{{ user.bio || 'no bio' }}</pre>
     <div>{{ user.created_at }}</div>
-    <div class="flex gap-2 border-b-[1px] border-gray-700">
+    <div class="flex gap-2 border-b-[1px] border-border">
       <div>following</div>
       <div>followers</div>
     </div>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col">
       <!-- n starts with 1 -->
       <Post
         v-for="n in user.posts.length"

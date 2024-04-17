@@ -32,7 +32,7 @@ const { mutate } = useMutation({
 <template>
   <button
     :disabled="!postContent && !imageBase64"
-    :class="`${!postContent && !imageBase64 ? 'bg-blue-400 opacity-50' : 'bg-blue-500 opacity-100'} hover:bg-blue-600 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
+    :class="`${!postContent && !imageBase64 ? 'bg-secondary' : 'bg-primary'} hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
     @click="
       mutate({
         content: postContent,

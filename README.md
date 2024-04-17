@@ -6,6 +6,7 @@ intro
 
 - [x] Posts schema (likes, comments)
 - [ ] Supabase storage integration
+  - [ ] Default avatar
 - [x] Login form
 - [x] Register (Postgres function)
 - [x] User View & User schema (tags should be unique)
