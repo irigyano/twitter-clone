@@ -10,7 +10,14 @@ intro
 - [x] Register (Postgres function)
 - [x] User View & User schema (tags should be unique)
 - [ ] Search view
-- [ ] Row Level Policy
-- [ ] Styling (Shadcn?)
+- [ ] Row Level Policy & (review constraints)
 - [ ] Frontend form/input validation & backend error messages
+  - [ ] Debounce check existing username
+- [ ] Comments pop up
+- [x] Likes feature
+- [ ] Styling
+
+## Optimizations
+
 - [ ] Router logic
+- [ ] Vue Query Cache

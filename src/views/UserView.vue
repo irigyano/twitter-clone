@@ -49,9 +49,14 @@ const {
       <div>following</div>
       <div>followers</div>
     </div>
-    <!-- n starts with 1 -->
-    <div v-for="n in user.posts.length">
-      <Post :author="user" :post="user.posts[n - 1]" />
+    <div class="flex flex-col gap-2">
+      <!-- n starts with 1 -->
+      <Post
+        v-for="n in user.posts.length"
+        :author="user"
+        :post="user.posts[n - 1]"
+        :key="user.posts[n - 1].id"
+      />
     </div>
     <div v-if="user.posts.length === 0">The user has no posts yet.</div>
   </div>

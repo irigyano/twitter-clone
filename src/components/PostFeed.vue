@@ -21,7 +21,7 @@ const {
     <Loading />
   </div>
   <div v-else-if="posts?.length" class="w-full flex flex-col gap-2">
-    <Post v-for="post in posts" :author="post.author" :post="post.post" />
+    <Post v-for="post in posts" :author="post.author" :post="post.post" :key="post.post.id" />
   </div>
   <div v-else-if="isError">Error: {{ error }}</div>
   <div v-else>Add a new post!</div>
