@@ -5,9 +5,11 @@ import type { Post } from '@/utils/query'
 import { useUserStore } from '@/stores/user'
 import { Heart, Trash2, MessageCircleMore } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { defaultAvatar } from '@/utils/defaultAvatar'
 const userStore = useUserStore()
 const queryClient = useQueryClient()
+const router = useRouter()
 
 const props = defineProps<{ post: Post['post']; author: Post['author'] }>()
 
@@ -51,32 +53,43 @@ const { mutate } = useMutation({
 </script>
 
 <template>
-  <div class="flex gap-2 px-4 pt-2 border-b-[1px] border-gray-700">
+  <div
+    @click="router.push(`/post/${post.id}`)"
+    class="flex gap-2 px-4 pt-2 border-b-[1px] border-border hover:bg-black/10 cursor-pointer"
+  >
     <img
       alt="avatar"
       class="min-w-10 h-10 rounded-full object-cover"
       width="40"
       height="40"
-      :src="author!.avatar || ''"
+      :src="author.avatar || defaultAvatar"
     />
     <div class="flex-1">
       <div class="flex justify-between">
         <div class="flex gap-2">
-          <RouterLink :to="`/${author.tag}`"> {{ author.name }} @{{ author.tag }} </RouterLink>
+          <div class="hover:underline font-bold" @click.stop="router.push(`/${author.tag}`)">
+            {{ author.name }}
+          </div>
           <p class="text-muted-foreground">
+            @{{ author.tag }}．
             {{ new Date(post.created_at).toLocaleTimeString() }}
           </p>
         </div>
+        <!-- Delete -->
         <button
           class="text-muted-foreground hover:bg-blue-400 hover:bg-opacity-30 hover:text-blue-400 p-2 duration-300 rounded-full"
           v-if="author.id === userStore.user.id"
-          @click="mutate()"
+          @click.stop="mutate()"
         >
           <Trash2 :size="18" />
         </button>
       </div>
       <pre class="text-wrap break-all">{{ post.content }}</pre>
-      <img class="rounded-3xl w-full pt-2" v-if="post.imageSrc" :src="post.imageSrc" />
+      <img
+        class="rounded-3xl w-full border-[1px] border-border"
+        v-if="post.imageSrc"
+        :src="post.imageSrc"
+      />
       <div class="flex justify-evenly gap-1 p-1 text-muted-foreground">
         <div class="flex-1">
           <button class="flex hover:text-blue-400 group gap-1 items-center duration-300">
@@ -90,7 +103,7 @@ const { mutate } = useMutation({
         </div>
         <div class="flex-1">
           <button
-            @click="likePost()"
+            @click.stop="likePost()"
             class="flex hover:text-red-500 group gap-1 items-center duration-300"
             :class="isLiked && 'text-red-500'"
           >

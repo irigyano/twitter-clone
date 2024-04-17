@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import type { Session } from '@supabase/supabase-js'
 
 type User = {
-  avatar: string | null
+  avatar: string
   id: string
   name: string
   tag: string
