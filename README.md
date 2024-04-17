@@ -16,6 +16,7 @@ intro
 - [ ] Comments pop up
 - [x] Likes feature
 - [ ] Styling
+- [ ] Realtime notifications
 
 ## Optimizations
 

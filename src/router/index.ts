@@ -24,6 +24,17 @@ const router = createRouter({
           path: '/:user',
           name: 'about',
           component: () => import('../views/UserView.vue')
+        },
+        {
+          path: '/notifications',
+          name: 'notifications',
+          meta: { title: '通知' },
+          component: () => import('../views/NotificationsView.vue')
+        },
+        {
+          path: '/search',
+          name: 'search',
+          component: () => import('../views/SearchView.vue')
         }
       ]
     },
@@ -43,9 +54,8 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (!to.params.user) {
+  if (to.meta.title)
     document.title = ((to.meta.title as string) && `${to.meta.title} / Webber`) || 'Webber'
-  }
 
   const userStore = useUserStore()
   // init the session on app enter

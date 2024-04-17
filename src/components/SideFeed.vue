@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import { Search } from 'lucide-vue-next'
+import { ref } from 'vue'
+
+const searchQuery = ref('')
 </script>
 
 <template>
@@ -13,6 +18,8 @@ import { Search } from 'lucide-vue-next'
           id="searchInput"
           placeholder="搜尋"
           class="pl-10 flex w-full rounded-full h-10 max-w-[350px] bg-gray-700"
+          v-model="searchQuery"
+          @keypress.enter="router.push(`/search?q=${searchQuery}`)"
         />
       </label>
     </div>

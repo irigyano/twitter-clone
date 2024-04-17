@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SideNavItem from '@/components/SideNavItem.vue'
-import { Home, UserRound } from 'lucide-vue-next'
+import { Home, UserRound, Bell } from 'lucide-vue-next'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
@@ -29,13 +29,20 @@ async function signOut() {
         <SideNavItem location="/" title="首頁">
           <Home :size="24" />
         </SideNavItem>
+        <SideNavItem :location="`/notifications`" title="通知">
+          <Bell :size="24" />
+        </SideNavItem>
         <SideNavItem :location="`/${user.tag}`" title="個人資料">
           <UserRound :size="24" />
         </SideNavItem>
       </div>
-      <div class="w-1/2 flex flex-col gap-2">
-        <div>{{ user.name }}</div>
-        <button @click="signOut()">登出</button>
+      <div class="w-1/2 flex items-center gap-2">
+        <img :src="user.avatar || ''" class="rounded-full w-10 h-10 object-cover" />
+        <div>
+          <div>{{ user.name }}</div>
+          <div class="text-muted-foreground">@{{ user.tag }}</div>
+        </div>
+        <button class="hover:text-blue-400 duration-300" @click="signOut()">登出</button>
       </div>
     </div>
   </header>
