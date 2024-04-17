@@ -12,7 +12,7 @@ const {
 } = useQuery({
   queryKey: ['posts'],
   queryFn: getPosts,
-  retry: false
+  gcTime: 0
 })
 </script>
 

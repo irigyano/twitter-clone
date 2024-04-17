@@ -21,7 +21,7 @@ const {
     })
     return data
   },
-  retry: false
+  gcTime: 0
 })
 </script>
 
