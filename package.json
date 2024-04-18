@@ -21,6 +21,7 @@
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "javascript-time-ago": "^2.5.10",
     "lucide-vue-next": "^0.368.0",
     "pinia": "^2.1.7",
     "radix-vue": "^1.7.0",

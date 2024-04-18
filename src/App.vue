@@ -3,6 +3,9 @@ import { RouterView } from 'vue-router'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import TimeAgo from 'javascript-time-ago'
+import zh from 'javascript-time-ago/locale/zh-Hant'
+TimeAgo.addDefaultLocale(zh)
 const router = useRouter()
 const userStore = useUserStore()
 

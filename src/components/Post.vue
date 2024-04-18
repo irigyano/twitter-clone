@@ -7,6 +7,9 @@ import { Heart, Trash2, MessageCircleMore } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { defaultAvatar } from '@/utils/defaultAvatar'
+import TimeAgo from 'javascript-time-ago'
+
+const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()
 const queryClient = useQueryClient()
 const router = useRouter()
@@ -50,12 +53,17 @@ const { mutate } = useMutation({
     console.log('failed')
   }
 })
+
+function goToPost() {
+  if (document?.getSelection()?.type === 'Range') return
+  router.push(`/post/${props.post.id}`)
+}
 </script>
 
 <template>
   <div
-    @click="router.push(`/post/${post.id}`)"
-    class="flex gap-2 px-4 pt-2 border-b-[1px] border-border hover:bg-black/10 cursor-pointer"
+    @click="goToPost"
+    class="flex gap-2 px-4 pt-2 border-b-[1px] border-border hover:bg-primary/10 duration-300 cursor-pointer"
   >
     <img
       alt="avatar"
@@ -70,21 +78,20 @@ const { mutate } = useMutation({
           <div class="hover:underline font-bold" @click.stop="router.push(`/${author.tag}`)">
             {{ author.name }}
           </div>
-          <p class="text-muted-foreground">
-            @{{ author.tag }}．
-            {{ new Date(post.created_at).toLocaleTimeString() }}
-          </p>
+          <div class="text-muted-foreground">
+            @{{ author.tag }}．{{ timeAgo.format(new Date(post.created_at), 'twitter-minute-now') }}
+          </div>
         </div>
         <!-- Delete -->
         <button
-          class="text-muted-foreground hover:bg-blue-400 hover:bg-opacity-30 hover:text-blue-400 p-2 duration-300 rounded-full"
+          class="text-muted-foreground hover:bg-blue-400 hover:bg-opacity-30 hover:text-blue-400 duration-300 rounded-full p-1"
           v-if="author.id === userStore.user.id"
           @click.stop="mutate()"
         >
           <Trash2 :size="18" />
         </button>
       </div>
-      <pre class="text-wrap break-all">{{ post.content }}</pre>
+      <div class="whitespace-pre-wrap">{{ post.content }}</div>
       <img
         class="rounded-3xl w-full border-[1px] border-border"
         v-if="post.imageSrc"
@@ -92,7 +99,10 @@ const { mutate } = useMutation({
       />
       <div class="flex justify-evenly gap-1 p-1 text-muted-foreground">
         <div class="flex-1">
-          <button class="flex hover:text-blue-400 group gap-1 items-center duration-300">
+          <button
+            @click.stop="console.log('comment')"
+            class="flex hover:text-blue-400 group gap-1 items-center duration-300"
+          >
             <div
               class="group-hover:bg-blue-400 group-hover:text-blue-400 group-hover:bg-opacity-30 rounded-full p-2 cursor-pointer duration-300"
             >
@@ -103,7 +113,7 @@ const { mutate } = useMutation({
         </div>
         <div class="flex-1">
           <button
-            @click.stop="likePost()"
+            @click.stop="likePost"
             class="flex hover:text-red-500 group gap-1 items-center duration-300"
             :class="isLiked && 'text-red-500'"
           >

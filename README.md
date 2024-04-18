@@ -19,6 +19,7 @@ intro
 - [x] Likes feature
 - [ ] Styling
 - [ ] Realtime notifications
+- [ ] Follow feature(db relation)
 
 ## Optimizations
 
