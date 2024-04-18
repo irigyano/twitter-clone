@@ -27,3 +27,4 @@ intro
   - [x] Handle routes exception
 - [ ] Vue Query Cache
 - [ ] Vercel 404 redirect
+- [ ] Post typography (links, tag highlight, word breaks)

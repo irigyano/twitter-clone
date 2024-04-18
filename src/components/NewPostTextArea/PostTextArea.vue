@@ -8,13 +8,13 @@ const textarea = ref<HTMLTextAreaElement | null>(null)
 
 function shrinkTextareaRows() {
   if (!textarea.value) return
-  textarea.value.style.height = '52px'
-  if (textarea.value.scrollHeight > 52)
+  textarea.value.style.height = '60px'
+  if (textarea.value.scrollHeight > 60)
     textarea.value.style.height = `${textarea.value.scrollHeight + 4}px` // 4px offset for the border
 }
 
 watch(postContent, (value) => {
-  if (!value) return (textarea.value!.style.height = '52px') // reset after sumbit
+  if (!value) return (textarea.value!.style.height = '60px') // reset after sumbit
   shrinkTextareaRows()
 })
 
@@ -44,7 +44,7 @@ function readInputToBase64(imageFileList: FileList | null) {
     ref="textarea"
     v-model="postContent"
     placeholder="有什麼新鮮事？！"
-    :class="`placeholder-muted-foreground overflow-y-hidden w-full bg-transparent focus:outline-none border-dashed rounded-md px-2 resize-none border-2 ${isDragOver ? 'border-primary' : 'border-transparent'}`"
+    :class="`placeholder-muted-foreground text-lg font-semibold overflow-y-hidden w-full bg-transparent focus:outline-none border-dashed rounded-md px-2 resize-none border-2 ${isDragOver ? 'border-primary' : 'border-transparent'}`"
     @drop.prevent="handleImageDrop"
     @dragover="isDragOver = true"
     @dragleave="isDragOver = false"

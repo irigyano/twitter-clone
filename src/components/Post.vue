@@ -65,13 +65,15 @@ function goToPost() {
     @click="goToPost"
     class="flex gap-2 px-4 pt-2 border-b-[1px] border-border hover:bg-primary/10 duration-300 cursor-pointer"
   >
-    <img
-      alt="avatar"
-      class="min-w-10 h-10 rounded-full object-cover"
-      width="40"
-      height="40"
-      :src="author.avatar || defaultAvatar"
-    />
+    <div class="pt-1">
+      <img
+        alt="avatar"
+        class="min-w-10 h-10 rounded-full object-cover"
+        width="40"
+        height="40"
+        :src="author.avatar || defaultAvatar"
+      />
+    </div>
     <div class="flex-1">
       <div class="flex justify-between">
         <div class="flex gap-2">

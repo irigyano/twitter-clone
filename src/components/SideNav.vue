@@ -5,6 +5,7 @@ import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
+import { LogOut } from 'lucide-vue-next'
 const router = useRouter()
 const { user } = useUserStore()
 
@@ -15,14 +16,12 @@ async function signOut() {
 </script>
 
 <template>
-  <header class="hidden sm:flex flex-[0.25]">
-    <div
-      class="py-4 flex w-full flex-col items-start border-r-[1px] border-border justify-between h-[100dvh] sticky top-0"
-    >
-      <div class="flex flex-col gap-2">
+  <header class="hidden sm:flex flex-[0.25] justify-end">
+    <div class="p-4 flex w-fit flex-col justify-between h-[100dvh] sticky top-0">
+      <div class="flex flex-col gap-2 items-center xl:items-start font-bold">
         <RouterLink
           to="/"
-          class="hover:bg-gray-400 p-1 rounded-full duration-300 hover:bg-opacity-50 self-start"
+          class="hover:bg-secondary p-1 rounded-full duration-300 hover:bg-opacity-50 self-start"
         >
           <img class="w-10 rounded-full" src="/src/assets//images/garf.webp" />
         </RouterLink>
@@ -36,13 +35,23 @@ async function signOut() {
           <UserRound :size="24" />
         </SideNavItem>
       </div>
-      <div class="flex items-center gap-2">
+      <div
+        @click.stop="router.push(`/${user.tag}`)"
+        class="flex items-center gap-2 hover:bg-secondary p-2 rounded-full duration-300 cursor-pointer"
+      >
         <img :src="user.avatar" class="rounded-full w-10 h-10 object-cover" />
-        <div>
-          <div>{{ user.name }}</div>
-          <div class="text-muted-foreground">@{{ user.tag }}</div>
+        <div class="hidden xl:flex gap-2 leading-5">
+          <div>
+            <div class="font-bold">{{ user.name }}</div>
+            <div class="text-muted-foreground">@{{ user.tag }}</div>
+          </div>
+          <button
+            class="hover:text-primary hover:bg-secondary rounded-full text-muted-foreground p-2 duration-300"
+            @click="signOut"
+          >
+            <LogOut />
+          </button>
         </div>
-        <button class="hover:text-blue-400 duration-300" @click="signOut()">登出</button>
       </div>
     </div>
   </header>
