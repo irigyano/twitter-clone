@@ -55,6 +55,11 @@ const router = createRouter({
       name: 'signup',
       meta: { title: '註冊' },
       component: SignView
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      redirect: '/'
     }
   ]
 })

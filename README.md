@@ -23,5 +23,6 @@ intro
 ## Optimizations
 
 - [ ] Router logic
+  - [x] Handle routes exception
 - [ ] Vue Query Cache
 - [ ] Vercel 404 redirect
