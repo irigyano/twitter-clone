@@ -50,7 +50,7 @@ async function signOut() {
           </div>
           <button
             class="hover:text-primary hover:bg-secondary rounded-full text-muted-foreground p-2 duration-300"
-            @click="signOut"
+            @click.stop="signOut"
           >
             <LogOut />
           </button>

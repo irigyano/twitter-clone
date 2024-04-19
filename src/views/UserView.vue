@@ -10,6 +10,7 @@ import TimeAgo from 'javascript-time-ago'
 import { ChevronLeft } from 'lucide-vue-next'
 import UploadBackgroundButton from '@/components/UploadBackgroundButton.vue'
 import { useUserStore } from '@/stores/user'
+import { defaultAvatar } from '@/utils/defaultAvatar'
 const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
 const route = useRoute()
@@ -67,7 +68,7 @@ const {
         <div>
           <img
             class="absolute rounded-full border-secondary object-cover border-2 aspect-square h-28 -top-full"
-            :src="user.avatar!"
+            :src="user.avatar || defaultAvatar"
           />
         </div>
         <div class="py-2">
