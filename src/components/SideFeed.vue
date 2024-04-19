@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 const router = useRouter()
-import { Search } from 'lucide-vue-next'
+import { Search, CircleX } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { CircleX } from 'lucide-vue-next'
 
 const searchQuery = ref('')
 </script>

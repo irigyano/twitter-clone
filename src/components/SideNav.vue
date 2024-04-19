@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SideNavItem from '@/components/SideNavItem.vue'
-import { Home, UserRound, Bell } from 'lucide-vue-next'
+import { Home, UserRound, Bell, Search } from 'lucide-vue-next'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
@@ -33,6 +33,9 @@ async function signOut() {
         </SideNavItem>
         <SideNavItem :location="`/${user.tag}`" title="個人資料">
           <UserRound :size="24" />
+        </SideNavItem>
+        <SideNavItem :location="`/search`" title="" class="block lg:hidden">
+          <Search :size="24" />
         </SideNavItem>
       </div>
       <div

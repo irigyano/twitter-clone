@@ -72,11 +72,12 @@ function goToPost() {
         width="40"
         height="40"
         :src="author.avatar || defaultAvatar"
+        @click.stop="router.push(`/${author.tag}`)"
       />
     </div>
     <div class="flex-1">
       <div class="flex justify-between">
-        <div class="flex gap-2">
+        <div class="flex gap-1">
           <div class="hover:underline font-bold" @click.stop="router.push(`/${author.tag}`)">
             {{ author.name }}
           </div>
@@ -95,7 +96,7 @@ function goToPost() {
       </div>
       <div class="whitespace-pre-wrap">{{ post.content }}</div>
       <img
-        class="rounded-3xl w-full border-[1px] border-border"
+        class="rounded-3xl w-full border-[1px] border-border mt-3"
         v-if="post.imageSrc"
         :src="post.imageSrc"
       />
