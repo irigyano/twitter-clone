@@ -5,7 +5,7 @@ intro
 ## TODO
 
 - [x] Posts schema (likes, comments)
-- [ ] Supabase storage integration
+- [x] Supabase storage integration
   - [ ] Default avatar
 - [x] Login form
 - [x] Register (Postgres function)
@@ -26,5 +26,5 @@ intro
 - [ ] Router logic
   - [x] Handle routes exception
 - [ ] Vue Query Cache
-- [ ] Vercel 404 redirect
+- [x] Vercel 404 redirect
 - [ ] Post typography (links, tag highlight, word breaks)

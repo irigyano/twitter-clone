@@ -8,6 +8,9 @@ import { getUserWithTag } from '@/utils/query'
 import { Button } from '@/components/ui/button'
 import TimeAgo from 'javascript-time-ago'
 import { ChevronLeft } from 'lucide-vue-next'
+import UploadBackgroundButton from '@/components/UploadBackgroundButton.vue'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
 const route = useRoute()
 
@@ -51,8 +54,12 @@ const {
       </div>
     </div>
     <div class="relative bg-secondary pb-[33%] overflow-hidden">
-      <!-- TBA: background image -->
-      <img v-if="false" class="h-full w-full object-cover absolute" src="" />
+      <UploadBackgroundButton v-if="userStore.user.tag === user.tag" />
+      <img
+        v-if="user.background_cover"
+        class="h-full w-full object-cover absolute"
+        :src="user.background_cover"
+      />
       <div v-else class="h-full w-full object-cover absolute"></div>
     </div>
     <div class="px-4 border-b-[1px] border-border flex flex-col gap-1 pb-4">
