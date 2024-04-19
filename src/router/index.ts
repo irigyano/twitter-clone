@@ -23,7 +23,7 @@ const router = createRouter({
         },
         {
           path: '/:user',
-          name: 'about',
+          name: 'user',
           component: () => import('../views/UserView.vue')
         },
         {
@@ -55,6 +55,11 @@ const router = createRouter({
       name: 'signup',
       meta: { title: '註冊' },
       component: SignView
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      redirect: '/'
     }
   ]
 })

@@ -27,15 +27,20 @@ const { mutate } = useMutation({
     console.log('failed')
   }
 })
+
+function filterEmptyContent() {
+  if (!postContent.value) return false
+  return postContent.value.trim().length > 0
+}
 </script>
 
 <template>
   <button
     :disabled="!postContent && !imageBase64"
-    :class="`${!postContent && !imageBase64 ? 'bg-secondary' : 'bg-primary'} hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
+    :class="`${!filterEmptyContent() && !imageBase64 ? 'bg-secondary' : 'bg-primary'} hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
     @click="
       mutate({
-        content: postContent,
+        content: postContent?.trim(),
         imageSrc: imageBase64
       })
     "

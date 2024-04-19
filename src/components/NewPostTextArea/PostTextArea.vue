@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-const numberOfLineBreaks = ref(1)
+import { ref, watch } from 'vue'
 const isDragOver = ref(false)
 const postContent = defineModel<string>('postContent')
 const imageBase64 = defineModel<string>('imageBase64')
 
-function shrinkTextareaRows(event: Event) {
-  const inputText = (event.target as HTMLInputElement).value
-  const lineBreaks = (inputText.match(/\n/g) || []).length
-  numberOfLineBreaks.value = lineBreaks + 1
+const textarea = ref<HTMLTextAreaElement | null>(null)
+
+function shrinkTextareaRows() {
+  if (!textarea.value) return
+  textarea.value.style.height = '60px'
+  if (textarea.value.scrollHeight > 60)
+    textarea.value.style.height = `${textarea.value.scrollHeight + 4}px` // 4px offset for the border
 }
+
+watch(postContent, (value) => {
+  if (!value) return (textarea.value!.style.height = '60px') // reset after sumbit
+  shrinkTextareaRows()
+})
 
 function handleImageDrop(e: DragEvent) {
   if (!e.dataTransfer) return
@@ -34,15 +41,14 @@ function readInputToBase64(imageFileList: FileList | null) {
 
 <template>
   <textarea
+    ref="textarea"
     v-model="postContent"
     placeholder="有什麼新鮮事？！"
-    :class="`placeholder-muted-foreground w-full bg-transparent focus:outline-none border-dashed rounded-md px-2 resize-none border-2 ${isDragOver ? 'border-primary' : 'border-transparent'}`"
-    :rows="numberOfLineBreaks"
+    :class="`placeholder-muted-foreground text-lg font-semibold overflow-y-hidden w-full bg-transparent focus:outline-none border-dashed rounded-md px-2 resize-none border-2 ${isDragOver ? 'border-primary' : 'border-transparent'}`"
     @drop.prevent="handleImageDrop"
     @dragover="isDragOver = true"
     @dragleave="isDragOver = false"
     @drop="isDragOver = false"
-    @input="shrinkTextareaRows"
   ></textarea>
   <img
     class="rounded-xl w-full p-2"

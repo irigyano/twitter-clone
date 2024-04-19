@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 const router = useRouter()
-import { Search } from 'lucide-vue-next'
+import { Search, CircleX } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { CircleX } from 'lucide-vue-next'
 
 const searchQuery = ref('')
 </script>
 
 <template>
-  <footer class="hidden sm:flex flex-[0.25]">
-    <div class="flex flex-col flex-1 items-start px-10 border-l-[1px] border-border">
+  <footer class="hidden lg:flex flex-[0.25]">
+    <div class="flex flex-col flex-1 items-start px-10">
       <label
         class="sticky top-4 p-1 flex w-full items-center bg-secondary rounded-full max-w-[300px]"
         for="searchInput"

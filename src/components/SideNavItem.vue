@@ -4,12 +4,12 @@ defineProps<{ location: string; title?: string }>()
 </script>
 
 <template>
-  <RouterLink :to="location" class="flex self-start">
+  <RouterLink :to="location" class="flex">
     <div
-      class="flex items-center hover:bg-gray-400 py-2 px-4 rounded-full duration-300 hover:bg-opacity-50"
+      class="flex items-center hover:bg-secondary xl:px-4 px-2 py-2 rounded-full duration-300 hover:bg-opacity-50"
     >
       <slot></slot>
-      <div v-if="title" class="pl-5 text-xl font-bold hidden 2xl:block">
+      <div v-if="title" class="pl-5 text-xl hidden xl:block">
         {{ title }}
       </div>
     </div>

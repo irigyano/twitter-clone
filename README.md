@@ -5,8 +5,8 @@ intro
 ## TODO
 
 - [x] Posts schema (likes, comments)
-- [ ] Supabase storage integration
-  - [ ] Default avatar
+- [x] Supabase storage integration
+  - [x] Default avatar
 - [x] Login form
 - [x] Register (Postgres function)
 - [x] User View & User schema (tags should be unique)
@@ -19,9 +19,12 @@ intro
 - [x] Likes feature
 - [ ] Styling
 - [ ] Realtime notifications
+- [ ] Follow feature(db relation)
 
 ## Optimizations
 
 - [ ] Router logic
+  - [x] Handle routes exception
 - [ ] Vue Query Cache
-- [ ] Vercel 404 redirect
+- [x] Vercel 404 redirect
+- [ ] Post typography (links, tag highlight, word breaks)
