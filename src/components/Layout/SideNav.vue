@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SideNavItem from '@/components/SideNavItem.vue'
+import SideNavItem from '@/components/Layout/SideNavItem.vue'
 import { Home, UserRound, Bell, Search } from 'lucide-vue-next'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'

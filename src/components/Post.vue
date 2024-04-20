@@ -9,6 +9,16 @@ import { useRouter } from 'vue-router'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import TimeAgo from 'javascript-time-ago'
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
+
 const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()
 const queryClient = useQueryClient()
@@ -102,17 +112,29 @@ function goToPost() {
       />
       <div class="flex justify-evenly gap-1 p-1 text-muted-foreground">
         <div class="flex-1">
-          <button
-            @click.stop="console.log('comment')"
-            class="flex hover:text-blue-400 group gap-1 items-center duration-300"
-          >
-            <div
-              class="group-hover:bg-blue-400 group-hover:text-blue-400 group-hover:bg-opacity-30 rounded-full p-2 cursor-pointer duration-300"
+          <Dialog>
+            <DialogTrigger
+              @click.stop
+              class="flex gap-1 items-center group hover:text-blue-400 duration-300"
             >
-              <MessageCircleMore :size="18" />
-            </div>
-            {{ post.comments.length }}
-          </button>
+              <div
+                class="group-hover:bg-blue-400 group-hover:text-blue-400 group-hover:bg-opacity-30 rounded-full p-2 cursor-pointer duration-300"
+              >
+                <MessageCircleMore :size="18" />
+              </div>
+              {{ post.comments.length }}
+            </DialogTrigger>
+            <DialogContent>
+              <!-- <DialogHeader>
+                <DialogTitle>Edit profile</DialogTitle>
+                <DialogDescription>
+                  Make changes to your profile here. Click save when you're done.
+                </DialogDescription>
+              </DialogHeader>
+
+              <DialogFooter> Save changes </DialogFooter> -->
+            </DialogContent>
+          </Dialog>
         </div>
         <div class="flex-1">
           <button

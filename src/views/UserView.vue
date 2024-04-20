@@ -8,9 +8,12 @@ import { getUserWithTag } from '@/utils/query'
 import { Button } from '@/components/ui/button'
 import TimeAgo from 'javascript-time-ago'
 import { ChevronLeft } from 'lucide-vue-next'
-import UploadBackgroundButton from '@/components/UploadBackgroundButton.vue'
+import UploadCoverButton from '@/components/UploadCoverButton.vue'
 import { useUserStore } from '@/stores/user'
 import { defaultAvatar } from '@/utils/defaultAvatar'
+import EditPanel from '@/components/EditPanel.vue'
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
+
 const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
 const route = useRoute()
@@ -18,8 +21,7 @@ const route = useRoute()
 const {
   isLoading,
   isError,
-  data: user,
-  error
+  data: user
 } = useQuery({
   queryKey: ['userPosts'],
   queryFn: async () => {
@@ -41,9 +43,13 @@ const {
   >
     <Loading />
   </div>
-  <div v-if="isError">{{ error }}</div>
-  <div v-if="user">
-    <div
+
+  <div v-if="isError" class="flex justify-center flex-1 items-center">
+    <div>嗯…此頁面不存在。請嘗試搜尋其他內容。</div>
+  </div>
+
+  <div v-if="user" class="flex-1">
+    <nav
       class="flex fixed w-full sm:sticky top-0 z-10 bg-background/50 backdrop-blur-md items-center"
     >
       <RouterLink to="/" class="p-4 hover:text-primary duration-300">
@@ -53,9 +59,9 @@ const {
         <div class="font-bold">{{ user.name }}</div>
         <div class="text-muted-foreground">{{ user.posts.length }} 則貼文</div>
       </div>
-    </div>
+    </nav>
     <div class="relative bg-secondary pb-[33%] overflow-hidden">
-      <UploadBackgroundButton v-if="userStore.user.tag === user.tag" />
+      <UploadCoverButton v-if="userStore.user.tag === user.tag" />
       <img
         v-if="user.background_cover"
         class="h-full w-full object-cover absolute"
@@ -64,25 +70,30 @@ const {
       <div v-else class="h-full w-full object-cover absolute"></div>
     </div>
     <div class="px-4 border-b-[1px] border-border flex flex-col gap-1 pb-4">
-      <div class="flex justify-between relative">
+      <div class="flex justify-between relative h-14">
         <div>
           <img
             class="absolute rounded-full border-secondary object-cover border-2 aspect-square h-28 -top-full"
             :src="user.avatar || defaultAvatar"
           />
         </div>
-        <div class="py-2">
-          <Button class="rounded-full text-foreground">編輯</Button>
-        </div>
+        <Dialog>
+          <DialogTrigger>
+            <div class="py-2">
+              <Button class="rounded-full text-foreground h-9">編輯個人資料</Button>
+            </div>
+          </DialogTrigger>
+          <DialogContent>
+            <EditPanel :user="user" />
+          </DialogContent>
+        </Dialog>
       </div>
       <div class="leading-none">
         <div class="font-bold text-lg">{{ user.name }}</div>
         <div class="text-muted-foreground">@{{ user.tag }}</div>
       </div>
-      <div class="py-3">
-        {{ user.bio }}lorem ipsum Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore
-        est cumque inventore sequi sit saepe facere nobis nam nisi, iste assumenda officiis ut
-        voluptates magnam magni totam? Corporis, neque deleniti.
+      <div class="py-3 whitespace-pre-wrap">
+        {{ user.bio }}
       </div>
       <div class="text-muted-foreground text-sm">
         已加入 {{ timeAgo.format(new Date(user.created_at), 'twitter-minute-now') }}
@@ -96,7 +107,6 @@ const {
         </div>
       </div>
     </div>
-
     <div class="flex flex-col">
       <!-- n starts with 1 -->
       <Post

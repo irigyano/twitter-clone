@@ -1,40 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { supabase } from '@/utils/supabase'
 import { Camera } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/user'
 import { useQueryClient } from '@tanstack/vue-query'
+import { useUploadImage } from '@/hooks/useUploadImage'
+import { updateUserMetaByTag } from '@/utils/query'
 const queryClient = useQueryClient()
 const uploadInput = ref()
 const userStore = useUserStore()
 const isUploading = ref(false)
-const files = ref()
 
-const uploadAvatar = async (event: Event) => {
+async function uploadCover(event: Event) {
   if (isUploading.value) return
   isUploading.value = true
-
-  files.value = (event.target as HTMLInputElement).files
-  if (!files.value || files.value.length === 0) return
-
-  const file = files.value[0]
-  const fileExt = file.name.split('.').pop()
-  const filePath = `${Math.random()}.${fileExt}`
-
-  const { data } = await supabase.storage.from('background-cover').upload(filePath, file)
-  if (!data) return
-  files.value = null
-
-  await supabase
-    .from('users')
-    .update({
-      background_cover: `${import.meta.env.VITE_SUPABASE_BUCKETS}/${(data as any).fullPath}`
-    })
-    .eq('tag', userStore.user.tag)
-    .single()
-  // UX: let user see the new background cover
+  try {
+    const url = await useUploadImage(event, 'background-cover', userStore.user.tag)
+    await updateUserMetaByTag(userStore.user.tag, { background_cover: url })
+  } catch (error) {}
   queryClient.invalidateQueries({ queryKey: ['userPosts'] })
-  isUploading.value = false
+  setTimeout(() => {
+    isUploading.value = false
+  }, 2000)
 }
 </script>
 
@@ -49,7 +35,7 @@ const uploadAvatar = async (event: Event) => {
       ref="uploadInput"
       type="file"
       class="visibility: hidden"
-      @change="uploadAvatar"
+      @change="uploadCover"
       accept="image/*"
     />
   </div>
