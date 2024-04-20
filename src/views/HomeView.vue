@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NewPostTextArea from '@/components/NewPostTextArea/NewPostTextArea.vue'
 import PostFeed from '@/components/PostFeed.vue'
-import Category from '@/components/Category.vue'
+import Category from '@/components/Layout/Category.vue'
 </script>
 
 <template>
