@@ -28,3 +28,8 @@ export async function getPosts() {
 
   return trimmed || []
 }
+
+export async function updateUserMetaByTag(tag: string, data: Partial<Post['author']>) {
+  const { error } = await supabase.from('users').update(data).eq('tag', tag).single()
+  if (error) throw new Error(error.message)
+}

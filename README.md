@@ -11,7 +11,7 @@ intro
 - [x] Register (Postgres function)
 - [x] User View & User schema (tags should be unique)
 - [ ] Search view
-- [ ] User meta edit
+- [x] User meta edit
 - [ ] Frontend form/input validation & backend error messages
   - [ ] Debounce check existing username
 - [ ] Comments pop up
@@ -28,3 +28,7 @@ intro
 - [ ] Vue Query Cache
 - [x] Vercel 404 redirect
 - [ ] Post typography (links, tag highlight, word breaks)
+
+## Issues
+
+- [ ] User data stored in Pinia isn't reflected realtime
