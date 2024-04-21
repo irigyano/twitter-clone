@@ -87,12 +87,16 @@ function goToPost() {
     </div>
     <div class="flex-1">
       <div class="flex justify-between">
-        <div class="flex gap-1">
+        <div class="flex gap-1 flex-wrap">
           <div class="hover:underline font-bold" @click.stop="router.push(`/${author.tag}`)">
             {{ author.name }}
           </div>
-          <div class="text-muted-foreground">
-            @{{ author.tag }}．{{ timeAgo.format(new Date(post.created_at), 'twitter-minute-now') }}
+          <div class="flex text-muted-foreground">
+            <!-- restrict tag length in db schema -->
+            <div class="max-w-48 truncate sm:max-w-none">@{{ author.tag }}．</div>
+            <time class="whitespace-nowrap"
+              >{{ timeAgo.format(new Date(post.created_at), 'twitter-minute-now') }}
+            </time>
           </div>
         </div>
         <!-- Delete -->

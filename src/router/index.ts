@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
+import SignInPage from '@/views/SignInPage.vue'
 import { supabase } from '@/utils/supabase'
 import MainLayout from '@/components/Layout/MainLayout.vue'
 import { useUserStore } from '@/stores/user'
@@ -48,7 +48,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       meta: { title: '登入' },
-      component: LoginView
+      component: SignInPage
     },
     {
       path: '/signup',

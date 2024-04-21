@@ -25,6 +25,6 @@ function sumbitPost(e: Event) {
     <div class="hover:bg-blue-500 bg-opacity-20 duration-200 rounded-full p-2">
       <ImageUp :size="20" />
     </div>
-    <input ref="uploadImageButton" class="w-0 h-0" type="file" @change="sumbitPost" />
+    <input ref="uploadImageButton" class="hidden" type="file" @change="sumbitPost" />
   </div>
 </template>
