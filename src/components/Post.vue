@@ -8,16 +8,8 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import TimeAgo from 'javascript-time-ago'
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import CommentDialog from './CommentDialog.vue'
 
 const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()
@@ -108,7 +100,7 @@ function goToPost() {
           <Trash2 :size="18" />
         </button>
       </div>
-      <div class="whitespace-pre-wrap">{{ post.content }}</div>
+      <div class="whitespace-pre-wrap break-all">{{ post.content }}</div>
       <img
         class="rounded-3xl w-full border-[1px] border-border mt-3"
         v-if="post.imageSrc"
@@ -129,14 +121,7 @@ function goToPost() {
               {{ post.comments.length }}
             </DialogTrigger>
             <DialogContent>
-              <!-- <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're done.
-                </DialogDescription>
-              </DialogHeader>
-
-              <DialogFooter> Save changes </DialogFooter> -->
+              <CommentDialog :post="props.post" :author="props.author" />
             </DialogContent>
           </Dialog>
         </div>
