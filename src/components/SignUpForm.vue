@@ -8,10 +8,10 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 const router = useRouter()
 
-const email = ref('zhihao@gmail.com')
-const username = ref('zhihao')
-const tag = ref('zhihao5566')
-const password = ref('555666')
+const email = ref('')
+const username = ref('')
+const tag = ref('')
+const password = ref('')
 const authError = ref('')
 
 async function SignUp() {
@@ -45,7 +45,7 @@ async function SignUp() {
           <Label for="tag">Tag</Label>
           <Input v-model="tag" id="tag" type="text" />
           <Label for="password">密碼</Label>
-          <Input v-model="password" id="password" type="password" />
+          <Input v-model="password" id="password" minlength="6" type="password" />
         </div>
         <Button class="bg-primary">註冊</Button>
       </div>

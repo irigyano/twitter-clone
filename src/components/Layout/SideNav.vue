@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import SideNavItem from '@/components/Layout/SideNavItem.vue'
 import { Home, UserRound, Bell, Search } from 'lucide-vue-next'
-import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
-import { LogOut } from 'lucide-vue-next'
+import SignOutButton from '@/components/SignOutButton.vue'
 const router = useRouter()
 const { user } = useUserStore()
-
-async function signOut() {
-  await supabase.auth.signOut()
-  router.go(0)
-}
 </script>
 
 <template>
@@ -48,12 +42,7 @@ async function signOut() {
             <div class="font-bold">{{ user.name }}</div>
             <div class="text-muted-foreground">@{{ user.tag }}</div>
           </div>
-          <button
-            class="hover:text-primary hover:bg-secondary rounded-full text-muted-foreground p-2 duration-300"
-            @click.stop="signOut"
-          >
-            <LogOut />
-          </button>
+          <SignOutButton />
         </div>
       </div>
     </div>

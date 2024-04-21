@@ -51,7 +51,7 @@ function readInputToBase64(imageFileList: FileList | null) {
     @drop="isDragOver = false"
   ></textarea>
   <img
-    class="rounded-xl w-full p-2"
+    class="rounded-3xl w-full border-[1px] border-border"
     v-if="imageBase64"
     :src="imageBase64"
     @click="imageBase64 = ''"

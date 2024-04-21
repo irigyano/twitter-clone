@@ -2,6 +2,7 @@
 import { RouterView, useRoute } from 'vue-router'
 import SideNav from '@/components/Layout/SideNav.vue'
 import SideFeed from '@/components/Layout/SideFeed.vue'
+import Footer from '@/components/Layout/Mobile/Footer.vue'
 const route = useRoute()
 </script>
 
@@ -12,5 +13,6 @@ const route = useRoute()
     <!-- https://stackoverflow.com/questions/69638667/vue-router-is-changing-the-url-but-not-re-rendering-the-component -->
     <RouterView :key="route.path" />
   </main>
+  <Footer />
   <SideFeed />
 </template>

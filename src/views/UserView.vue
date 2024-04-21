@@ -13,6 +13,7 @@ import { useUserStore } from '@/stores/user'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import EditPanel from '@/components/EditPanel.vue'
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
+import { computed } from 'vue'
 
 const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
@@ -34,6 +35,8 @@ const {
   gcTime: 0,
   retry: false
 })
+
+const isUserOwner = computed(() => user.value?.id === userStore.user.id)
 </script>
 
 <template>
@@ -48,27 +51,31 @@ const {
     <div>嗯…此頁面不存在。請嘗試搜尋其他內容。</div>
   </div>
 
-  <div v-if="user" class="flex-1">
-    <nav
-      class="flex fixed w-full sm:sticky top-0 z-10 bg-background/50 backdrop-blur-md items-center"
-    >
-      <RouterLink to="/" class="p-4 hover:text-primary duration-300">
-        <ChevronLeft :size="24" />
-      </RouterLink>
-      <div>
-        <div class="font-bold">{{ user.name }}</div>
-        <div class="text-muted-foreground">{{ user.posts.length }} 則貼文</div>
+  <div v-if="user" class="flex-1 flex-col flex">
+    <div class="bg-secondary">
+      <nav
+        class="flex fixed w-full sm:sticky top-0 z-10 backdrop-blur-md items-center bg-background/50"
+      >
+        <RouterLink to="/" class="p-4 hover:text-primary duration-300">
+          <ChevronLeft :size="24" />
+        </RouterLink>
+        <div>
+          <div class="font-bold">{{ user.name }}</div>
+          <div class="text-muted-foreground">{{ user.posts.length }} 則貼文</div>
+        </div>
+      </nav>
+      <div class="h-14 sm:hidden"></div>
+      <div class="relative pb-[33%] overflow-hidden">
+        <UploadCoverButton v-if="isUserOwner" />
+        <img
+          v-if="user.background_cover"
+          class="h-full w-full object-cover absolute"
+          :src="user.background_cover"
+        />
+        <div v-else class="h-full w-full object-cover absolute"></div>
       </div>
-    </nav>
-    <div class="relative bg-secondary pb-[33%] overflow-hidden">
-      <UploadCoverButton v-if="userStore.user.tag === user.tag" />
-      <img
-        v-if="user.background_cover"
-        class="h-full w-full object-cover absolute"
-        :src="user.background_cover"
-      />
-      <div v-else class="h-full w-full object-cover absolute"></div>
     </div>
+
     <div class="px-4 border-b-[1px] border-border flex flex-col gap-1 pb-4">
       <div class="flex justify-between relative h-14">
         <div>
@@ -77,7 +84,7 @@ const {
             :src="user.avatar || defaultAvatar"
           />
         </div>
-        <Dialog>
+        <Dialog v-if="isUserOwner">
           <DialogTrigger>
             <div class="py-2">
               <Button class="rounded-full text-foreground h-9">編輯個人資料</Button>
@@ -116,6 +123,8 @@ const {
         :key="user.posts[n - 1].id"
       />
     </div>
-    <div v-if="user.posts.length === 0">The user has no posts yet.</div>
+    <div class="flex items-center justify-center text-3xl flex-1" v-if="user.posts.length === 0">
+      <div>@{{ user.tag }} 尚未新增貼文</div>
+    </div>
   </div>
 </template>

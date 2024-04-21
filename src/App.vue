@@ -22,7 +22,7 @@ supabase.auth.onAuthStateChange((event, session) => {
 </script>
 
 <template>
-  <div class="min-h-screen flex justify-center">
+  <div class="min-h-[100dvh] flex justify-center">
     <RouterView />
   </div>
 </template>

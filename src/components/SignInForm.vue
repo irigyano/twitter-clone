@@ -8,8 +8,8 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 const router = useRouter()
 
-const email = ref('zhihao@gmail.com')
-const password = ref('555666')
+const email = ref('guest1@example.com')
+const password = ref('guest1')
 const authError = ref('')
 
 async function SignIn() {
@@ -17,10 +17,8 @@ async function SignIn() {
     email: email.value,
     password: password.value
   })
-
   if (error) return (authError.value = error.message)
-
-  if (!error) router.replace('/')
+  router.replace('/')
 }
 </script>
 
@@ -36,6 +34,7 @@ async function SignIn() {
         </div>
         <Button class="bg-primary">登入</Button>
       </div>
+      <!-- fix style -->
       {{ authError }}
     </form>
   </div>
