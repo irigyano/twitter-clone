@@ -6,10 +6,10 @@ import { useUserStore } from '@/stores/user'
 import { Heart, Trash2, MessageCircleMore } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { defaultAvatar } from '@/utils/defaultAvatar'
 import TimeAgo from 'javascript-time-ago'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import CommentDialog from './CommentDialog.vue'
+import CommentDialog from '@/components/CommentDialog.vue'
+import PostAvatar from '@/components/PostAvatar.vue'
 
 const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()
@@ -68,14 +68,7 @@ function goToPost() {
     class="flex gap-2 px-4 pt-2 border-b-[1px] border-border hover:bg-primary/10 duration-300 cursor-pointer"
   >
     <div class="pt-1">
-      <img
-        alt="avatar"
-        class="min-w-10 h-10 rounded-full object-cover"
-        width="40"
-        height="40"
-        :src="author.avatar || defaultAvatar"
-        @click.stop="router.push(`/${author.tag}`)"
-      />
+      <PostAvatar :avatar="author.avatar" :tag="author.tag" />
     </div>
     <div class="flex-1">
       <div class="flex justify-between">
