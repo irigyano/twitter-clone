@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { supabase } from '@/utils/supabase'
-import { cn } from '@/utils/shadcn'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -23,19 +22,17 @@ async function SignIn() {
 </script>
 
 <template>
-  <div :class="cn('grid gap-6', $attrs.class ?? '')">
-    <form @submit.prevent="SignIn">
-      <div class="grid gap-2">
-        <div class="grid gap-1">
-          <Label class="sr-only" for="email"> Email </Label>
-          <Input v-model="email" id="email" placeholder="name@example.com" type="email" />
-          <Label class="sr-only" for="password"> Password </Label>
-          <Input v-model="password" id="password" placeholder="name@example.com" type="password" />
-        </div>
-        <Button class="bg-primary">登入</Button>
+  <form @submit.prevent="SignIn">
+    <div class="grid gap-2">
+      <div class="grid gap-1">
+        <Label class="sr-only" for="email"> Email </Label>
+        <Input v-model="email" id="email" placeholder="name@example.com" type="email" />
+        <Label class="sr-only" for="password"> Password </Label>
+        <Input v-model="password" id="password" placeholder="name@example.com" type="password" />
       </div>
-      <!-- fix style -->
-      {{ authError }}
-    </form>
-  </div>
+      <Button>登入</Button>
+    </div>
+    <!-- fix style -->
+    {{ authError }}
+  </form>
 </template>

@@ -25,9 +25,10 @@ function calculateRowsHeight() {
 const showMore = computed(calculateRowsHeight)
 
 async function sumbitComment() {
-  await supabase
+  const { error } = await supabase
     .from('comments')
     .insert({ comment: comment.value, postId: post.id, userId: userStore.user.id })
+  if (error) throw new Error(error.message)
   queryClient.invalidateQueries({ queryKey: ['posts'] })
 }
 </script>
@@ -70,7 +71,7 @@ async function sumbitComment() {
   </div>
   <DialogFooter>
     <DialogClose as-child>
-      <Button @click="sumbitComment">回覆</Button>
+      <Button @click="sumbitComment" :disabled="!comment">回覆</Button>
     </DialogClose>
   </DialogFooter>
 </template>
