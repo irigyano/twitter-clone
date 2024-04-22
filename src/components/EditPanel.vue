@@ -31,7 +31,7 @@ async function uploadAvatar(event: Event) {
   isUploading.value = true
 
   try {
-    const url = await useUploadImage(event, 'avatar', userData.user.tag)
+    const url = await useUploadImage(event, 'avatar')
     await updateUserMetaByTag(userData.user.tag, { avatar: url })
     avatar.value = url!
   } catch (e) {}

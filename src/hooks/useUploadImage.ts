@@ -1,7 +1,9 @@
 import { ref } from 'vue'
 import { supabase } from '@/utils/supabase'
 
-export const useUploadImage = async (event: Event, storage: string, userTag: string) => {
+type Storage = 'avatar' | 'background-cover' | 'post'
+
+export const useUploadImage = async (event: Event, storage: Storage) => {
   const files = ref()
 
   files.value = (event.target as HTMLInputElement).files
