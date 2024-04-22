@@ -29,6 +29,19 @@ export async function getPosts() {
   return trimmed || []
 }
 
+export type Comment = Awaited<ReturnType<typeof getPostById>>['comments'][number]
+export async function getPostById(postId: string) {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, user:users(*), comments(*,user:users(*)), likes(*,user:users(*))')
+    .order('created_at', { ascending: false, referencedTable: 'comments' })
+    .eq('id', postId)
+    .single()
+  if (error) throw new Error(error.message)
+
+  return data
+}
+
 export async function updateUserMetaByTag(tag: string, data: Partial<Post['author']>) {
   const { error } = await supabase.from('users').update(data).eq('tag', tag).single()
   if (error) throw new Error(error.message)
