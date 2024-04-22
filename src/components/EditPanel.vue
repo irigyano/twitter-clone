@@ -71,7 +71,7 @@ async function uploadAvatar(event: Event) {
   <Textarea id="bio" v-model="bio" type="text" rows="5" maxlength="160"></Textarea>
   <DialogFooter>
     <DialogClose as-child>
-      <Button @click="updateUserMeta" class="rounded-full text-foreground h-9">儲存</Button>
+      <Button @click="updateUserMeta">儲存</Button>
     </DialogClose>
   </DialogFooter>
 </template>

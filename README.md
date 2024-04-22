@@ -28,3 +28,4 @@
 - [x] Vercel 404 redirect
 - [ ] Post typography (links, tag highlight, word breaks, linkifyjs)
 - [ ] User data stored in Pinia isn't reflected realtime
+- [ ] Max length for password/tag/username/post content ...etc

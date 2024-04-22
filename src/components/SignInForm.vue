@@ -30,7 +30,7 @@ async function SignIn() {
         <Label class="sr-only" for="password"> Password </Label>
         <Input v-model="password" id="password" placeholder="name@example.com" type="password" />
       </div>
-      <Button class="bg-primary">登入</Button>
+      <Button>登入</Button>
     </div>
     <!-- fix style -->
     {{ authError }}

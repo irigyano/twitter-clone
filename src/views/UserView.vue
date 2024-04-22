@@ -87,7 +87,7 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
         <Dialog v-if="isUserOwner">
           <DialogTrigger>
             <div class="py-2">
-              <Button class="rounded-full text-foreground h-9">編輯個人資料</Button>
+              <Button>編輯個人資料</Button>
             </div>
           </DialogTrigger>
           <DialogContent>
