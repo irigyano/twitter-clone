@@ -2,7 +2,7 @@
 import { useQueryClient, useMutation } from '@tanstack/vue-query'
 const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
-const imageBase64 = defineModel<string>('imageBase64')
+const postImageLink = defineModel<string>('postImageLink')
 const emit = defineEmits(['submit'])
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
@@ -20,7 +20,7 @@ const { mutate } = useMutation({
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['posts'] })
     postContent.value = ''
-    imageBase64.value = ''
+    postImageLink.value = ''
   },
   onError: () => {
     // pop up
@@ -36,12 +36,12 @@ function filterEmptyContent() {
 
 <template>
   <button
-    :disabled="!postContent && !imageBase64"
-    :class="`${!filterEmptyContent() && !imageBase64 ? 'bg-secondary' : 'bg-primary'} hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
+    :disabled="!postContent && !postImageLink"
+    :class="`${!filterEmptyContent() && !postImageLink ? 'bg-secondary' : 'bg-primary'} hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
     @click="
       mutate({
         content: postContent?.trim(),
-        imageSrc: imageBase64
+        imageSrc: postImageLink
       })
     "
   >

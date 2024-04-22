@@ -17,13 +17,13 @@ const userStore = useUserStore()
       <div class="flex-1 p-2">
         <PostTextArea
           v-model:postContent="postContent"
-          v-model:imageBase64="postImageLink"
+          v-model:postImageLink="postImageLink"
           v-model:isUploading="isUploading"
         />
         <div class="flex pt-2">
-          <UploadButton v-model:imageBase64="postImageLink" v-model:isUploading="isUploading" />
+          <UploadButton v-model:postImageLink="postImageLink" v-model:isUploading="isUploading" />
           <div class="flex-1 flex justify-end items-center">
-            <SubmitButton v-model:postContent="postContent" v-model:imageBase64="postImageLink" />
+            <SubmitButton v-model:postContent="postContent" v-model:postImageLink="postImageLink" />
           </div>
         </div>
       </div>

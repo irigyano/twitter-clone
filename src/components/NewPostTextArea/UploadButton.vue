@@ -4,7 +4,7 @@ import { ImageUp } from 'lucide-vue-next'
 import { useUploadImage } from '@/hooks/useUploadImage'
 
 const uploadImageButton = ref<HTMLInputElement | null>(null)
-const imageBase64 = defineModel<string>('imageBase64')
+const postImageLink = defineModel<string>('postImageLink')
 
 const isUploading = defineModel<boolean>('isUploading')
 
@@ -12,7 +12,7 @@ async function uploadPostImage(event: Event) {
   if (isUploading.value) return
   isUploading.value = true
   const url = await useUploadImage(event, 'post')
-  imageBase64.value = url
+  postImageLink.value = url
   isUploading.value = false
 }
 </script>

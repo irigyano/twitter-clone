@@ -4,7 +4,7 @@ import { ref, watch } from 'vue'
 import Loading from '@/components/Loading.vue'
 const isDragOver = ref(false)
 const postContent = defineModel<string>('postContent')
-const imageBase64 = defineModel<string>('imageBase64')
+const postImageLink = defineModel<string>('postImageLink')
 const isUploading = defineModel<boolean>('isUploading')
 const textarea = ref<HTMLTextAreaElement | null>(null)
 
@@ -23,7 +23,7 @@ watch(postContent, (value) => {
 async function handleImageDrop(e: DragEvent) {
   if (!e.dataTransfer || isUploading.value) return
   isUploading.value = true
-  imageBase64.value = undefined
+  postImageLink.value = undefined
   const file = e.dataTransfer.files[0]
   if (file) {
     // if file is upload from user pc or dropped base64 format
@@ -33,11 +33,11 @@ async function handleImageDrop(e: DragEvent) {
     const { data, error } = await supabase.storage.from('post').upload(filePath, file)
     if (error) throw new Error(error.message)
 
-    imageBase64.value = `${import.meta.env.VITE_SUPABASE_BUCKETS}/${(data as any).fullPath}`
+    postImageLink.value = `${import.meta.env.VITE_SUPABASE_BUCKETS}/${(data as any).fullPath}`
   } else {
     // is file is dropped as url from other website
     const imgUrl = e.dataTransfer.getData('url')
-    if (imgUrl) imageBase64.value = imgUrl
+    if (imgUrl) postImageLink.value = imgUrl
   }
   return (isUploading.value = false)
 }
@@ -56,9 +56,9 @@ async function handleImageDrop(e: DragEvent) {
   ></textarea>
   <img
     class="rounded-3xl w-full border-[1px] border-border"
-    v-if="imageBase64"
-    :src="imageBase64"
-    @click="imageBase64 = undefined"
+    v-if="postImageLink"
+    :src="postImageLink"
+    @click="postImageLink = undefined"
   />
   <div class="flex justify-center" v-if="isUploading">
     <Loading />
