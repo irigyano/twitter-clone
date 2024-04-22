@@ -19,8 +19,10 @@ async function uploadPostImage(event: Event) {
 
 <template>
   <div @click="uploadImageButton?.click()" class="cursor-pointer flex items-center justify-center">
-    <div class="hover:bg-blue-500 bg-opacity-20 duration-200 rounded-full p-2">
-      <ImageUp :size="20" />
+    <div
+      class="text-muted-foreground hover:bg-blue-400 hover:bg-opacity-30 hover:text-blue-400 duration-300 rounded-full p-2"
+    >
+      <ImageUp :size="18" />
     </div>
     <input
       ref="uploadImageButton"
