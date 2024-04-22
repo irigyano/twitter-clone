@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useQueryClient, useMutation } from '@tanstack/vue-query'
+import { Button } from '@/components/ui/button'
+
 const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
 const postImageLink = defineModel<string>('postImageLink')
@@ -35,9 +37,9 @@ function filterEmptyContent() {
 </script>
 
 <template>
-  <button
+  <Button
     :disabled="!postContent && !postImageLink"
-    :class="`${!filterEmptyContent() && !postImageLink ? 'bg-secondary' : 'bg-primary'} hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none`"
+    class="hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none"
     @click="
       mutate({
         content: postContent?.trim(),
@@ -46,5 +48,5 @@ function filterEmptyContent() {
     "
   >
     發佈
-  </button>
+  </Button>
 </template>
