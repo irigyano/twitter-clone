@@ -1,41 +1,45 @@
 <script setup lang="ts">
+import { supabase } from '@/utils/supabase'
 import { ref, watch } from 'vue'
+import Loading from '@/components/Loading.vue'
 const isDragOver = ref(false)
 const postContent = defineModel<string>('postContent')
 const imageBase64 = defineModel<string>('imageBase64')
-
+const isUploading = defineModel<boolean>('isUploading')
 const textarea = ref<HTMLTextAreaElement | null>(null)
 
+// responsive textarea rows
 function shrinkTextareaRows() {
   if (!textarea.value) return
   textarea.value.style.height = '60px'
   if (textarea.value.scrollHeight > 60)
     textarea.value.style.height = `${textarea.value.scrollHeight + 4}px` // 4px offset for the border
 }
-
 watch(postContent, (value) => {
   if (!value) return (textarea.value!.style.height = '60px') // reset after sumbit
   shrinkTextareaRows()
 })
 
-function handleImageDrop(e: DragEvent) {
-  if (!e.dataTransfer) return
-  readInputToBase64(e.dataTransfer.files)
-}
+async function handleImageDrop(e: DragEvent) {
+  if (!e.dataTransfer || isUploading.value) return
+  isUploading.value = true
+  imageBase64.value = undefined
+  const file = e.dataTransfer.files[0]
+  if (file) {
+    // if file is upload from user pc or dropped base64 format
+    const fileExt = file.name.split('.').pop()
+    const filePath = `${Math.random()}.${fileExt}`
 
-function readInputToBase64(imageFileList: FileList | null) {
-  if (!imageFileList) return
-  const inputImage = imageFileList[0]
-  if (typeof inputImage === 'undefined') return
+    const { data, error } = await supabase.storage.from('post').upload(filePath, file)
+    if (error) throw new Error(error.message)
 
-  const fileReader = new FileReader()
-
-  fileReader.onloadend = function () {
-    const baseString = fileReader.result as string
-    imageBase64.value = baseString
+    imageBase64.value = `${import.meta.env.VITE_SUPABASE_BUCKETS}/${(data as any).fullPath}`
+  } else {
+    // is file is dropped as url from other website
+    const imgUrl = e.dataTransfer.getData('url')
+    if (imgUrl) imageBase64.value = imgUrl
   }
-
-  fileReader.readAsDataURL(inputImage)
+  return (isUploading.value = false)
 }
 </script>
 
@@ -54,6 +58,9 @@ function readInputToBase64(imageFileList: FileList | null) {
     class="rounded-3xl w-full border-[1px] border-border"
     v-if="imageBase64"
     :src="imageBase64"
-    @click="imageBase64 = ''"
+    @click="imageBase64 = undefined"
   />
+  <div class="flex justify-center" v-if="isUploading">
+    <Loading />
+  </div>
 </template>

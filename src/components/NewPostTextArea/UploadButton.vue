@@ -6,19 +6,14 @@ import { useUploadImage } from '@/hooks/useUploadImage'
 const uploadImageButton = ref<HTMLInputElement | null>(null)
 const imageBase64 = defineModel<string>('imageBase64')
 
-const isUploading = ref(false)
+const isUploading = defineModel<boolean>('isUploading')
 
 async function uploadPostImage(event: Event) {
   if (isUploading.value) return
   isUploading.value = true
-
-  try {
-    const url = await useUploadImage(event, 'post')
-    imageBase64.value = url
-  } catch (e) {}
-  setTimeout(() => {
-    isUploading.value = false
-  }, 2000)
+  const url = await useUploadImage(event, 'post')
+  imageBase64.value = url
+  isUploading.value = false
 }
 </script>
 
