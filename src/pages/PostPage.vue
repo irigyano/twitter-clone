@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { getPostById } from '@/utils/query'
 import Loading from '@/components/Loading.vue'
@@ -12,7 +12,7 @@ import { Heart, MessageCircleMore } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/utils/supabase'
 import PageNav from '@/components/PageNav.vue'
-
+const router = useRouter()
 const queryClient = useQueryClient()
 const route = useRoute()
 const userStore = useUserStore()
@@ -69,8 +69,12 @@ const user = computed(() => {
         <div class="flex gap-2">
           <PostAvatar :avatar="user.avatar" :tag="user.tag" />
           <div class="pb-2 flex-1">
-            <!-- TODO: fix width & routerlink -->
-            <div class="font-bold">{{ user.name }}</div>
+            <div
+              @click.stop="router.push(`/${user!.tag}`)"
+              class="font-bold inline-block cursor-pointer hover:underline"
+            >
+              {{ user.name }}
+            </div>
             <div class="text-muted-foreground">@{{ user.tag }}</div>
           </div>
           <Button v-if="true">追隨</Button>

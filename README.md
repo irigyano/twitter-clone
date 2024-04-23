@@ -21,6 +21,7 @@
 - [ ] User data stored in Pinia isn't reflected realtime
 - [ ] Max length for password/tag/username/post content ...etc
 - [ ] RouterView key in MainLayout [Stackoverflow](https://stackoverflow.com/questions/69638667/vue-router-is-changing-the-url-but-not-re-rendering-the-component)
+- [ ] Search length limit & hint(UX)
 
 ## Refactor
 
