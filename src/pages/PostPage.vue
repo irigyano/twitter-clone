@@ -129,8 +129,8 @@ const user = computed(() => {
           </div>
         </div>
       </div>
-      <div v-for="{ user, ...comment } in post.comments">
-        <Comment :user="user" :comment="comment" />
+      <div class="pb-[20dvh]">
+        <Comment v-for="{ user, ...comment } in post.comments" :user="user" :comment="comment" />
       </div>
     </div>
   </div>

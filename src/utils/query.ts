@@ -48,6 +48,8 @@ export async function updateUserMetaByTag(tag: string, data: Partial<Post['autho
 }
 
 export async function getPostsByTextSearch(keyword: string) {
+  if (!keyword) throw new Error('No keyword provided')
+
   const { data, error } = await supabase
     .from('posts')
     .select('*, user:users(*), comments(*), likes(*)')
