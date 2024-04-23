@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { ChevronLeft } from 'lucide-vue-next'
 import { getPostById } from '@/utils/query'
 import Loading from '@/components/Loading.vue'
 import { computed, ref } from 'vue'
