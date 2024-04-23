@@ -46,3 +46,16 @@ export async function updateUserMetaByTag(tag: string, data: Partial<Post['autho
   const { error } = await supabase.from('users').update(data).eq('tag', tag).single()
   if (error) throw new Error(error.message)
 }
+
+export async function getPostsByTextSearch(keyword: string) {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, user:users(*), comments(*), likes(*)')
+    .textSearch('content', keyword, {
+      type: 'websearch'
+    })
+    .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return data
+}
