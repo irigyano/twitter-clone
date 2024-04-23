@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import SignInPage from '@/views/SignInPage.vue'
+
 import { supabase } from '@/utils/supabase'
-import MainLayout from '@/components/Layout/MainLayout.vue'
 import { useUserStore } from '@/stores/user'
-import SignView from '../views/SignView.vue'
 import { defaultAvatar } from '@/utils/defaultAvatar'
+import MainLayout from '@/components/Layout/MainLayout.vue'
+
+import HomePage from '@/pages/HomePage.vue'
+import SignInPage from '@/pages/SignInPage.vue'
+import SignUpPage from '@/pages/SignUpPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,28 +21,28 @@ const router = createRouter({
           path: '',
           name: 'home',
           meta: { title: '首頁' },
-          component: HomeView
+          component: HomePage
         },
         {
           path: '/:user',
           name: 'user',
-          component: () => import('../views/UserView.vue')
+          component: () => import('../pages/UserPage.vue')
         },
         {
           path: '/notifications',
           name: 'notifications',
           meta: { title: '通知' },
-          component: () => import('../views/NotificationsView.vue')
+          component: () => import('../pages/NotificationPage.vue')
         },
         {
           path: '/search',
           name: 'search',
-          component: () => import('../views/SearchPage.vue')
+          component: () => import('../pages/SearchPage.vue')
         },
         {
           path: '/post/:postId',
           name: 'post',
-          component: () => import('../views/PostView.vue')
+          component: () => import('../pages/PostPage.vue')
         }
       ]
     },
@@ -54,7 +56,7 @@ const router = createRouter({
       path: '/signup',
       name: 'signup',
       meta: { title: '註冊' },
-      component: SignView
+      component: SignUpPage
     },
     {
       path: '/:pathMatch(.*)*',
