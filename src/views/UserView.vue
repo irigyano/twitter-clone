@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useHead } from 'unhead'
 import Post from '@/components/Post.vue'
 import Loading from '@/components/Loading.vue'
@@ -7,13 +7,13 @@ import { useQuery } from '@tanstack/vue-query'
 import { getUserWithTag } from '@/utils/query'
 import { Button } from '@/components/ui/button'
 import TimeAgo from 'javascript-time-ago'
-import { ChevronLeft } from 'lucide-vue-next'
 import UploadCoverButton from '@/components/UploadCoverButton.vue'
 import { useUserStore } from '@/stores/user'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import EditPanel from '@/components/EditPanel.vue'
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { computed } from 'vue'
+import PageNav from '@/components/PageNav.vue'
 
 const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
@@ -52,17 +52,9 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
   </div>
 
   <div v-if="user" class="flex-1 flex-col flex">
-    <nav
-      class="flex fixed top-0 w-full sm:sticky z-10 backdrop-blur-md items-center bg-background/50"
-    >
-      <RouterLink to="/" class="p-4 hover:text-primary duration-300">
-        <ChevronLeft :size="24" />
-      </RouterLink>
-      <div>
-        <div class="font-bold">{{ user.name }}</div>
-        <div class="text-muted-foreground">{{ user.posts.length }} 則貼文</div>
-      </div>
-    </nav>
+    <PageNav :title="user.name">
+      <div class="text-muted-foreground">{{ user.posts.length }} 則貼文</div>
+    </PageNav>
     <div class="h-14 sm:hidden"></div>
     <div class="bg-secondary">
       <div class="relative pb-[33%] overflow-hidden">
