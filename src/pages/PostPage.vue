@@ -43,13 +43,17 @@ const { isLoading, data: post } = useQuery({
   queryKey: [route.params.postId],
   queryFn: async () => {
     const data = await getPostById(route.params.postId as string)
-    // TODO: FIX warning in console
-    useHead({
-      title: `W 上的 ${data.user?.name}：「${data.content || data.imageSrc}」 / W`
-    })
     return data
   },
   gcTime: 0
+})
+
+useHead({
+  title: () => {
+    if (!post.value) return ''
+    const data = post.value
+    return `W 上的 ${data.user!.name}：「${data.content || data.imageSrc}」 / W`
+  }
 })
 
 const { mutate } = useMutation({
