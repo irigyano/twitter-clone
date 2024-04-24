@@ -12,6 +12,8 @@ import { Heart, MessageCircleMore } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/utils/supabase'
 import PageNav from '@/components/PageNav.vue'
+import LikeButton from '@/components/LikeButton.vue'
+
 const router = useRouter()
 const queryClient = useQueryClient()
 const route = useRoute()
@@ -102,17 +104,11 @@ const user = computed(() => {
             {{ post.comments.length }}
           </div>
           <div class="flex-1">
-            <button
-              class="flex hover:text-red-500 group gap-1 items-center duration-300"
-              :class="'text-red-500'"
-            >
-              <div
-                class="group-hover:bg-red-500 group-hover:text-red-500 group-hover:bg-opacity-30 rounded-full p-2 cursor-pointer duration-300"
-              >
-                <Heart :class="'fill-red-500'" :size="18" />
-              </div>
-              {{ post.likes.length }}
-            </button>
+            <LikeButton
+              :isLiked="post.likes.some((like) => like.userId === userStore.user.id)"
+              :likesCount="post.likes.length"
+              :postId="post.id"
+            />
           </div>
         </div>
       </div>

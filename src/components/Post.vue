@@ -3,13 +3,13 @@ import { supabase } from '@/utils/supabase'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import type { Post } from '@/utils/query'
 import { useUserStore } from '@/stores/user'
-import { Heart, Trash2, MessageCircleMore } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { Trash2, MessageCircleMore } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import CommentDialog from '@/components/CommentDialog.vue'
 import PostAvatar from '@/components/PostAvatar.vue'
+import LikeButton from '@/components/LikeButton.vue'
 
 const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()
@@ -18,29 +18,11 @@ const router = useRouter()
 
 const props = defineProps<{ post: Post['post']; author: Post['author'] }>()
 
-const likes = ref(props.post.likes.length)
-const isLiked = ref<boolean>(props.post.likes.some((like) => like.userId === userStore.user.id))
+const isLiked = props.post.likes.some((like) => like.userId === userStore.user.id)
 
 async function deletePost() {
   const { error } = await supabase.from('posts').delete().eq('id', props.post.id)
   if (error) return Promise.reject()
-}
-
-async function likePost() {
-  // TODO: better optimistic update
-  if (isLiked.value) {
-    supabase
-      .from('likes')
-      .delete()
-      .eq('postId', props.post.id)
-      .eq('userId', userStore.user.id)
-      .then()
-    likes.value--
-  } else {
-    supabase.from('likes').insert({ userId: userStore.user.id, postId: props.post.id }).then()
-    likes.value++
-  }
-  isLiked.value = !isLiked.value
 }
 
 const { mutate } = useMutation({
@@ -119,18 +101,7 @@ function goToPost() {
           </Dialog>
         </div>
         <div class="flex-1">
-          <button
-            @click.stop="likePost"
-            class="flex hover:text-red-500 group gap-1 items-center duration-300"
-            :class="isLiked && 'text-red-500'"
-          >
-            <div
-              class="group-hover:bg-red-500 group-hover:text-red-500 group-hover:bg-opacity-30 rounded-full p-2 cursor-pointer duration-300"
-            >
-              <Heart :class="isLiked && 'fill-red-500'" :size="18" />
-            </div>
-            {{ likes }}
-          </button>
+          <LikeButton :isLiked="isLiked" :likesCount="props.post.likes.length" :postId="post.id" />
         </div>
       </div>
     </div>
