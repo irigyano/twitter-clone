@@ -8,11 +8,12 @@ import PostAvatar from '@/components/PostAvatar.vue'
 import { useUserStore } from '@/stores/user'
 import ResponsiveRowTextarea from '@/components/ResponsiveRowTextarea.vue'
 import Comment from '@/components/Comment.vue'
-import { Heart, MessageCircleMore } from 'lucide-vue-next'
+import { MessageCircleMore } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/utils/supabase'
 import PageNav from '@/components/PageNav.vue'
 import LikeButton from '@/components/LikeButton.vue'
+import FollowButton from '@/components/FollowButton.vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -79,7 +80,11 @@ const user = computed(() => {
             </div>
             <div class="text-muted-foreground">@{{ user.tag }}</div>
           </div>
-          <Button v-if="true">追隨</Button>
+          <FollowButton
+            v-if="user.id !== userStore.user.id"
+            :targetUserId="user.id"
+            :follower="user.follower"
+          />
         </div>
 
         <div class="whitespace-pre-wrap break-all">

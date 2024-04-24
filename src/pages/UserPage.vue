@@ -14,6 +14,7 @@ import EditPanel from '@/components/EditPanel.vue'
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { computed } from 'vue'
 import PageNav from '@/components/PageNav.vue'
+import FollowButton from '@/components/FollowButton.vue'
 
 const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
@@ -85,6 +86,7 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
             <EditPanel :user="user" />
           </DialogContent>
         </Dialog>
+        <FollowButton v-else :target-user-id="user.id" :follower="user.follower" />
       </div>
       <div class="leading-none">
         <div class="font-bold text-lg">{{ user.name }}</div>
@@ -98,10 +100,10 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
       </div>
       <div class="flex gap-2 text-sm text-muted-foreground">
         <div>
-          <span class="text-white">{{ 0 }}</span> 個跟隨中
+          <span class="text-foreground font-bold">{{ user.following.length }}</span> 個跟隨中
         </div>
         <div>
-          <span class="text-white">{{ 0 }}</span> 位追隨者
+          <span class="text-foreground font-bold">{{ user.follower.length }}</span> 位跟隨者
         </div>
       </div>
     </div>
