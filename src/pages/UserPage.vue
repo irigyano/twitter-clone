@@ -55,7 +55,6 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
     <PageNav :title="user.name">
       <div class="text-muted-foreground">{{ user.posts.length }} 則貼文</div>
     </PageNav>
-    <div class="h-14 sm:hidden"></div>
     <div class="bg-secondary">
       <div class="relative pb-[33%] overflow-hidden">
         <UploadCoverButton v-if="isUserOwner" />

@@ -8,7 +8,7 @@ const route = useRoute()
 
 <template>
   <SideNav />
-  <main class="flex flex-1 max-w-[600px] border-x-[1px] border-border">
+  <main class="flex flex-1 max-w-[600px] sm:border-x-[1px] pb-[25dvh]">
     <RouterView :key="route.path + route.query.q" />
   </main>
   <Footer />
