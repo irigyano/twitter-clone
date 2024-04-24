@@ -28,13 +28,8 @@ async function deletePost() {
 const { mutate } = useMutation({
   mutationFn: deletePost,
   onSuccess: () => {
-    // TODO: optimazation
     queryClient.invalidateQueries({ queryKey: ['posts'] })
     queryClient.invalidateQueries({ queryKey: ['userPosts'] })
-  },
-  onError: () => {
-    // pop up
-    console.log('failed')
   }
 })
 

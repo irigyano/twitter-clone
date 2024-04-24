@@ -32,7 +32,7 @@ async function unfollowUser() {
 </script>
 
 <template>
-  <div class="py-2 w-24">
+  <div class="py-2 w-24" v-if="targetUserId !== userStore.user.id">
     <Button @click="followUser" v-if="!isFollowing" class="w-full">追隨</Button>
     <Button @click="unfollowUser" v-if="isFollowing" class="w-full bg-secondary duration-300"
       >取消追隨</Button
