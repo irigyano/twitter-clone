@@ -21,7 +21,7 @@ const {
 
 useHead({
   // if !route.query.q means redirected from mobile view
-  title: route.query.q ? `${route.query.q} - 搜尋 / Webber` : '搜尋 / Webber'
+  title: route.query.q ? `${route.query.q} - 搜尋 / W` : '搜尋 / W'
 })
 </script>
 

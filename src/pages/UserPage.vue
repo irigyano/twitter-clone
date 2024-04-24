@@ -20,6 +20,7 @@ const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
 const route = useRoute()
 
+// DRY
 const {
   isLoading,
   isError,
@@ -29,7 +30,7 @@ const {
   queryFn: async () => {
     const data = await getUserWithTag(route.params.user as string)
     useHead({
-      title: `${data.name} (@${data.tag}) / Webber`
+      title: `${data.name} (@${data.tag}) / W`
     })
     return data
   },
@@ -99,12 +100,12 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
         已加入 {{ timeAgo.format(new Date(user.created_at), 'twitter-minute-now') }}
       </div>
       <div class="flex gap-2 text-sm text-muted-foreground">
-        <div>
+        <RouterLink class="hover:underline" :to="`/${user.tag}/following`">
           <span class="text-foreground font-bold">{{ user.following.length }}</span> 個跟隨中
-        </div>
-        <div>
+        </RouterLink>
+        <RouterLink class="hover:underline" :to="`/${user.tag}/followers`">
           <span class="text-foreground font-bold">{{ user.follower.length }}</span> 位跟隨者
-        </div>
+        </RouterLink>
       </div>
     </div>
     <div class="flex flex-col">

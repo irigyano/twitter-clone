@@ -14,6 +14,7 @@ import { supabase } from '@/utils/supabase'
 import PageNav from '@/components/PageNav.vue'
 import LikeButton from '@/components/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
+import { useHead } from '@unhead/vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -40,7 +41,14 @@ async function addComment() {
 
 const { isLoading, data: post } = useQuery({
   queryKey: [route.params.postId],
-  queryFn: () => getPostById(route.params.postId as string),
+  queryFn: async () => {
+    const data = await getPostById(route.params.postId as string)
+    // TODO: FIX warning in console
+    useHead({
+      title: `W 上的 ${data.user?.name}：「${data.content || data.imageSrc}」 / W`
+    })
+    return data
+  },
   gcTime: 0
 })
 

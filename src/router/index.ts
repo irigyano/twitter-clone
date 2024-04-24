@@ -25,8 +25,24 @@ const router = createRouter({
         },
         {
           path: '/:user',
-          name: 'user',
-          component: () => import('../pages/UserPage.vue')
+          children: [
+            {
+              path: '',
+              name: 'user',
+              component: () => import('../pages/UserPage.vue')
+            },
+            // How to make these nested?
+            {
+              path: '/:user/following',
+              name: 'following',
+              component: () => import('../pages/FollowPage.vue')
+            },
+            {
+              path: '/:user/followers',
+              name: 'followers',
+              component: () => import('../pages/FollowPage.vue')
+            }
+          ]
         },
         {
           path: '/notifications',
@@ -67,8 +83,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.meta.title)
-    document.title = ((to.meta.title as string) && `${to.meta.title} / Webber`) || 'Webber'
+  if (to.meta.title) document.title = ((to.meta.title as string) && `${to.meta.title} / W`) || 'W'
 
   const userStore = useUserStore()
   // init the session on app enter
