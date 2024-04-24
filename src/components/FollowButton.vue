@@ -35,7 +35,7 @@ async function unfollowUser() {
   <div class="py-2 w-24" v-if="targetUserId !== userStore.user.id">
     <Button @click="followUser" v-if="!isFollowing" class="w-full">追隨</Button>
     <Button @click="unfollowUser" v-if="isFollowing" class="w-full bg-secondary duration-300"
-      >取消追隨</Button
+      >正在追隨</Button
     >
   </div>
 </template>

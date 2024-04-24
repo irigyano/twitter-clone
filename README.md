@@ -2,7 +2,7 @@
 
 - [x] Search view
 - [ ] Realtime notifications
-- [ ] Follow feature(db relation)
+- [x] Follow feature(db relation)
 
 ## Minor
 

@@ -64,3 +64,20 @@ export async function getPostsByTextSearch(keyword: string) {
   if (error) throw new Error(error.message)
   return data
 }
+
+export type UserWithRelation = Awaited<
+  ReturnType<typeof getUserFollowRelationByTag>
+>['following'][number]
+export async function getUserFollowRelationByTag(tag: string) {
+  const { data, error } = await supabase
+    .from('users')
+    .select(
+      '*, \
+      following:follows!follower(*, user:users!public_follows_followee_fkey(*, follows!public_follows_followee_fkey(*))), \
+      follower:follows!followee(*, user:users!public_follows_follower_fkey(*, follows!public_follows_followee_fkey(*)))'
+    )
+    .eq('tag', tag)
+    .single()
+  if (error) throw new Error(error.message)
+  return data
+}
