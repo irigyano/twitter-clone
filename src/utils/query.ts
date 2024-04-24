@@ -42,8 +42,6 @@ export async function getPostById(postId: string) {
     .eq('id', postId)
     .single()
   if (error) throw new Error(error.message)
-
-  console.log(data)
   return data
 }
 

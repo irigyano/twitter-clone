@@ -32,17 +32,22 @@ const { user } = useUserStore()
           <Search :size="24" />
         </SideNavItem>
       </div>
-      <div
-        @click.stop="router.push(`/${user.tag}`)"
-        class="flex items-center gap-2 hover:bg-secondary p-2 rounded-full duration-300 cursor-pointer"
-      >
-        <img :src="user.avatar" class="rounded-full w-10 h-10 object-cover" />
-        <div class="hidden xl:flex gap-2 leading-5">
-          <div>
-            <div class="font-bold">{{ user.name }}</div>
-            <div class="text-muted-foreground">@{{ user.tag }}</div>
+
+      <div class="flex flex-col items-center gap-2">
+        <SignOutButton class="xl:hidden" />
+
+        <div
+          @click.stop="router.push(`/${user.tag}`)"
+          class="flex items-center gap-2 hover:bg-secondary p-2 rounded-full duration-300 cursor-pointer"
+        >
+          <img :src="user.avatar" class="rounded-full w-10 h-10 object-cover" />
+          <div class="hidden xl:flex gap-2 leading-5">
+            <div>
+              <div class="font-bold">{{ user.name }}</div>
+              <div class="text-muted-foreground">@{{ user.tag }}</div>
+            </div>
+            <SignOutButton />
           </div>
-          <SignOutButton />
         </div>
       </div>
     </div>

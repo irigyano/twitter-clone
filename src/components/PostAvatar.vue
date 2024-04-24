@@ -9,7 +9,7 @@ defineProps<{ avatar: string | null; tag: string }>()
 <template>
   <img
     alt="avatar"
-    class="min-w-10 h-10 rounded-full object-cover cursor-pointer"
+    class="min-w-10 h-10 rounded-full object-cover cursor-pointer hover:brightness-75 duration-300"
     width="40"
     height="40"
     :src="avatar || defaultAvatar"

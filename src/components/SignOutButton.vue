@@ -13,7 +13,7 @@ async function signOut() {
 
 <template>
   <button
-    class="hover:text-primary hover:bg-secondary rounded-full text-muted-foreground p-2 duration-300"
+    class="hover:text-primary hover:bg-secondary rounded-full p-2 duration-300"
     @click.stop="signOut"
   >
     <LogOut />
