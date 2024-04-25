@@ -3,6 +3,8 @@
 - [x] Search view
 - [ ] Realtime notifications
 - [x] Follow feature(db relation)
+- [ ] Retweet
+- [ ] Multiple images upload & show
 
 ## Minor
 
@@ -15,7 +17,7 @@
 
 - [ ] Styling
 - [ ] Row Level Policy & (review constraints)
-- [ ] Router logic
+- [x] Router logic
 - [ ] Vue Query Cache
 - [ ] Post typography (links, tag highlight, word breaks, linkifyjs)
 - [ ] User data stored in Pinia isn't reflected realtime

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+
 const router = useRouter()
 
 const email = ref('guest1@example.com')
@@ -34,5 +35,8 @@ async function SignIn() {
     </div>
     <!-- fix style -->
     {{ authError }}
+    <p class="pt-4 text-center text-sm text-muted-foreground">
+      還沒有帳戶嗎？<RouterLink to="signup" class="text-primary">註冊</RouterLink>
+    </p>
   </form>
 </template>

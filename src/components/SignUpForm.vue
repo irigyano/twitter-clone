@@ -33,25 +33,27 @@ async function SignUp() {
 </script>
 
 <template>
-  <div :class="cn('grid gap-6', $attrs.class ?? '')">
-    <form @submit.prevent="SignUp">
-      <div class="grid gap-2">
-        <div class="grid gap-1">
-          <Label for="email">電子郵件</Label>
-          <Input v-model="email" id="email" placeholder="name@example.com" type="email" />
-          <Label for="username">使用者名稱</Label>
-          <Input v-model="username" id="username" type="text" />
-          <!-- validate no whtiespace -->
-          <Label for="tag">Tag</Label>
-          <Input v-model="tag" id="tag" type="text" />
-          <Label for="password">密碼</Label>
-          <Input v-model="password" id="password" minlength="6" type="password" />
-        </div>
-        <Button class="bg-primary">註冊</Button>
+  <form @submit.prevent="SignUp">
+    <div class="grid gap-2">
+      <div class="grid gap-1">
+        <Label for="email">電子郵件</Label>
+        <Input v-model="email" id="email" placeholder="name@example.com" type="email" />
+        <Label for="username">使用者名稱</Label>
+        <Input v-model="username" id="username" type="text" />
+        <!-- validate no whtiespace -->
+        <Label for="tag">Tag</Label>
+        <Input v-model="tag" id="tag" type="text" />
+        <Label for="password">密碼</Label>
+        <Input v-model="password" id="password" minlength="6" type="password" />
       </div>
-      {{ authError }}
-    </form>
-  </div>
+      <Button class="bg-primary">註冊</Button>
+    </div>
+    {{ authError }}
+  </form>
+
+  <p class="pt-4 text-center text-sm text-muted-foreground">
+    <RouterLink to="signin" class="text-primary">已經有一個帳號？</RouterLink>
+  </p>
 </template>
 
 <!-- TODO: validate if tag exists -->
