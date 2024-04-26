@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import Post from '@/components/Post.vue'
+import Post from '@/components/Post/Post.vue'
 import Loading from '@/components/Loading.vue'
 import { getPosts } from '@/utils/query'
 

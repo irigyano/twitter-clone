@@ -5,10 +5,10 @@ import { MessageCircleMore } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import CommentDialog from '@/components/CommentDialog.vue'
+import CommentDialog from '@/components/Post/CommentDialog.vue'
 import PostAvatar from '@/components/PostAvatar.vue'
-import LikeButton from '@/components/LikeButton.vue'
-import PostOptionsDropdown from '@/components/PostOptionsDropdown.vue'
+import LikeButton from '@/components/Post/LikeButton.vue'
+import PostOptionsDropdown from '@/components/Post/PostOptionsDropdown.vue'
 
 const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()

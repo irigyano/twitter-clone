@@ -5,7 +5,7 @@ import PageNav from '@/components/PageNav.vue'
 import { getPostsByTextSearch } from '@/utils/query'
 import { useQuery } from '@tanstack/vue-query'
 import Loading from '@/components/Loading.vue'
-import Post from '@/components/Post.vue'
+import Post from '@/components/Post/Post.vue'
 import SearchBar from '@/components/SearchBar.vue'
 const route = useRoute()
 

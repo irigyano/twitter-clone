@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useHead } from 'unhead'
-import Post from '@/components/Post.vue'
+import Post from '@/components/Post/Post.vue'
 import Loading from '@/components/Loading.vue'
 import { useQuery } from '@tanstack/vue-query'
 import { getUserWithTag } from '@/utils/query'
