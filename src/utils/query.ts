@@ -4,7 +4,10 @@ export async function getUserWithTag(tag: string) {
   const { data, error } = await supabase
     .from('users')
     .select(
-      '*, following:follows!follower(followee), follower:follows!followee(follower), posts(*, comments(*), likes(*))'
+      '*,\
+      following:follows!follower(followee),\
+      follower:follows!followee(follower),\
+      posts(*, comments(*), likes(*), retweets(*))'
     )
     .order('created_at', { ascending: false, referencedTable: 'posts' })
     .eq('tag', tag)

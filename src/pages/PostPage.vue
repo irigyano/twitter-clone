@@ -15,6 +15,7 @@ import PageNav from '@/components/Layout/PageNav.vue'
 import LikeButton from '@/components/Post/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import { useHead } from '@unhead/vue'
+import RetweetButton from '@/components/Post/RetweetButton.vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -115,6 +116,9 @@ const user = computed(() => {
               <MessageCircleMore :size="18" />
             </div>
             {{ post.comments.length }}
+          </div>
+          <div class="flex-1">
+            <RetweetButton :post="post" />
           </div>
           <div class="flex-1">
             <LikeButton :post="post" />
