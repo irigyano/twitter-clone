@@ -7,8 +7,8 @@ import MainLayout from '@/components/Layout/MainLayout.vue'
 
 import HomePage from '@/pages/HomePage.vue'
 import AuthPage from '@/pages/AuthPage.vue'
-import SignInForm from '@/components/SignInForm.vue'
-import SignUpForm from '@/components/SignUpForm.vue'
+import SignInForm from '@/components/Auth/SignInForm.vue'
+import SignUpForm from '@/components/Auth/SignUpForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
