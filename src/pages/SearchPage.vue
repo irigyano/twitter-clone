@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useHead } from 'unhead'
-import PageNav from '@/components/PageNav.vue'
+import PageNav from '@/components/Layout/PageNav.vue'
 import { getPostsByTextSearch } from '@/utils/query'
 import { useQuery } from '@tanstack/vue-query'
 import Loading from '@/components/Loading.vue'
