@@ -8,8 +8,7 @@
 
 ## Minor
 
-- [ ] Frontend form/input validation & backend error messages
-  - [ ] Debounce check existing username
+- [x] Frontend form/input validation & backend error messages
 - [ ] Side feed who to follow section
 - [ ] Post image page
 
@@ -26,6 +25,8 @@
 - [ ] Search length limit & hint(UX)
 - [ ] Handle empty content(whitespaces only comments)
 - [ ] Postgres text search range
+- [ ] Crop images before upload
+- [ ] Debounce check existing username
 
 ## Refactor
 
