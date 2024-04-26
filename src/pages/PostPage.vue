@@ -32,7 +32,7 @@ const commentContent = ref()
 
 async function addComment() {
   const { error } = await supabase.from('comments').insert({
-    comment: commentContent.value,
+    comment: commentContent.value.trim(),
     postId: route.params.postId as string,
     userId: userStore.user.id
   })
@@ -134,7 +134,9 @@ const user = computed(() => {
             <ResponsiveRowTextarea v-model="commentContent" />
           </div>
           <div class="self-end p-2">
-            <Button @click="mutate" :disabled="!commentContent">回覆</Button>
+            <Button @click="mutate" :disabled="!commentContent || commentContent.trim().length <= 0"
+              >回覆</Button
+            >
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ const userStore = useUserStore()
 <template>
   <div class="w-full px-4 pt-4 border-b-[1px] border-border">
     <div class="flex relative">
-      <img class="h-10 w-10 rounded-full" :src="userStore.user.avatar" alt="avatar" />
+      <img class="h-10 w-10 rounded-full object-cover" :src="userStore.user.avatar" alt="avatar" />
       <div class="flex-1 p-2">
         <PostTextArea
           v-model:postContent="postContent"

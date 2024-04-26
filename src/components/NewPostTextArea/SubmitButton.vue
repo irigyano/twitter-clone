@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useQueryClient, useMutation } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
-
+import { supabase } from '@/utils/supabase'
+import { useUserStore } from '@/stores/user'
 const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
 const postImageLink = defineModel<string>('postImageLink')
 const emit = defineEmits(['submit'])
-import { supabase } from '@/utils/supabase'
-import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
 
 async function sumbitPost({ content, imageSrc }: { content?: string; imageSrc?: string }) {
@@ -23,22 +22,13 @@ const { mutate } = useMutation({
     queryClient.invalidateQueries({ queryKey: ['posts'] })
     postContent.value = ''
     postImageLink.value = ''
-  },
-  onError: () => {
-    // pop up
-    console.log('failed')
   }
 })
-
-function filterEmptyContent() {
-  if (!postContent.value) return false
-  return postContent.value.trim().length > 0
-}
 </script>
 
 <template>
   <Button
-    :disabled="!postContent && !postImageLink"
+    :disabled="!postContent?.trim().length && !postImageLink"
     class="hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none"
     @click="
       mutate({

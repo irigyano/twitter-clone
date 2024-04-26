@@ -3,11 +3,12 @@
 - [x] Search view
 - [ ] Realtime notifications
 - [x] Follow feature(db relation)
+- [ ] Retweet
+- [ ] Multiple images upload & show
 
 ## Minor
 
-- [ ] Frontend form/input validation & backend error messages
-  - [ ] Debounce check existing username
+- [x] Frontend form/input validation & backend error messages
 - [ ] Side feed who to follow section
 - [ ] Post image page
 
@@ -15,7 +16,7 @@
 
 - [ ] Styling
 - [ ] Row Level Policy & (review constraints)
-- [ ] Router logic
+- [x] Router logic
 - [ ] Vue Query Cache
 - [ ] Post typography (links, tag highlight, word breaks, linkifyjs)
 - [ ] User data stored in Pinia isn't reflected realtime
@@ -24,6 +25,8 @@
 - [ ] Search length limit & hint(UX)
 - [ ] Handle empty content(whitespaces only comments)
 - [ ] Postgres text search range
+- [ ] Crop images before upload
+- [ ] Debounce check existing username
 
 ## Refactor
 
