@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Post } from '@/utils/query'
-import { useUserStore } from '@/stores/user'
 import { MessageCircleMore } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
@@ -8,15 +7,11 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import CommentDialog from '@/components/Post/CommentDialog.vue'
 import PostAvatar from '@/components/PostAvatar.vue'
 import LikeButton from '@/components/Post/LikeButton.vue'
+import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostOptionsDropdown from '@/components/Post/PostOptionsDropdown.vue'
-
 const timeAgo = new TimeAgo('zh-TW')
-const userStore = useUserStore()
 const router = useRouter()
-
 const props = defineProps<{ post: Post['post']; author: Post['author'] }>()
-
-const isLiked = props.post.likes.some((like) => like.userId === userStore.user.id)
 
 function goToPost() {
   if (document?.getSelection()?.type === 'Range') return
@@ -72,8 +67,13 @@ function goToPost() {
             </DialogContent>
           </Dialog>
         </div>
+
         <div class="flex-1">
-          <LikeButton :isLiked="isLiked" :likesCount="props.post.likes.length" :postId="post.id" />
+          <RetweetButton :post="post" />
+        </div>
+
+        <div class="flex-1">
+          <LikeButton :post="post" />
         </div>
       </div>
     </div>

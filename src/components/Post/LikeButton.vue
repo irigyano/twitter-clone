@@ -3,23 +3,20 @@ import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { Heart } from 'lucide-vue-next'
 import { ref } from 'vue'
+import type { Post } from '@/utils/query'
 
-const {
-  isLiked: isLikedProps,
-  likesCount,
-  postId
-} = defineProps<{ isLiked: boolean; likesCount: number; postId: string }>()
+const { post } = defineProps<{ post: Post['post'] }>()
 
 const userStore = useUserStore()
-const isLiked = ref(isLikedProps)
-const likes = ref(likesCount)
+const isLiked = ref(post.likes.some((like) => like.userId === userStore.user.id))
+const likes = ref(post.likes.length)
 
 async function likePost() {
   if (isLiked.value) {
-    supabase.from('likes').delete().eq('postId', postId).eq('userId', userStore.user.id).then()
+    supabase.from('likes').delete().eq('postId', post.id).eq('userId', userStore.user.id).then()
     likes.value--
   } else {
-    supabase.from('likes').insert({ userId: userStore.user.id, postId: postId }).then()
+    supabase.from('likes').insert({ userId: userStore.user.id, postId: post.id }).then()
     likes.value++
   }
   isLiked.value = !isLiked.value

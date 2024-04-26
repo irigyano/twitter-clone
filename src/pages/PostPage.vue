@@ -117,11 +117,7 @@ const user = computed(() => {
             {{ post.comments.length }}
           </div>
           <div class="flex-1">
-            <LikeButton
-              :isLiked="post.likes.some((like) => like.userId === userStore.user.id)"
-              :likesCount="post.likes.length"
-              :postId="post.id"
-            />
+            <LikeButton :post="post" />
           </div>
         </div>
       </div>

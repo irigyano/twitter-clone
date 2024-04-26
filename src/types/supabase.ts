@@ -152,6 +152,42 @@ export type Database = {
           },
         ]
       }
+      retweets: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retweets_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "retweets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           avatar: string | null
@@ -159,6 +195,7 @@ export type Database = {
           bio: string | null
           created_at: string
           id: string
+          is_vip: boolean | null
           name: string
           tag: string
         }
@@ -168,6 +205,7 @@ export type Database = {
           bio?: string | null
           created_at?: string
           id: string
+          is_vip?: boolean | null
           name: string
           tag: string
         }
@@ -177,6 +215,7 @@ export type Database = {
           bio?: string | null
           created_at?: string
           id?: string
+          is_vip?: boolean | null
           name?: string
           tag?: string
         }

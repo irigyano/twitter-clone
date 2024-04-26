@@ -17,7 +17,7 @@ export type Post = Awaited<ReturnType<typeof getPosts>>[number]
 export async function getPosts() {
   const { data, error } = await supabase
     .from('posts')
-    .select('*, user:users(*), comments(*), likes(*)')
+    .select('*, user:users(*), comments(*), likes(*), retweets(*)')
     .order('created_at', { ascending: false })
 
   if (error) throw new Error(error.message)
@@ -36,7 +36,12 @@ export async function getPostById(postId: string) {
   const { data, error } = await supabase
     .from('posts')
     .select(
-      '*, user:users(*,following:follows!follower(followee), follower:follows!followee(follower)), comments(*,user:users(*)), likes(*,user:users(*))'
+      '*,\
+      user:users(*,following:follows!follower(followee),\
+      follower:follows!followee(follower)),\
+      comments(*,user:users(*)),\
+      likes(*,user:users(*)),\
+      retweets(*)'
     )
     .order('created_at', { ascending: false, referencedTable: 'comments' })
     .eq('id', postId)
