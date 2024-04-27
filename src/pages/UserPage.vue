@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { useHead } from 'unhead'
+import { useHead } from '@unhead/vue'
 import Loading from '@/components/Loading.vue'
 import { useQuery } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
@@ -28,13 +28,17 @@ const {
   queryKey: ['userMeta'],
   queryFn: async () => {
     const data = await getUserMetaByTag(route.params.user as string)
-    useHead({
-      title: `${data.name} (@${data.tag}) / W`
-    })
     return data
   },
   gcTime: 0,
   retry: false
+})
+
+useHead({
+  title: () => {
+    if (!user.value) return ''
+    return `${user.value.name} (@${user.value.tag}) / W`
+  }
 })
 
 const isUserOwner = computed(() => user.value?.id === userStore.user.id)
