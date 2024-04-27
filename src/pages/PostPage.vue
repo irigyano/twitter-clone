@@ -65,9 +65,7 @@ const { mutate } = useMutation({
   }
 })
 
-const user = computed(() => {
-  if (post.value?.user) return post.value.user
-})
+const user = computed(() => post.value?.user)
 </script>
 
 <template>

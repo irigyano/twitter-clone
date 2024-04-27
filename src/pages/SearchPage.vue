@@ -33,7 +33,7 @@ useHead({
     </div>
 
     <div v-if="tweets?.length" class="border-t-[1px]">
-      <Post v-for="tweet in tweets" :tweet="tweet" />
+      <Post v-for="tweet in tweets" :tweet="tweet" :key="tweet.id" />
     </div>
 
     <div v-else class="flex-1 flex items-center justify-center">
