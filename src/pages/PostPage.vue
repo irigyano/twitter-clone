@@ -110,19 +110,15 @@ const user = computed(() => post.value?.user)
       </div>
 
       <!-- status -->
-      <div class="border-y-[1px] flex py-1 text-muted-foreground">
-        <div class="flex gap-1 items-center flex-1">
+      <div class="border-y-[1px] flex py-1 text-muted-foreground justify-around">
+        <div class="flex gap-1 items-center">
           <div class="p-2">
             <MessageCircleMore :size="18" />
           </div>
           {{ post.comments.length }}
         </div>
-        <div class="flex-1">
-          <RetweetButton :post="post" />
-        </div>
-        <div class="flex-1">
-          <LikeButton :post="post" />
-        </div>
+        <RetweetButton :post="post" />
+        <LikeButton :post="post" />
       </div>
 
       <!-- reply -->
