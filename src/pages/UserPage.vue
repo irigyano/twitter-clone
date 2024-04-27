@@ -86,7 +86,7 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
             <EditPanel :user="user" />
           </DialogContent>
         </Dialog>
-        <FollowButton :target-user-id="user.id" :follower="user.follower" />
+        <FollowButton :target-user-id="user.id" :followers="user.follower" />
       </div>
       <div class="leading-none">
         <div class="font-bold text-lg">{{ user.name }}</div>

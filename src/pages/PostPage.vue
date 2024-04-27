@@ -93,7 +93,7 @@ const user = computed(() => {
             </div>
             <div class="text-muted-foreground">@{{ user.tag }}</div>
           </div>
-          <FollowButton :targetUserId="user.id" :follower="user.follower" />
+          <FollowButton :targetUserId="user.id" :followers="user.follower" />
         </div>
 
         <div class="whitespace-pre-wrap break-all">
