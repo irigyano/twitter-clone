@@ -72,7 +72,7 @@ export async function getUserFollowRelationByTag(tag: string) {
     .eq('tag', tag)
     .single()
   if (error) throw new Error(error.message)
-  return data
+  return data as any
 }
 
 export async function queryRetweets() {

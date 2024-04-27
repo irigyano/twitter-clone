@@ -15,6 +15,10 @@ export type PostInfoWithAuthor = Post & {
   retweets: Retweet[]
 }
 export type FollowWithUser = Follow & { user: User & { follows: Follow[] } }
+// export type UserWithFollow = User & {
+//   following: Follow & { user: User }
+//   follower: Follow & { user: User }
+// }
 export type RetweetInfo = Retweet & { retweeter: User; retweetedPost: PostInfo & { user: User } }
 
 export type Tweet =
