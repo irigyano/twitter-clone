@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PageNav from '@/components/Layout/PageNav.vue'
 import { useUserStore } from '@/stores/user'
-import { getUserFollowRelationByTag } from '@/utils/query'
+import { getUserFollowByTag } from '@/utils/services'
 import { useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
 import { computed, ref } from 'vue'
@@ -18,10 +18,7 @@ const isFollowingCategory = computed(() => category.value === 'following')
 
 const { isLoading, data: user } = useQuery({
   queryKey: ['userRelation'],
-  queryFn: async () => {
-    const data = await getUserFollowRelationByTag(route.params.user as string)
-    return data
-  },
+  queryFn: () => getUserFollowByTag(route.params.user as string),
   gcTime: 0,
   retry: false
 })

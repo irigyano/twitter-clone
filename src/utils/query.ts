@@ -1,6 +1,6 @@
 import { supabase } from '@/utils/supabase'
 import type { User } from '@/types/queries'
-import type { PostInfoWithAuthor, RetweetInfo } from '@/types/queries'
+import type { PostInfoWithAuthor, RetweetInfo, FollowWithUser } from '@/types/queries'
 
 export async function queryUserMetaByTag(tag: string) {
   const { data, error } = await supabase
@@ -61,7 +61,7 @@ export async function queryPostsByTextSearch(keyword: string) {
   return data as PostInfoWithAuthor[]
 }
 
-export async function getUserFollowRelationByTag(tag: string) {
+export async function queryUserFollowByTag(tag: string) {
   const { data, error } = await supabase
     .from('users')
     .select(
@@ -72,7 +72,10 @@ export async function getUserFollowRelationByTag(tag: string) {
     .eq('tag', tag)
     .single()
   if (error) throw new Error(error.message)
-  return data as any
+  return data as User & {
+    following: Array<FollowWithUser>
+    follower: Array<FollowWithUser>
+  }
 }
 
 export async function queryRetweets() {
