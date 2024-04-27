@@ -6,7 +6,7 @@ defineProps<{ targetUserFollows: FollowWithUser[] }>()
 </script>
 
 <template>
-  <div v-for="{ user } in targetUserFollows" class="flex flex-col gap-2 p-4">
+  <div v-for="{ user, id } in targetUserFollows" class="flex flex-col gap-2 p-4" :key="id">
     <div class="flex gap-2">
       <PostAvatar :avatar="user.avatar" :tag="user.tag" />
       <div class="flex-1">
@@ -17,7 +17,6 @@ defineProps<{ targetUserFollows: FollowWithUser[] }>()
             }}</RouterLink>
             <div class="text-muted-foreground leading-4">@{{ user.tag }}</div>
           </div>
-          <!-- make this non optimistic? -->
           <FollowButton :target-user-id="user.id" :followers="user.follows" class="py-0" />
         </div>
         {{ user.bio }}

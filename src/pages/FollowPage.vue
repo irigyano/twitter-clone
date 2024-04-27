@@ -12,7 +12,6 @@ const route = useRoute()
 const userStore = useUserStore()
 
 const category = ref(route.name)
-
 const isFollowersCategory = computed(() => category.value === 'followers')
 const isFollowingCategory = computed(() => category.value === 'following')
 
@@ -38,7 +37,7 @@ useHead({
   }
 })
 
-function addHashToLocation(path: string) {
+function updateUrl(path: string) {
   history.replaceState({}, '', `/${userStore.user.tag}/${path}`)
   category.value = path
 }
@@ -50,7 +49,7 @@ function addHashToLocation(path: string) {
 
     <div class="flex text-center border-b-[1px]">
       <div
-        @click="addHashToLocation('followers')"
+        @click="updateUrl('followers')"
         class="flex-1 py-4 relative cursor-pointer hover:bg-secondary duration-300"
       >
         跟隨者
@@ -60,7 +59,7 @@ function addHashToLocation(path: string) {
         ></div>
       </div>
       <div
-        @click="addHashToLocation('following')"
+        @click="updateUrl('following')"
         class="flex-1 py-4 relative cursor-pointer hover:bg-secondary duration-300"
       >
         正在跟隨
