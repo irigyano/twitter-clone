@@ -4,7 +4,7 @@ import Category from '@/components/Layout/Category.vue'
 import { useQuery } from '@tanstack/vue-query'
 import Post from '@/components/Post/Post.vue'
 import Loading from '@/components/Loading.vue'
-import { getPostsAndRetweets } from '@/utils/services'
+import { getTweets } from '@/utils/services'
 
 const {
   isLoading,
@@ -13,7 +13,7 @@ const {
   error
 } = useQuery({
   queryKey: ['posts'],
-  queryFn: getPostsAndRetweets,
+  queryFn: getTweets,
   gcTime: 0
 })
 </script>

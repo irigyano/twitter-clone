@@ -1,18 +1,15 @@
 import { supabase } from '@/utils/supabase'
-import type { QueryResult, QueryData, QueryError } from '@supabase/supabase-js'
 import type { User } from '@/types/queries'
 import type { PostInfoWithAuthor, RetweetInfo } from '@/types/queries'
 
-export async function getUserWithTag(tag: string) {
+export async function queryUserMetaByTag(tag: string) {
   const { data, error } = await supabase
     .from('users')
     .select(
-      '*,\
+      '*, posts(*), retweets(*),\
       following:follows!follower(followee),\
-      follower:follows!followee(follower),\
-      posts(*, comments(*), likes(*), retweets(*))'
+      follower:follows!followee(follower)'
     )
-    .order('created_at', { ascending: false, referencedTable: 'posts' })
     .eq('tag', tag)
     .single()
   if (error) throw new Error(error.message)
@@ -22,12 +19,9 @@ export async function getUserWithTag(tag: string) {
 export async function queryPosts() {
   const { data, error } = await supabase
     .from('posts')
-    // REVISIT: Services might not know when to include these referenced table
     .select('*, user:users(*), comments(*), likes(*), retweets(*)')
-    .order('created_at', { ascending: false })
-    .returns<PostInfoWithAuthor[]>()
   if (error) throw new Error(error.message)
-  return data
+  return data as PostInfoWithAuthor[]
 }
 
 export async function getPostById(postId: string) {
@@ -63,10 +57,8 @@ export async function queryPostsByTextSearch(keyword: string) {
       type: 'websearch'
     })
     .order('created_at', { ascending: false })
-    .returns<PostInfoWithAuthor[]>()
-
   if (error) throw new Error(error.message)
-  return data
+  return data as PostInfoWithAuthor[]
 }
 
 export async function getUserFollowRelationByTag(tag: string) {
@@ -84,17 +76,34 @@ export async function getUserFollowRelationByTag(tag: string) {
 }
 
 export async function queryRetweets() {
+  const { data, error } = await supabase.from('retweets').select(
+    '*,\
+      retweeter:users(*),\
+      retweetedPost:posts(*, user:users(*), comments(*), likes(*), retweets(*))'
+  )
+  if (error) throw new Error(error.message)
+  return data as RetweetInfo[]
+}
+
+export async function queryUserPostByTag(tag: string) {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, user:users!inner(*), comments(*), likes(*), retweets(*)')
+    .eq('user.tag', tag)
+
+  if (error) throw new Error(error.message)
+  return data as PostInfoWithAuthor[]
+}
+
+export async function queryUserRetweetsByTag(tag: string) {
   const { data, error } = await supabase
     .from('retweets')
     .select(
       '*,\
-      retweeter:users(*),\
+      retweeter:users!inner(*),\
       retweetedPost:posts(*, user:users(*), comments(*), likes(*), retweets(*))'
     )
-    .order('created_at', { ascending: false })
-    // REVISIT: Explicit casting because supabase isn't infering correctly (e.g. User is nullable which is not)
-    .returns<RetweetInfo[]>()
-
+    .eq('retweeter.tag', tag)
   if (error) throw new Error(error.message)
-  return data
+  return data as RetweetInfo[]
 }
