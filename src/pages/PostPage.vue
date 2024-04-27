@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { getPostById } from '@/utils/query'
+import { getPostById } from '@/utils/services'
 import Loading from '@/components/Loading.vue'
 import { computed, ref } from 'vue'
 import PostAvatar from '@/components/PostAvatar.vue'

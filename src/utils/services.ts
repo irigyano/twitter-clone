@@ -3,9 +3,10 @@ import {
   queryRetweets,
   queryPostsByTextSearch,
   queryUserMetaByTag,
-  queryUserPostByTag,
+  queryUserPostsByTag,
   queryUserRetweetsByTag,
-  queryUserFollowByTag
+  queryUserFollowByTag,
+  queryPostById
 } from '@/utils/query'
 import { pipePostsToTweets, pipeRetweetsToTweets } from '@/utils/pipes'
 import { sortTweetsByCreatedAt } from '@/utils/helper'
@@ -44,7 +45,7 @@ export async function getUserMetaByTag(tag: string) {
 }
 
 async function getPipedTweetsByTag(tag: string) {
-  const data = await queryUserPostByTag(tag)
+  const data = await queryUserPostsByTag(tag)
   const piped = pipePostsToTweets(data)
   return piped
 }
@@ -65,5 +66,10 @@ export async function getTweetsByTag(tag: string) {
 
 export async function getUserFollowByTag(tag: string) {
   const data = await queryUserFollowByTag(tag)
+  return data
+}
+
+export async function getPostById(postId: string) {
+  const data = await queryPostById(postId)
   return data
 }

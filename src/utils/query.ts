@@ -2,6 +2,8 @@ import { supabase } from '@/utils/supabase'
 import type { User } from '@/types/queries'
 import type { PostInfoWithAuthor, RetweetInfo, FollowWithUser } from '@/types/queries'
 
+// User
+
 export async function queryUserMetaByTag(tag: string) {
   const { data, error } = await supabase
     .from('users')
@@ -14,46 +16,6 @@ export async function queryUserMetaByTag(tag: string) {
     .single()
   if (error) throw new Error(error.message)
   return data
-}
-
-export async function queryPosts() {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*, user:users(*), comments(*), likes(*), retweets(*)')
-  if (error) throw new Error(error.message)
-  return data as PostInfoWithAuthor[]
-}
-
-export async function getPostById(postId: string) {
-  const { data, error } = await supabase
-    .from('posts')
-    .select(
-      '*,\
-      user:users(*,following:follows!follower(followee),\
-      follower:follows!followee(follower)),\
-      comments(*,user:users(*)),\
-      likes(*,user:users(*)),\
-      retweets(*)'
-    )
-    .order('created_at', { ascending: false, referencedTable: 'comments' })
-    .eq('id', postId)
-    .single()
-  if (error) throw new Error(error.message)
-  return data
-}
-
-export async function queryPostsByTextSearch(keyword: string) {
-  if (!keyword) throw new Error('No keyword provided')
-
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*, user:users(*), comments(*), likes(*), retweets(*)')
-    .textSearch('content', keyword, {
-      type: 'websearch'
-    })
-    .order('created_at', { ascending: false })
-  if (error) throw new Error(error.message)
-  return data as PostInfoWithAuthor[]
 }
 
 export async function queryUserFollowByTag(tag: string) {
@@ -73,6 +35,48 @@ export async function queryUserFollowByTag(tag: string) {
   }
 }
 
+// Post
+
+export async function queryPosts() {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, user:users(*), comments(*), likes(*), retweets(*)')
+  if (error) throw new Error(error.message)
+  return data as PostInfoWithAuthor[]
+}
+
+export async function queryPostsByTextSearch(keyword: string) {
+  if (!keyword) throw new Error('No keyword provided')
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, user:users(*), comments(*), likes(*), retweets(*)')
+    .textSearch('content', keyword, {
+      type: 'websearch'
+    })
+    .order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data as PostInfoWithAuthor[]
+}
+
+export async function queryPostById(postId: string) {
+  const { data, error } = await supabase
+    .from('posts')
+    .select(
+      '*,\
+      user:users(*,following:follows!follower(followee),\
+      follower:follows!followee(follower)),\
+      comments(*,user:users(*)),\
+      likes(*,user:users(*)),\
+      retweets(*)'
+    )
+    .order('created_at', { ascending: false, referencedTable: 'comments' })
+    .eq('id', postId)
+    .single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
 export async function queryRetweets() {
   const { data, error } = await supabase.from('retweets').select(
     '*,\
@@ -83,7 +87,7 @@ export async function queryRetweets() {
   return data as RetweetInfo[]
 }
 
-export async function queryUserPostByTag(tag: string) {
+export async function queryUserPostsByTag(tag: string) {
   const { data, error } = await supabase
     .from('posts')
     .select('*, user:users!inner(*), comments(*), likes(*), retweets(*)')
