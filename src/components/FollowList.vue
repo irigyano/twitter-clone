@@ -17,7 +17,7 @@ defineProps<{ targetUserFollows: FollowWithUser[] }>()
             }}</RouterLink>
             <div class="text-muted-foreground leading-4">@{{ user.tag }}</div>
           </div>
-          <FollowButton :target-user-id="user.id" :follower="user.follows" />
+          <FollowButton :target-user-id="user.id" :follower="user.follows" class="py-0" />
         </div>
         {{ user.bio }}
       </div>

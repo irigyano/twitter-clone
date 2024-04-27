@@ -3,11 +3,17 @@ import { Button } from '@/components/ui/button'
 import { ref } from 'vue'
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/utils/shadcn'
 
-const { targetUserId, follower } = defineProps<{
+const props = defineProps<{
   targetUserId: string
   follower: { follower: string }[]
+  class?: HTMLAttributes['class']
 }>()
+
+const { targetUserId, follower } = props
+
 const userStore = useUserStore()
 const isFollowing = ref(follower.some(({ follower }) => follower === userStore.user.id))
 
@@ -32,7 +38,7 @@ async function unfollowUser() {
 </script>
 
 <template>
-  <div class="py-2 w-24" v-if="targetUserId !== userStore.user.id">
+  <div :class="cn('py-2 w-24', props.class)" v-if="targetUserId !== userStore.user.id">
     <Button @click="followUser" v-if="!isFollowing" class="w-full">追隨</Button>
     <Button @click="unfollowUser" v-if="isFollowing" class="w-full bg-secondary duration-300"
       >正在追隨</Button
