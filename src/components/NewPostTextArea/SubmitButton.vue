@@ -9,6 +9,7 @@ const postImageLink = defineModel<string>('postImageLink')
 const emit = defineEmits(['submit'])
 const userStore = useUserStore()
 
+// TODO: refactor to service
 async function sumbitPost({ content, imageSrc }: { content?: string; imageSrc?: string }) {
   const { error } = await supabase
     .from('posts')
@@ -19,7 +20,7 @@ async function sumbitPost({ content, imageSrc }: { content?: string; imageSrc?: 
 const { mutate } = useMutation({
   mutationFn: sumbitPost,
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['posts'] })
+    queryClient.invalidateQueries({ queryKey: ['tweets'] })
     postContent.value = ''
     postImageLink.value = ''
   }

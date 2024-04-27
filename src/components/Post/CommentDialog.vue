@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '@/utils/query'
+import type { User, PostInfo } from '@/types/queries'
 import { DialogFooter, DialogTitle, DialogClose } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { useUserStore } from '@/stores/user'
@@ -14,7 +14,7 @@ const queryClient = useQueryClient()
 const comment = ref('')
 const postContent = ref<HTMLDivElement>()
 const userStore = useUserStore()
-const { post, author } = defineProps<{ post: Post['post']; author: Post['author'] }>()
+const { post, author } = defineProps<{ post: PostInfo; author: User }>()
 
 const lineHeight = 24
 function calculateRowsHeight() {
@@ -25,11 +25,14 @@ function calculateRowsHeight() {
 const showMore = computed(calculateRowsHeight)
 
 async function sumbitComment() {
+  // TODO: refactor to service
   const { error } = await supabase
     .from('comments')
     .insert({ comment: comment.value, postId: post.id, userId: userStore.user.id })
   if (error) throw new Error(error.message)
-  queryClient.invalidateQueries({ queryKey: ['posts'] })
+  // NOTE: 1. Could remove this to reduce backend load or make it optimistic since comments count is not crucial
+  //       2. Could make a popup that navigate to post for UX
+  queryClient.invalidateQueries({ queryKey: ['tweets'] })
 }
 </script>
 

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
-import PasswordInput from '@/components/Sign/PasswordInput.vue'
+import PasswordInput from '@/components/Auth/PasswordInput.vue'
 const router = useRouter()
 
 const email = ref('aintnoway@w.com')

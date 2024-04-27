@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useHead } from 'unhead'
-import Post from '@/components/Post.vue'
 import Loading from '@/components/Loading.vue'
 import { useQuery } from '@tanstack/vue-query'
-import { getUserWithTag } from '@/utils/query'
 import { Button } from '@/components/ui/button'
 import TimeAgo from 'javascript-time-ago'
-import UploadCoverButton from '@/components/UploadCoverButton.vue'
+import UploadCoverButton from '@/components/User/UploadCoverButton.vue'
 import { useUserStore } from '@/stores/user'
 import { defaultAvatar } from '@/utils/defaultAvatar'
-import EditPanel from '@/components/EditPanel.vue'
+import EditPanel from '@/components/User/EditPanel.vue'
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { computed } from 'vue'
-import PageNav from '@/components/PageNav.vue'
+import PageNav from '@/components/Layout/PageNav.vue'
 import FollowButton from '@/components/FollowButton.vue'
+import UserTweets from '@/components/User/UserTweets.vue'
+import { getUserMetaByTag } from '@/utils/services'
 
 const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
@@ -25,9 +25,9 @@ const {
   isError,
   data: user
 } = useQuery({
-  queryKey: ['userPosts'],
+  queryKey: ['userMeta'],
   queryFn: async () => {
-    const data = await getUserWithTag(route.params.user as string)
+    const data = await getUserMetaByTag(route.params.user as string)
     useHead({
       title: `${data.name} (@${data.tag}) / W`
     })
@@ -41,20 +41,18 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
 </script>
 
 <template>
-  <div
-    v-if="isLoading"
-    class="fixed top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
-  >
+  <!-- DRY -->
+  <div v-if="isLoading" class="w-full flex items-center justify-center">
     <Loading />
   </div>
 
-  <div v-if="isError" class="flex justify-center flex-1 items-center">
+  <div v-else-if="isError" class="flex justify-center flex-1 items-center">
     <div>嗯…此頁面不存在。請嘗試搜尋其他內容。</div>
   </div>
 
-  <div v-if="user" class="flex-1 flex-col flex">
+  <div v-else-if="user" class="flex-1 flex-col flex">
     <PageNav :title="user.name">
-      <div class="text-muted-foreground">{{ user.posts.length }} 則貼文</div>
+      <div class="text-muted-foreground">{{ user.posts.length + user.retweets.length }} 則貼文</div>
     </PageNav>
     <div class="bg-secondary">
       <div class="relative pb-[33%] overflow-hidden">
@@ -86,7 +84,7 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
             <EditPanel :user="user" />
           </DialogContent>
         </Dialog>
-        <FollowButton :target-user-id="user.id" :follower="user.follower" />
+        <FollowButton :target-user-id="user.id" :followers="user.follower" />
       </div>
       <div class="leading-none">
         <div class="font-bold text-lg">{{ user.name }}</div>
@@ -107,17 +105,6 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
         </RouterLink>
       </div>
     </div>
-    <div class="flex flex-col">
-      <!-- n starts with 1 -->
-      <Post
-        v-for="n in user.posts.length"
-        :author="user"
-        :post="user.posts[n - 1]"
-        :key="user.posts[n - 1].id"
-      />
-    </div>
-    <div class="flex items-center justify-center text-3xl flex-1" v-if="user.posts.length === 0">
-      <div>@{{ user.tag }} 尚未新增貼文</div>
-    </div>
+    <UserTweets />
   </div>
 </template>

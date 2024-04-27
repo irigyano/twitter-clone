@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { supabase } from '@/utils/supabase'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import type { Comment } from '@/utils/query'
+import type { User, Comment } from '@/types/queries'
 import { useUserStore } from '@/stores/user'
 import { Trash2 } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
@@ -14,8 +14,7 @@ const queryClient = useQueryClient()
 const router = useRouter()
 const route = useRoute()
 
-type CommentOmitUser = Omit<Comment, 'user'>
-const { comment, user } = defineProps<{ comment: CommentOmitUser; user: Comment['user'] }>()
+const { comment, user } = defineProps<{ comment: Comment; user: User }>()
 
 async function deleteComment() {
   const { error } = await supabase.from('comments').delete().eq('id', comment.id)

@@ -6,15 +6,16 @@ import Loading from '@/components/Loading.vue'
 import { computed, ref } from 'vue'
 import PostAvatar from '@/components/PostAvatar.vue'
 import { useUserStore } from '@/stores/user'
-import ResponsiveRowTextarea from '@/components/ResponsiveRowTextarea.vue'
-import Comment from '@/components/Comment.vue'
+import ResponsiveRowTextarea from '@/components/Post/ResponsiveRowTextarea.vue'
+import Comment from '@/components/Post/Comment.vue'
 import { MessageCircleMore } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/utils/supabase'
-import PageNav from '@/components/PageNav.vue'
-import LikeButton from '@/components/LikeButton.vue'
+import PageNav from '@/components/Layout/PageNav.vue'
+import LikeButton from '@/components/Post/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import { useHead } from '@unhead/vue'
+import RetweetButton from '@/components/Post/RetweetButton.vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -92,7 +93,7 @@ const user = computed(() => {
             </div>
             <div class="text-muted-foreground">@{{ user.tag }}</div>
           </div>
-          <FollowButton :targetUserId="user.id" :follower="user.follower" />
+          <FollowButton :targetUserId="user.id" :followers="user.follower" />
         </div>
 
         <div class="whitespace-pre-wrap break-all">
@@ -117,11 +118,10 @@ const user = computed(() => {
             {{ post.comments.length }}
           </div>
           <div class="flex-1">
-            <LikeButton
-              :isLiked="post.likes.some((like) => like.userId === userStore.user.id)"
-              :likesCount="post.likes.length"
-              :postId="post.id"
-            />
+            <RetweetButton :post="post" />
+          </div>
+          <div class="flex-1">
+            <LikeButton :post="post" />
           </div>
         </div>
       </div>
@@ -141,7 +141,7 @@ const user = computed(() => {
         </div>
       </div>
       <div>
-        <Comment v-for="{ user, ...comment } in post.comments" :user="user" :comment="comment" />
+        <Comment v-for="{ user, ...comment } in post.comments" :user="user!" :comment="comment" />
       </div>
     </div>
   </div>

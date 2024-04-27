@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PageNav from '@/components/PageNav.vue'
+import PageNav from '@/components/Layout/PageNav.vue'
 import { useUserStore } from '@/stores/user'
 import { getUserFollowRelationByTag } from '@/utils/query'
 import { useQuery } from '@tanstack/vue-query'

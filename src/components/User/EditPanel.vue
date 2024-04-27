@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '@/utils/query'
+import type { User } from '@/types/queries'
 import { useQueryClient } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -12,7 +12,7 @@ import { Camera } from 'lucide-vue-next'
 import { useUploadImage } from '@/hooks/useUploadImage'
 import { updateUserMetaByTag } from '@/utils/query'
 const queryClient = useQueryClient()
-const userData = defineProps<{ user: Post['author'] }>()
+const userData = defineProps<{ user: User }>()
 const username = ref(userData.user.name)
 const bio = ref(userData.user.bio!)
 const avatar = ref(userData.user.avatar || defaultAvatar)
@@ -22,7 +22,7 @@ const isUploading = ref(false)
 async function updateUserMeta() {
   try {
     await updateUserMetaByTag(userData.user.tag, { name: username.value, bio: bio.value })
-    queryClient.invalidateQueries({ queryKey: ['userPosts'] })
+    queryClient.invalidateQueries({ queryKey: ['userMeta'] })
   } catch (error) {}
 }
 

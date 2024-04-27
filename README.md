@@ -31,3 +31,4 @@
 ## Refactor
 
 - [ ] Vue Query & supabase query functions
+- [ ] Pass props into `toRefs()`

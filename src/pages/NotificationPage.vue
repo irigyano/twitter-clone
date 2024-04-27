@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PageNav from '@/components/PageNav.vue'
+import PageNav from '@/components/Layout/PageNav.vue'
 </script>
 
 <template>
