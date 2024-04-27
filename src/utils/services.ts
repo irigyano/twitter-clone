@@ -1,10 +1,22 @@
-import { queryPosts, queryRetweets } from '@/utils/query'
-import type { PostInfoWithAuthor, RetweetInfo, Tweet } from '@/types/queries'
+import { queryPosts, queryRetweets, queryPostsByTextSearch } from '@/utils/query'
+import { pipePostsToTweets, pipeRetweetsToTweets } from '@/utils/pipes'
+
+async function getPipedTweets() {
+  const data = await queryPosts()
+  const piped = pipePostsToTweets(data)
+  return piped
+}
+
+async function getPipedRetweets() {
+  const data = await queryRetweets()
+  const piped = pipeRetweetsToTweets(data)
+  return piped
+}
 
 export async function getPostsAndRetweets() {
   const promises = [getPipedTweets(), getPipedRetweets()]
   const [t1, t2] = await Promise.all(promises)
-  const tweets = t1.concat(t2) as Tweet[]
+  const tweets = t1.concat(t2)
 
   tweets.sort((b, a) => {
     let createdA = a.isRetweet ? a.retweetedAt! : a.post.created_at
@@ -15,49 +27,8 @@ export async function getPostsAndRetweets() {
   return tweets
 }
 
-// Tweets
-
-async function getPipedTweets() {
-  const data = await queryPosts()
+export async function getPostsByTextSearch(keyword: string) {
+  const data = await queryPostsByTextSearch(keyword)
   const piped = pipePostsToTweets(data)
   return piped
 }
-
-function pipePostsToTweets(posts: PostInfoWithAuthor[]) {
-  const piped = posts.map((post) => {
-    const { user, ...tweet } = post
-    return {
-      // NOTE: User is a referenced foreign key so wouldn't be null.
-      id: tweet.id,
-      author: user,
-      post: tweet,
-      isRetweet: false
-    }
-  })
-  return piped
-}
-
-// Retweets
-
-async function getPipedRetweets() {
-  const data = await queryRetweets()
-  const piped = pipeRetweetsToTweets(data)
-  return piped
-}
-
-function pipeRetweetsToTweets(retweets: RetweetInfo[]) {
-  const piped = retweets.map((retweet) => {
-    return {
-      id: retweet.id,
-      author: retweet.retweetedPost.user,
-      post: retweet.retweetedPost,
-      isRetweet: true,
-      retweeter: retweet.retweeter,
-      retweetedAt: retweet.created_at
-    }
-  })
-  return piped
-}
-
-// export async function getPostsAndRetweetsByUserId(){
-// }

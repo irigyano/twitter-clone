@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router'
 import { useHead } from 'unhead'
 import PageNav from '@/components/Layout/PageNav.vue'
-import { getPostsByTextSearch } from '@/utils/query'
+import { getPostsByTextSearch } from '@/utils/services'
 import { useQuery } from '@tanstack/vue-query'
 import Loading from '@/components/Loading.vue'
 import Post from '@/components/Post/Post.vue'
@@ -11,7 +11,7 @@ const route = useRoute()
 
 const {
   isLoading,
-  data: posts,
+  data: tweets,
   error
 } = useQuery({
   queryKey: [route.query.q],
@@ -32,8 +32,8 @@ useHead({
       <SearchBar />
     </div>
 
-    <div v-if="posts?.length" class="border-t-[1px]">
-      <!-- <Post :post="post" :author="post.user!" v-for="post in posts" /> -->
+    <div v-if="tweets?.length" class="border-t-[1px]">
+      <Post v-for="tweet in tweets" :tweet="tweet" />
     </div>
 
     <div v-else class="flex-1 flex items-center justify-center">

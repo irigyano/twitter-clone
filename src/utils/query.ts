@@ -1,4 +1,5 @@
 import { supabase } from '@/utils/supabase'
+import type { QueryResult, QueryData, QueryError } from '@supabase/supabase-js'
 import type { User } from '@/types/queries'
 import type { PostInfoWithAuthor, RetweetInfo } from '@/types/queries'
 
@@ -52,7 +53,7 @@ export async function updateUserMetaByTag(tag: string, data: Partial<User>) {
   if (error) throw new Error(error.message)
 }
 
-export async function getPostsByTextSearch(keyword: string) {
+export async function queryPostsByTextSearch(keyword: string) {
   if (!keyword) throw new Error('No keyword provided')
 
   const { data, error } = await supabase
@@ -62,6 +63,7 @@ export async function getPostsByTextSearch(keyword: string) {
       type: 'websearch'
     })
     .order('created_at', { ascending: false })
+    .returns<PostInfoWithAuthor[]>()
 
   if (error) throw new Error(error.message)
   return data
