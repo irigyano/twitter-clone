@@ -7,7 +7,7 @@ import {
   queryUserRetweetsByTag,
   queryUserFollowByTag,
   queryPostById
-} from '@/utils/query'
+} from '@/utils/queries'
 import { pipePostsToTweets, pipeRetweetsToTweets } from '@/utils/pipes'
 import { sortTweetsByCreatedAt } from '@/utils/helper'
 
