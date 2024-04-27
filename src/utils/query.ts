@@ -1,4 +1,5 @@
 import { supabase } from '@/utils/supabase'
+import type { User } from '@/types/queries'
 
 export async function getUserWithTag(tag: string) {
   const { data, error } = await supabase
@@ -16,7 +17,6 @@ export async function getUserWithTag(tag: string) {
   return data
 }
 
-export type Post = Awaited<ReturnType<typeof getPosts>>[number]
 export async function getPosts() {
   const { data, error } = await supabase
     .from('posts')
@@ -34,7 +34,6 @@ export async function getPosts() {
   })
 }
 
-export type Comment = Awaited<ReturnType<typeof getPostById>>['comments'][number]
 export async function getPostById(postId: string) {
   const { data, error } = await supabase
     .from('posts')
@@ -53,7 +52,7 @@ export async function getPostById(postId: string) {
   return data
 }
 
-export async function updateUserMetaByTag(tag: string, data: Partial<Post['author']>) {
+export async function updateUserMetaByTag(tag: string, data: Partial<User>) {
   const { error } = await supabase.from('users').update(data).eq('tag', tag).single()
   if (error) throw new Error(error.message)
 }
@@ -63,7 +62,7 @@ export async function getPostsByTextSearch(keyword: string) {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('*, user:users(*), comments(*), likes(*)')
+    .select('*, user:users(*), comments(*), likes(*), retweets(*)')
     .textSearch('content', keyword, {
       type: 'websearch'
     })
@@ -73,9 +72,6 @@ export async function getPostsByTextSearch(keyword: string) {
   return data
 }
 
-export type UserWithRelation = Awaited<
-  ReturnType<typeof getUserFollowRelationByTag>
->['following'][number]
 export async function getUserFollowRelationByTag(tag: string) {
   const { data, error } = await supabase
     .from('users')

@@ -2,9 +2,9 @@
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { Repeat2 } from 'lucide-vue-next'
-import type { Post } from '@/utils/query'
+import type { PostInfo } from '@/types/queries'
 import { ref } from 'vue'
-const { post } = defineProps<{ post: Post['post'] }>()
+const { post } = defineProps<{ post: PostInfo }>()
 const userStore = useUserStore()
 
 const isRetweeted = ref(post.retweets.some((retweet) => retweet.user_id === userStore.user.id))

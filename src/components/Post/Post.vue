@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '@/utils/query'
+import type { User, PostInfo } from '@/types/queries'
 import { MessageCircleMore } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
@@ -11,7 +11,7 @@ import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostOptionsDropdown from '@/components/Post/PostOptionsDropdown.vue'
 const timeAgo = new TimeAgo('zh-TW')
 const router = useRouter()
-const props = defineProps<{ post: Post['post']; author: Post['author'] }>()
+const props = defineProps<{ post: PostInfo; author: User }>()
 
 function goToPost() {
   if (document?.getSelection()?.type === 'Range') return

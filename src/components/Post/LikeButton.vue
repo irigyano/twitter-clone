@@ -3,9 +3,9 @@ import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { Heart } from 'lucide-vue-next'
 import { ref } from 'vue'
-import type { Post } from '@/utils/query'
+import type { PostInfo } from '@/types/queries'
 
-const { post } = defineProps<{ post: Post['post'] }>()
+const { post } = defineProps<{ post: PostInfo }>()
 
 const userStore = useUserStore()
 const isLiked = ref(post.likes.some((like) => like.userId === userStore.user.id))

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '@/utils/query'
+import type { User, PostInfo } from '@/types/queries'
 import { DialogFooter, DialogTitle, DialogClose } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { useUserStore } from '@/stores/user'
@@ -14,7 +14,7 @@ const queryClient = useQueryClient()
 const comment = ref('')
 const postContent = ref<HTMLDivElement>()
 const userStore = useUserStore()
-const { post, author } = defineProps<{ post: Post['post']; author: Post['author'] }>()
+const { post, author } = defineProps<{ post: PostInfo; author: User }>()
 
 const lineHeight = 24
 function calculateRowsHeight() {
