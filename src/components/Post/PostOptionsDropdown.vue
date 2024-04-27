@@ -7,22 +7,16 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Ellipsis, MessageSquareOff, Trash2 } from 'lucide-vue-next'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
+import { deletePostById } from '@/utils/actions'
 
 const queryClient = useQueryClient()
 const userStore = useUserStore()
 
 const { authorId, postId } = defineProps<{ authorId: string; postId: string }>()
 
-async function deletePost() {
-  // TODO: refactor to service
-  const { error } = await supabase.from('posts').delete().eq('id', postId)
-  if (error) throw new Error(error.message)
-}
-
 const { mutate } = useMutation({
-  mutationFn: deletePost,
+  mutationFn: () => deletePostById(postId),
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['tweets'] })
     queryClient.invalidateQueries({ queryKey: ['userTweets'] })

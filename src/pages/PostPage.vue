@@ -81,7 +81,7 @@ const user = computed(() => {
     <PageNav title="貼文" />
     <div v-if="post && user">
       <!-- post body -->
-      <div class="p-4">
+      <div class="px-4 pt-4">
         <div class="flex gap-2">
           <PostAvatar :avatar="user.avatar" :tag="user.tag" />
           <div class="pb-2 flex-1">
@@ -109,25 +109,26 @@ const user = computed(() => {
             >{{ new Date(post.created_at).toLocaleString('zh-tw', timeOptions) }}
           </time>
         </div>
-        <!-- status -->
-        <div class="border-y-[1px] flex py-1 text-muted-foreground">
-          <div class="flex gap-1 items-center flex-1">
-            <div class="p-2">
-              <MessageCircleMore :size="18" />
-            </div>
-            {{ post.comments.length }}
+      </div>
+
+      <!-- status -->
+      <div class="border-y-[1px] flex py-1 text-muted-foreground">
+        <div class="flex gap-1 items-center flex-1">
+          <div class="p-2">
+            <MessageCircleMore :size="18" />
           </div>
-          <div class="flex-1">
-            <RetweetButton :post="post" />
-          </div>
-          <div class="flex-1">
-            <LikeButton :post="post" />
-          </div>
+          {{ post.comments.length }}
+        </div>
+        <div class="flex-1">
+          <RetweetButton :post="post" />
+        </div>
+        <div class="flex-1">
+          <LikeButton :post="post" />
         </div>
       </div>
 
       <!-- reply -->
-      <div class="flex border-b-[1px] px-4">
+      <div class="flex border-b-[1px] px-4 pt-4">
         <PostAvatar :avatar="userStore.user.avatar" :tag="user.tag" />
         <div class="flex-1 flex flex-col">
           <div class="pt-1">

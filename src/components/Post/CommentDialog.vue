@@ -7,8 +7,8 @@ import { computed, ref } from 'vue'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import { RouterLink } from 'vue-router'
 import { Image } from 'lucide-vue-next'
-import { supabase } from '@/utils/supabase'
 import { useQueryClient } from '@tanstack/vue-query'
+import { insertComment } from '@/utils/actions'
 const queryClient = useQueryClient()
 
 const comment = ref('')
@@ -18,18 +18,13 @@ const { post, author } = defineProps<{ post: PostInfo; author: User }>()
 
 const lineHeight = 24
 function calculateRowsHeight() {
-  // fix to make it dynamic
   if (!postContent.value?.clientHeight) return false
   return postContent.value.clientHeight / lineHeight > 8
 }
 const showMore = computed(calculateRowsHeight)
 
 async function sumbitComment() {
-  // TODO: refactor to service
-  const { error } = await supabase
-    .from('comments')
-    .insert({ comment: comment.value, postId: post.id, userId: userStore.user.id })
-  if (error) throw new Error(error.message)
+  await insertComment(userStore.user.id, post.id, comment.value)
   // NOTE: 1. Could remove this to reduce backend load or make it optimistic since comments count is not crucial
   //       2. Could make a popup that navigate to post for UX
   queryClient.invalidateQueries({ queryKey: ['tweets'] })
