@@ -109,12 +109,12 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
     </div>
     <div class="flex flex-col">
       <!-- n starts with 1 -->
-      <Post
+      <!-- <Post
         v-for="n in user.posts.length"
         :author="user"
         :post="user.posts[n - 1]"
         :key="user.posts[n - 1].id"
-      />
+      /> -->
     </div>
     <div class="flex items-center justify-center text-3xl flex-1" v-if="user.posts.length === 0">
       <div>@{{ user.tag }} 尚未新增貼文</div>

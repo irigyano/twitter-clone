@@ -1,5 +1,6 @@
 import { supabase } from '@/utils/supabase'
 import type { User } from '@/types/queries'
+import type { PostInfoWithAuthor, RetweetInfo } from '@/types/queries'
 
 export async function getUserWithTag(tag: string) {
   const { data, error } = await supabase
@@ -17,21 +18,15 @@ export async function getUserWithTag(tag: string) {
   return data
 }
 
-export async function getPosts() {
+export async function queryPosts() {
   const { data, error } = await supabase
     .from('posts')
+    // REVISIT: Services might not know when to include these referenced table
     .select('*, user:users(*), comments(*), likes(*), retweets(*)')
     .order('created_at', { ascending: false })
-
+    .returns<PostInfoWithAuthor[]>()
   if (error) throw new Error(error.message)
-
-  return data.map((post) => {
-    const { user, ...rest } = post
-    return {
-      author: user!,
-      post: rest
-    }
-  })
+  return data
 }
 
 export async function getPostById(postId: string) {
@@ -82,6 +77,22 @@ export async function getUserFollowRelationByTag(tag: string) {
     )
     .eq('tag', tag)
     .single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function queryRetweets() {
+  const { data, error } = await supabase
+    .from('retweets')
+    .select(
+      '*,\
+      retweeter:users(*),\
+      retweetedPost:posts(*, user:users(*), comments(*), likes(*), retweets(*))'
+    )
+    .order('created_at', { ascending: false })
+    // REVISIT: Explicit casting because supabase isn't infering correctly (e.g. User is nullable which is not)
+    .returns<RetweetInfo[]>()
+
   if (error) throw new Error(error.message)
   return data
 }

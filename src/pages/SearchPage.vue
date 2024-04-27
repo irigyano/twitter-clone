@@ -33,7 +33,7 @@ useHead({
     </div>
 
     <div v-if="posts?.length" class="border-t-[1px]">
-      <Post :post="post" :author="post.user!" v-for="post in posts" />
+      <!-- <Post :post="post" :author="post.user!" v-for="post in posts" /> -->
     </div>
 
     <div v-else class="flex-1 flex items-center justify-center">
