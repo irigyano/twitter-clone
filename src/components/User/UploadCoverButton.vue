@@ -17,7 +17,7 @@ async function uploadCover(event: Event) {
     const url = await useUploadImage(event, 'background-cover')
     await updateUserMetaByTag(userStore.user.tag, { background_cover: url })
   } catch (error) {}
-  queryClient.invalidateQueries({ queryKey: ['userPosts'] })
+  queryClient.invalidateQueries({ queryKey: ['userMeta'] })
   setTimeout(() => {
     isUploading.value = false
   }, 2000)

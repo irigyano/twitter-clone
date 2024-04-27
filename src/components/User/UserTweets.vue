@@ -7,17 +7,9 @@ import Post from '@/components/Post/Post.vue'
 
 const route = useRoute()
 
-const {
-  isLoading,
-  isError,
-  data: tweets
-} = useQuery({
-  // REVISIT
+const { isLoading, data: tweets } = useQuery({
   queryKey: ['userTweets'],
-  queryFn: async () => {
-    const data = await getTweetsByTag(route.params.user as string)
-    return data
-  },
+  queryFn: () => getTweetsByTag(route.params.user as string),
   gcTime: 0,
   retry: false
 })
@@ -28,7 +20,11 @@ const {
     <Loading />
   </div>
 
-  <div v-else-if="tweets" class="flex flex-col">
+  <div v-else-if="tweets?.length" class="flex flex-col">
     <Post v-for="tweet in tweets" :tweet="tweet" :key="tweet.id" />
+  </div>
+
+  <div v-else class="flex items-center justify-center text-3xl flex-1">
+    <div>@{{ route.params.user }} 尚未新增貼文</div>
   </div>
 </template>

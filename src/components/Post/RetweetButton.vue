@@ -3,28 +3,32 @@ import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { Repeat2 } from 'lucide-vue-next'
 import type { PostInfo } from '@/types/queries'
-import { ref } from 'vue'
-const { post } = defineProps<{ post: PostInfo }>()
+import { computed } from 'vue'
+import { useQueryClient } from '@tanstack/vue-query'
+const props = defineProps<{ post: PostInfo }>()
 const userStore = useUserStore()
+const queryClient = useQueryClient()
 
-const isRetweeted = ref(post.retweets.some((retweet) => retweet.user_id === userStore.user.id))
-const retweets = ref(post.retweets.length)
+const isRetweeted = computed(() =>
+  props.post.retweets.some((retweet) => retweet.user_id === userStore.user.id)
+)
+const retweets = computed(() => props.post.retweets.length)
 
-// Revisit: is Optimistic updates problematic
-function retweet() {
+async function retweet() {
   if (isRetweeted.value) {
-    supabase
+    await supabase
       .from('retweets')
       .delete()
-      .eq('post_id', post.id)
+      .eq('post_id', props.post.id)
       .eq('user_id', userStore.user.id)
-      .then()
-    retweets.value--
   } else if (!isRetweeted.value) {
-    supabase.from('retweets').insert({ user_id: userStore.user.id, post_id: post.id }).then()
-    retweets.value++
+    await supabase
+      .from('retweets')
+      .insert({ user_id: userStore.user.id, post_id: props.post.id })
+      .then()
   }
-  return (isRetweeted.value = !isRetweeted.value)
+  queryClient.invalidateQueries({ queryKey: ['tweets'] })
+  queryClient.invalidateQueries({ queryKey: ['userTweets'] })
 }
 </script>
 

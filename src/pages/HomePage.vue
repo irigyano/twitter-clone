@@ -12,7 +12,7 @@ const {
   data: tweets,
   error
 } = useQuery({
-  queryKey: ['posts'],
+  queryKey: ['tweets'],
   queryFn: getTweets,
   gcTime: 0
 })

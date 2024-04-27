@@ -16,6 +16,7 @@ const userStore = useUserStore()
 const { authorId, postId } = defineProps<{ authorId: string; postId: string }>()
 
 async function deletePost() {
+  // TODO: refactor to service
   const { error } = await supabase.from('posts').delete().eq('id', postId)
   if (error) throw new Error(error.message)
 }
@@ -23,8 +24,8 @@ async function deletePost() {
 const { mutate } = useMutation({
   mutationFn: deletePost,
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['posts'] })
-    queryClient.invalidateQueries({ queryKey: ['userPosts'] })
+    queryClient.invalidateQueries({ queryKey: ['tweets'] })
+    queryClient.invalidateQueries({ queryKey: ['userTweets'] })
   }
 })
 </script>

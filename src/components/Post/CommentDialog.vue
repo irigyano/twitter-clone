@@ -25,11 +25,14 @@ function calculateRowsHeight() {
 const showMore = computed(calculateRowsHeight)
 
 async function sumbitComment() {
+  // TODO: refactor to service
   const { error } = await supabase
     .from('comments')
     .insert({ comment: comment.value, postId: post.id, userId: userStore.user.id })
   if (error) throw new Error(error.message)
-  queryClient.invalidateQueries({ queryKey: ['posts'] })
+  // NOTE: 1. Could remove this to reduce backend load or make it optimistic since comments count is not crucial
+  //       2. Could make a popup that navigate to post for UX
+  queryClient.invalidateQueries({ queryKey: ['tweets'] })
 }
 </script>
 

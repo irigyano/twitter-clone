@@ -22,7 +22,7 @@ const isUploading = ref(false)
 async function updateUserMeta() {
   try {
     await updateUserMetaByTag(userData.user.tag, { name: username.value, bio: bio.value })
-    queryClient.invalidateQueries({ queryKey: ['userPosts'] })
+    queryClient.invalidateQueries({ queryKey: ['userMeta'] })
   } catch (error) {}
 }
 

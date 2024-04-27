@@ -25,7 +25,7 @@ const {
   isError,
   data: user
 } = useQuery({
-  queryKey: ['userPosts'],
+  queryKey: ['userMeta'],
   queryFn: async () => {
     const data = await getUserMetaByTag(route.params.user as string)
     useHead({
@@ -106,8 +106,5 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
       </div>
     </div>
     <UserTweets />
-    <div class="flex items-center justify-center text-3xl flex-1" v-if="user.posts.length === 0">
-      <div>@{{ user.tag }} 尚未新增貼文</div>
-    </div>
   </div>
 </template>
