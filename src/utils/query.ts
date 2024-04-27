@@ -42,11 +42,6 @@ export async function getPostById(postId: string) {
   return data
 }
 
-export async function updateUserMetaByTag(tag: string, data: Partial<User>) {
-  const { error } = await supabase.from('users').update(data).eq('tag', tag).single()
-  if (error) throw new Error(error.message)
-}
-
 export async function queryPostsByTextSearch(keyword: string) {
   if (!keyword) throw new Error('No keyword provided')
 

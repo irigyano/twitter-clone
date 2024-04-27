@@ -10,7 +10,8 @@ import { ref } from 'vue'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import { Camera } from 'lucide-vue-next'
 import { useUploadImage } from '@/hooks/useUploadImage'
-import { updateUserMetaByTag } from '@/utils/query'
+import { updateUserMetaByTag } from '@/utils/actions'
+import Loading from '@/components/Loading.vue'
 const queryClient = useQueryClient()
 const userData = defineProps<{ user: User }>()
 const username = ref(userData.user.name)
@@ -20,24 +21,19 @@ const uploadInput = ref()
 const isUploading = ref(false)
 
 async function updateUserMeta() {
-  try {
-    await updateUserMetaByTag(userData.user.tag, { name: username.value, bio: bio.value })
-    queryClient.invalidateQueries({ queryKey: ['userMeta'] })
-  } catch (error) {}
+  await updateUserMetaByTag(userData.user.tag, { name: username.value, bio: bio.value })
+  queryClient.invalidateQueries({ queryKey: ['userMeta'] })
 }
 
 async function uploadAvatar(event: Event) {
   if (isUploading.value) return
   isUploading.value = true
 
-  try {
-    const url = await useUploadImage(event, 'avatar')
-    await updateUserMetaByTag(userData.user.tag, { avatar: url })
-    avatar.value = url!
-  } catch (e) {}
-  setTimeout(() => {
-    isUploading.value = false
-  }, 2000)
+  const url = await useUploadImage(event, 'avatar')
+  await updateUserMetaByTag(userData.user.tag, { avatar: url })
+
+  avatar.value = url!
+  isUploading.value = false
 }
 </script>
 
@@ -47,18 +43,23 @@ async function uploadAvatar(event: Event) {
   </DialogHeader>
   <div class="flex justify-center relative">
     <div
-      v-if="!isUploading"
       @click="uploadInput?.click()"
-      class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-primary duration-300 cursor-pointer z-10 border-2 border-primary p-4 rounded-full opacity-0 hover:opacity-100"
+      class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
     >
-      <Camera :size="30" />
-      <input
-        ref="uploadInput"
-        type="file"
-        class="visibility: hidden"
-        @change="uploadAvatar"
-        accept="image/*"
-      />
+      <Loading v-if="isUploading" />
+      <div
+        v-else-if="!isUploading"
+        class="text-primary duration-300 cursor-pointer z-10 border-2 border-primary p-4 rounded-full opacity-0 hover:opacity-100"
+      >
+        <Camera :size="30" />
+        <input
+          ref="uploadInput"
+          type="file"
+          class="visibility: hidden"
+          @change="uploadAvatar"
+          accept="image/*"
+        />
+      </div>
     </div>
     <img
       :src="avatar"
