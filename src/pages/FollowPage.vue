@@ -38,7 +38,8 @@ useHead({
 })
 
 function updateUrl(path: string) {
-  history.replaceState({}, '', `/${userStore.user.tag}/${path}`)
+  if (!user.value?.name) return
+  history.replaceState({}, '', `/${user.value.name}/${path}`)
   category.value = path
 }
 </script>

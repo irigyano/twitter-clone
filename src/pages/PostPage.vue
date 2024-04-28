@@ -16,6 +16,7 @@ import LikeButton from '@/components/Post/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import { useHead } from '@unhead/vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
+import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -97,11 +98,7 @@ const user = computed(() => post.value?.user)
         <div class="whitespace-pre-wrap break-all">
           {{ post.content }}
         </div>
-        <img
-          class="rounded-3xl w-full border-[1px] border-border mt-3"
-          v-if="post.imageSrc"
-          :src="post.imageSrc"
-        />
+        <PostImagesLayout :imageUrls="post.imageSrc" />
         <div class="py-2 text-muted-foreground text-sm">
           <time class="whitespace-nowrap"
             >{{ new Date(post.created_at).toLocaleString('zh-tw', timeOptions) }}
@@ -110,19 +107,15 @@ const user = computed(() => post.value?.user)
       </div>
 
       <!-- status -->
-      <div class="border-y-[1px] flex py-1 text-muted-foreground">
-        <div class="flex gap-1 items-center flex-1">
+      <div class="border-y-[1px] flex py-1 text-muted-foreground justify-around">
+        <div class="flex gap-1 items-center">
           <div class="p-2">
             <MessageCircleMore :size="18" />
           </div>
           {{ post.comments.length }}
         </div>
-        <div class="flex-1">
-          <RetweetButton :post="post" />
-        </div>
-        <div class="flex-1">
-          <LikeButton :post="post" />
-        </div>
+        <RetweetButton :post="post" />
+        <LikeButton :post="post" />
       </div>
 
       <!-- reply -->

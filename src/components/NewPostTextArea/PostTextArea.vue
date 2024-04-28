@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { supabase } from '@/utils/supabase'
 import { ref, watch } from 'vue'
-import Loading from '@/components/Loading.vue'
 const isDragOver = ref(false)
 const postContent = defineModel<string>('postContent')
-const postImageLink = defineModel<string>('postImageLink')
-const isUploading = defineModel<boolean>('isUploading')
+const imagesBuffer = defineModel<File[]>('imagesBuffer')
 const textarea = ref<HTMLTextAreaElement | null>(null)
 
 // responsive textarea rows
@@ -21,25 +18,13 @@ watch(postContent, (value) => {
 })
 
 async function handleImageDrop(e: DragEvent) {
-  if (!e.dataTransfer || isUploading.value) return
-  isUploading.value = true
-  postImageLink.value = undefined
-  const file = e.dataTransfer.files[0]
-  if (file) {
-    // if file is upload from user pc or dropped base64 format
-    const fileExt = file.name.split('.').pop()
-    const filePath = `${Math.random()}.${fileExt}`
+  const fileList = e.dataTransfer?.files
+  if (!fileList) return
 
-    const { data, error } = await supabase.storage.from('post').upload(filePath, file)
-    if (error) throw new Error(error.message)
-
-    postImageLink.value = `${import.meta.env.VITE_SUPABASE_BUCKETS}/${(data as any).fullPath}`
-  } else {
-    // is file is dropped as url from other website
-    const imgUrl = e.dataTransfer.getData('url')
-    if (imgUrl) postImageLink.value = imgUrl
+  for (let i = 0; i < fileList.length; i++) {
+    const file = fileList[i]
+    imagesBuffer.value?.push(file)
   }
-  return (isUploading.value = false)
 }
 </script>
 
@@ -54,13 +39,4 @@ async function handleImageDrop(e: DragEvent) {
     @dragleave="isDragOver = false"
     @drop="isDragOver = false"
   ></textarea>
-  <img
-    class="rounded-3xl w-full border-[1px] border-border"
-    v-if="postImageLink"
-    :src="postImageLink"
-    @click="postImageLink = undefined"
-  />
-  <div class="flex justify-center" v-if="isUploading">
-    <Loading />
-  </div>
 </template>
