@@ -12,6 +12,7 @@ import PostOptionsDropdown from '@/components/Post/PostOptionsDropdown.vue'
 import { Repeat2 } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/user'
 import PostContent from '@/components/Post/PostContent.vue'
+import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -61,11 +62,7 @@ function goToPost() {
           <PostOptionsDropdown :authorId="tweet.author.id" :postId="tweet.post.id" />
         </div>
         <PostContent :content="tweet.post.content" />
-        <img
-          class="rounded-3xl w-full border-[1px] border-border mt-3"
-          v-if="tweet.post.imageSrc"
-          :src="tweet.post.imageSrc"
-        />
+        <PostImagesLayout :imageUrls="tweet.post.imageSrc" />
         <div class="flex justify-evenly gap-1 p-1 text-muted-foreground">
           <div class="flex-1">
             <Dialog>

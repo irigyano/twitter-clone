@@ -125,21 +125,21 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
-          imageSrc: string | null
+          imageSrc: string[] | null
           userId: string
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: string
-          imageSrc?: string | null
+          imageSrc?: string[] | null
           userId: string
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: string
-          imageSrc?: string | null
+          imageSrc?: string[] | null
           userId?: string
         }
         Relationships: [

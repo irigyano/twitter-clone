@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { ref } from 'vue'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import { Camera } from 'lucide-vue-next'
-import { useUploadImage } from '@/hooks/useUploadImage'
+import { uploadImage } from '@/utils/actions'
 import { updateUserMetaByTag } from '@/utils/actions'
 import Loading from '@/components/Loading.vue'
 const queryClient = useQueryClient()
@@ -27,13 +27,21 @@ async function updateUserMeta() {
 
 async function uploadAvatar(event: Event) {
   if (isUploading.value) return
+
+  const files = (event.target as HTMLInputElement).files
+  if (!files || files.length === 0) return
+
   isUploading.value = true
-
-  const url = await useUploadImage(event, 'avatar')
-  await updateUserMetaByTag(userData.user.tag, { avatar: url })
-
-  avatar.value = url!
-  isUploading.value = false
+  try {
+    const file = files[0]
+    const url = await uploadImage(file, 'avatar')
+    await updateUserMetaByTag(userData.user.tag, { avatar: url })
+    avatar.value = url
+    isUploading.value = false
+  } catch (error) {
+    isUploading.value = false
+    console.log(error)
+  }
 }
 </script>
 

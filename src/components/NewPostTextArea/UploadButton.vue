@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ImageUp } from 'lucide-vue-next'
-import { useUploadImage } from '@/hooks/useUploadImage'
-
 const uploadImageButton = ref<HTMLInputElement | null>(null)
-const postImageLink = defineModel<string>('postImageLink')
-
-const isUploading = defineModel<boolean>('isUploading')
+const imagesBuffer = defineModel<File[]>('imagesBuffer')
 
 async function uploadPostImage(event: Event) {
-  if (isUploading.value) return
-  isUploading.value = true
-  const url = await useUploadImage(event, 'post')
-  postImageLink.value = url
-  isUploading.value = false
+  const files = (event.target as HTMLInputElement).files
+  if (!files || files.length === 0) return
+
+  const file = files[0]
+  imagesBuffer.value?.push(file)
 }
 </script>
 

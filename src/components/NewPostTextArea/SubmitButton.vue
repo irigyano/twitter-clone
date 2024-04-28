@@ -3,30 +3,40 @@ import { useQueryClient, useMutation } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
 import { useUserStore } from '@/stores/user'
 import { insertPost } from '@/utils/actions'
+import { uploadMultipleImages } from '@/utils/actions'
 const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
-const postImageLink = defineModel<string>('postImageLink')
+const imagesBuffer = defineModel<File[]>('imagesBuffer')
+const isUploading = defineModel<boolean>('isUploading')
 const emit = defineEmits(['submit'])
 const userStore = useUserStore()
-
 const { mutate } = useMutation({
-  mutationFn: () =>
-    insertPost({
+  mutationFn: async () => {
+    isUploading.value = true
+    let imagesUrl = undefined
+
+    if (imagesBuffer.value?.length) {
+      imagesUrl = await uploadMultipleImages(imagesBuffer.value)
+    }
+
+    return insertPost({
       content: postContent.value?.trim(),
-      imageSrc: postImageLink.value,
+      imageSrc: imagesUrl,
       userId: userStore.user.id
-    }),
+    })
+  },
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['tweets'] })
     postContent.value = ''
-    postImageLink.value = ''
+    imagesBuffer.value = []
+    isUploading.value = false
   }
 })
 </script>
 
 <template>
   <Button
-    :disabled="!postContent?.trim().length && !postImageLink"
+    :disabled="!postContent?.trim().length && !imagesBuffer?.length"
     class="hover:bg-primary/80 font-extrabold rounded-full h-9 px-4 disabled:pointer-events-none"
     @click="mutate()"
   >

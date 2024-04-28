@@ -33,7 +33,7 @@ export async function insertPost({
   userId
 }: {
   content?: string
-  imageSrc?: string
+  imageSrc?: string[]
   userId: string
 }) {
   const { error } = await supabase.from('posts').insert({ content, imageSrc, userId })
@@ -43,4 +43,25 @@ export async function insertPost({
 export async function insertComment(userId: string, postId: string, comment: string) {
   const { error } = await supabase.from('comments').insert({ userId, postId, comment })
   if (error) throw new Error(error.message)
+}
+
+export async function uploadImage(file: File, storage: 'avatar' | 'background-cover' | 'post') {
+  const fileExt = file.name.split('.').pop()
+  const filePath = `${String(Math.random()).slice(2)}.${fileExt}`
+
+  const { data, error } = await supabase.storage.from(storage).upload(filePath, file)
+  if (error) throw new Error(error.message)
+
+  return `${import.meta.env.VITE_SUPABASE_BUCKETS}/${storage}/${data.path}`
+}
+
+export async function uploadMultipleImages(imagesBuffer: File[]) {
+  const uploadPromises: Array<Promise<string>> = []
+
+  for (let image of imagesBuffer) {
+    uploadPromises.push(uploadImage(image, 'post'))
+  }
+
+  const imagesUrl = await Promise.all(uploadPromises)
+  return imagesUrl
 }
