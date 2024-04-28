@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NewPostTextArea from '@/components/NewPostTextArea/NewPostTextArea.vue'
+import PostSubmission from '@/components/PostSubmission/PostSubmission.vue'
 import Category from '@/components/Layout/Category.vue'
 import { useQuery } from '@tanstack/vue-query'
 import Post from '@/components/Post/Post.vue'
@@ -21,7 +21,7 @@ const {
 <template>
   <div class="flex flex-col items-center w-full">
     <Category />
-    <NewPostTextArea />
+    <PostSubmission />
     <div v-if="isLoading" class="fixed top-[50%]">
       <Loading />
     </div>

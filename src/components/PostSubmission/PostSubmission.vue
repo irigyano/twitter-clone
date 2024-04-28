@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import SubmitButton from './SubmitButton.vue'
-import UploadButton from './UploadButton.vue'
-import PostTextArea from './PostTextArea.vue'
-import PostImages from './PostImages.vue'
+import SubmitButton from '@/components/PostSubmission/SubmitButton.vue'
+import UploadButton from '@/components/PostSubmission/UploadButton.vue'
+import PostTextArea from '@/components/PostSubmission/PostTextArea.vue'
+import PostImages from '@/components/PostSubmission/PostImages.vue'
 import Loading from '@/components/Loading.vue'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
