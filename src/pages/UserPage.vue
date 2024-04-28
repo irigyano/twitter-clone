@@ -15,6 +15,7 @@ import PageNav from '@/components/Layout/PageNav.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import UserTweets from '@/components/User/UserTweets.vue'
 import { getUserMetaByTag } from '@/utils/services'
+import Typographer from '@/components/Typographer.vue'
 
 const userStore = useUserStore()
 const timeAgo = new TimeAgo('zh-TW')
@@ -94,9 +95,7 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
         <div class="font-bold text-lg">{{ user.name }}</div>
         <div class="text-muted-foreground">@{{ user.tag }}</div>
       </div>
-      <div class="py-3 whitespace-pre-wrap">
-        {{ user.bio }}
-      </div>
+      <Typographer class="py-3" :content="user.bio" />
       <div class="text-muted-foreground text-sm">
         已加入 {{ timeAgo.format(new Date(user.created_at), 'twitter-minute-now') }}
       </div>

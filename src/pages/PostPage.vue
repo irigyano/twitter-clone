@@ -17,7 +17,7 @@ import FollowButton from '@/components/FollowButton.vue'
 import { useHead } from '@unhead/vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
-import PostContent from '@/components/Post/PostContent.vue'
+import Typographer from '@/components/Typographer.vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -92,7 +92,7 @@ const user = computed(() => post.value?.user)
           </div>
           <FollowButton :targetUserId="user.id" :followers="user.follower" />
         </div>
-        <PostContent :content="post.content" />
+        <Typographer :content="post.content" />
         <PostImagesLayout :imageUrls="post.imageSrc" />
         <div class="py-2 text-muted-foreground text-sm">
           <time class="whitespace-nowrap"
