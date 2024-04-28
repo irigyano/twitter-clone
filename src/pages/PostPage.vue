@@ -16,6 +16,7 @@ import LikeButton from '@/components/Post/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import { useHead } from '@unhead/vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
+import PostContent from '@/components/Post/PostContent.vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -69,15 +70,12 @@ const user = computed(() => post.value?.user)
 </script>
 
 <template>
-  <div
-    v-if="isLoading"
-    class="fixed top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2"
-  >
-    <Loading />
-  </div>
   <div class="flex flex-col w-full">
     <PageNav title="貼文" />
-    <div v-if="post && user">
+    <div v-if="isLoading" class="w-full h-full flex justify-center items-center">
+      <Loading />
+    </div>
+    <div v-else-if="post && user">
       <!-- post body -->
       <div class="px-4 pt-4">
         <div class="flex gap-2">
@@ -93,10 +91,7 @@ const user = computed(() => post.value?.user)
           </div>
           <FollowButton :targetUserId="user.id" :followers="user.follower" />
         </div>
-
-        <div class="whitespace-pre-wrap break-all">
-          {{ post.content }}
-        </div>
+        <PostContent :content="post.content" />
         <img
           class="rounded-3xl w-full border-[1px] border-border mt-3"
           v-if="post.imageSrc"
