@@ -16,6 +16,7 @@ import LikeButton from '@/components/Post/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import { useHead } from '@unhead/vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
+import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -97,15 +98,7 @@ const user = computed(() => post.value?.user)
         <div class="whitespace-pre-wrap break-all">
           {{ post.content }}
         </div>
-
-        <div v-if="post.imageSrc?.length" class="mt-3">
-          <div class="flex rounded-3xl overflow-hidden border-[1px]">
-            <div v-for="imageUrl in post.imageSrc" class="flex-1">
-              <img class="w-full h-full object-cover" :src="imageUrl" />
-            </div>
-          </div>
-        </div>
-
+        <PostImagesLayout :imageUrls="post.imageSrc" />
         <div class="py-2 text-muted-foreground text-sm">
           <time class="whitespace-nowrap"
             >{{ new Date(post.created_at).toLocaleString('zh-tw', timeOptions) }}
