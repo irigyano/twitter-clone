@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { supabase } from '@/utils/supabase'
 import { ref, watch } from 'vue'
+import { uploadImage } from '@/utils/actions'
 import Loading from '@/components/Loading.vue'
 const isDragOver = ref(false)
 const postContent = defineModel<string>('postContent')
@@ -23,19 +23,19 @@ watch(postContent, (value) => {
 async function handleImageDrop(e: DragEvent) {
   if (!e.dataTransfer || isUploading.value) return
   isUploading.value = true
-  postImageLink.value = undefined
   const file = e.dataTransfer.files[0]
+
   if (file) {
-    // if file is upload from user pc or dropped base64 format
-    const fileExt = file.name.split('.').pop()
-    const filePath = `${Math.random()}.${fileExt}`
-
-    const { data, error } = await supabase.storage.from('post').upload(filePath, file)
-    if (error) throw new Error(error.message)
-
-    postImageLink.value = `${import.meta.env.VITE_SUPABASE_BUCKETS}/${(data as any).fullPath}`
+    try {
+      const url = await uploadImage(file, 'post')
+      postImageLink.value = url
+      isUploading.value = false
+    } catch (error) {
+      isUploading.value = false
+      console.log(error)
+    }
   } else {
-    // is file is dropped as url from other website
+    // For some reason some dropped images isn't show up at FileList!?
     const imgUrl = e.dataTransfer.getData('url')
     if (imgUrl) postImageLink.value = imgUrl
   }
@@ -54,13 +54,13 @@ async function handleImageDrop(e: DragEvent) {
     @dragleave="isDragOver = false"
     @drop="isDragOver = false"
   ></textarea>
-  <img
-    class="rounded-3xl w-full border-[1px] border-border"
-    v-if="postImageLink"
-    :src="postImageLink"
-    @click="postImageLink = undefined"
-  />
   <div class="flex justify-center" v-if="isUploading">
     <Loading />
   </div>
+  <img
+    class="rounded-3xl w-full border-[1px] border-border"
+    v-else-if="postImageLink"
+    :src="postImageLink"
+    @click="postImageLink = undefined"
+  />
 </template>
