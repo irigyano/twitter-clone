@@ -97,11 +97,15 @@ const user = computed(() => post.value?.user)
         <div class="whitespace-pre-wrap break-all">
           {{ post.content }}
         </div>
-        <img
-          class="rounded-3xl w-full border-[1px] border-border mt-3"
-          v-if="post.imageSrc"
-          :src="post.imageSrc"
-        />
+
+        <div v-if="post.imageSrc?.length" class="mt-3">
+          <div class="flex rounded-3xl overflow-hidden border-[1px]">
+            <div v-for="imageUrl in post.imageSrc" class="flex-1">
+              <img class="w-full h-full object-cover" :src="imageUrl" />
+            </div>
+          </div>
+        </div>
+
         <div class="py-2 text-muted-foreground text-sm">
           <time class="whitespace-nowrap"
             >{{ new Date(post.created_at).toLocaleString('zh-tw', timeOptions) }}

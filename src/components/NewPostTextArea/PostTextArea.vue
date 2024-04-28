@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { uploadImage } from '@/utils/actions'
-import Loading from '@/components/Loading.vue'
 const isDragOver = ref(false)
 const postContent = defineModel<string>('postContent')
-const postImageLink = defineModel<string>('postImageLink')
-const isUploading = defineModel<boolean>('isUploading')
+const imagesBuffer = defineModel<File[]>('imagesBuffer')
 const textarea = ref<HTMLTextAreaElement | null>(null)
 
 // responsive textarea rows
@@ -21,25 +18,13 @@ watch(postContent, (value) => {
 })
 
 async function handleImageDrop(e: DragEvent) {
-  if (!e.dataTransfer || isUploading.value) return
-  isUploading.value = true
-  const file = e.dataTransfer.files[0]
+  const fileList = e.dataTransfer?.files
+  if (!fileList) return
 
-  if (file) {
-    try {
-      const url = await uploadImage(file, 'post')
-      postImageLink.value = url
-      isUploading.value = false
-    } catch (error) {
-      isUploading.value = false
-      console.log(error)
-    }
-  } else {
-    // For some reason some dropped images isn't show up at FileList!?
-    const imgUrl = e.dataTransfer.getData('url')
-    if (imgUrl) postImageLink.value = imgUrl
+  for (let i = 0; i < fileList.length; i++) {
+    const file = fileList[i]
+    imagesBuffer.value?.push(file)
   }
-  return (isUploading.value = false)
 }
 </script>
 
@@ -54,13 +39,4 @@ async function handleImageDrop(e: DragEvent) {
     @dragleave="isDragOver = false"
     @drop="isDragOver = false"
   ></textarea>
-  <div class="flex justify-center" v-if="isUploading">
-    <Loading />
-  </div>
-  <img
-    class="rounded-3xl w-full border-[1px] border-border"
-    v-else-if="postImageLink"
-    :src="postImageLink"
-    @click="postImageLink = undefined"
-  />
 </template>

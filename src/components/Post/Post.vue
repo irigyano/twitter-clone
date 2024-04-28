@@ -60,11 +60,15 @@ function goToPost() {
           <PostOptionsDropdown :authorId="tweet.author.id" :postId="tweet.post.id" />
         </div>
         <div class="whitespace-pre-wrap break-all">{{ tweet.post.content }}</div>
-        <img
-          class="rounded-3xl w-full border-[1px] border-border mt-3"
-          v-if="tweet.post.imageSrc"
-          :src="tweet.post.imageSrc"
-        />
+
+        <div v-if="tweet.post.imageSrc?.length" class="mt-3">
+          <div class="flex rounded-3xl overflow-hidden border-[1px]">
+            <div v-for="imageUrl in tweet.post.imageSrc" class="flex-1">
+              <img class="w-full h-full object-cover" :src="imageUrl" />
+            </div>
+          </div>
+        </div>
+
         <div class="flex justify-evenly gap-1 p-1 text-muted-foreground">
           <div class="flex-1">
             <Dialog>
