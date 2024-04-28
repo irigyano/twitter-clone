@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-const router = useRouter()
 import { Search, CircleX } from 'lucide-vue-next'
 import { ref } from 'vue'
+const router = useRouter()
 const searchQuery = ref('')
 
 function pushToSearchPage() {
   if (!searchQuery.value) return
-  router.push(`/search?q=${searchQuery.value}`)
+  router.push(`/search?q=${searchQuery.value.replace('#', '')}`)
   searchQuery.value = ''
 }
 </script>
