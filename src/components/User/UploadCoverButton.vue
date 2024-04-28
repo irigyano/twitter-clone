@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { Camera } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/user'
 import { useQueryClient } from '@tanstack/vue-query'
-import { useUploadImage } from '@/hooks/useUploadImage'
+import { uploadImage } from '@/utils/actions'
 import { updateUserMetaByTag } from '@/utils/actions'
 import Loading from '@/components/Loading.vue'
 const queryClient = useQueryClient()
@@ -13,13 +13,21 @@ const isUploading = ref(false)
 
 async function uploadCover(event: Event) {
   if (isUploading.value) return
+
+  const files = (event.target as HTMLInputElement).files
+  if (!files || files.length === 0) return
+
   isUploading.value = true
-
-  const url = await useUploadImage(event, 'background-cover')
-  await updateUserMetaByTag(userStore.user.tag, { background_cover: url })
-
-  queryClient.invalidateQueries({ queryKey: ['userMeta'] })
-  isUploading.value = false
+  try {
+    const file = files[0]
+    const url = await uploadImage(file, 'background-cover')
+    await updateUserMetaByTag(userStore.user.tag, { background_cover: url })
+    queryClient.invalidateQueries({ queryKey: ['userMeta'] })
+    isUploading.value = false
+  } catch (error) {
+    isUploading.value = false
+    console.log(error)
+  }
 }
 </script>
 
