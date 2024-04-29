@@ -12,8 +12,8 @@ function fileToBlob(f: File) {
 </script>
 
 <template>
-  <div class="flex">
-    <div class="flex-1 flex" v-for="(image, index) in imagesBuffer" :key="index">
+  <div class="flex gap-1">
+    <div class="flex flex-1" v-for="(image, index) in imagesBuffer" :key="index">
       <img
         :src="fileToBlob(image)"
         class="object-cover w-full rounded-2xl border-[1px]"

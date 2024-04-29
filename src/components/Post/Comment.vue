@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { supabase } from '@/utils/supabase'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import type { User, Comment } from '@/types/queries'
 import { useUserStore } from '@/stores/user'
@@ -7,7 +6,7 @@ import { Trash2 } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
 import PostAvatar from '@/components/PostAvatar.vue'
-
+import { deleteCommentById } from '@/utils/actions'
 const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()
 const queryClient = useQueryClient()
@@ -16,15 +15,10 @@ const route = useRoute()
 
 const { comment, user } = defineProps<{ comment: Comment; user: User }>()
 
-async function deleteComment() {
-  const { error } = await supabase.from('comments').delete().eq('id', comment.id)
-  if (error) throw new Error(error.message)
-}
-
 const { mutate } = useMutation({
-  mutationFn: deleteComment,
+  mutationFn: () => deleteCommentById(comment.id),
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: [route.params.postId] })
+    queryClient.invalidateQueries({ queryKey: [route.params.postId + 'Comment'] })
   }
 })
 </script>

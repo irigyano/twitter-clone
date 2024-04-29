@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
 import zh from 'javascript-time-ago/locale/zh-Hant'
+import Toaster from '@/components/ui/toast/Toaster.vue'
 TimeAgo.addDefaultLocale(zh)
 const router = useRouter()
 const userStore = useUserStore()
@@ -25,4 +26,5 @@ supabase.auth.onAuthStateChange((event, session) => {
   <div class="min-h-[100dvh] flex justify-center">
     <RouterView />
   </div>
+  <Toaster />
 </template>

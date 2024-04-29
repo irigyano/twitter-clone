@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PageNav from '@/components/Layout/PageNav.vue'
-import { useUserStore } from '@/stores/user'
 import { getUserFollowByTag } from '@/utils/services'
 import { useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
@@ -9,11 +8,7 @@ import { useRoute } from 'vue-router'
 import Loading from '@/components/Loading.vue'
 import FollowList from '@/components/FollowList.vue'
 const route = useRoute()
-const userStore = useUserStore()
-
 const category = ref(route.name)
-const isFollowersCategory = computed(() => category.value === 'followers')
-const isFollowingCategory = computed(() => category.value === 'following')
 
 const { isLoading, data: user } = useQuery({
   queryKey: ['userRelation'],
@@ -37,9 +32,13 @@ useHead({
   }
 })
 
+// computed when updateUrl calledd
+const isFollowersCategory = computed(() => category.value === 'followers')
+const isFollowingCategory = computed(() => category.value === 'following')
+
 function updateUrl(path: string) {
-  if (!user.value?.name) return
-  history.replaceState({}, '', `/${user.value.name}/${path}`)
+  if (!user.value?.tag) return
+  history.replaceState({}, '', `/${user.value.tag}/${path}`)
   category.value = path
 }
 </script>

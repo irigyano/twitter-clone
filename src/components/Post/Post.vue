@@ -11,6 +11,7 @@ import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostOptionsDropdown from '@/components/Post/PostOptionsDropdown.vue'
 import { Repeat2 } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/user'
+import Typographer from '@/components/Typographer.vue'
 import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 
 const userStore = useUserStore()
@@ -60,7 +61,7 @@ function goToPost() {
           </div>
           <PostOptionsDropdown :authorId="tweet.author.id" :postId="tweet.post.id" />
         </div>
-        <div class="whitespace-pre-wrap break-all">{{ tweet.post.content }}</div>
+        <Typographer :content="tweet.post.content" />
         <PostImagesLayout :imageUrls="tweet.post.imageSrc" />
         <div class="flex justify-evenly gap-1 p-1 text-muted-foreground">
           <div class="flex-1">

@@ -20,7 +20,6 @@ const {
 })
 
 useHead({
-  // if !route.query.q means redirected from mobile view
   title: route.query.q ? `${route.query.q} - 搜尋 / W` : '搜尋 / W'
 })
 </script>
@@ -36,10 +35,10 @@ useHead({
       <Post v-for="tweet in tweets" :tweet="tweet" :key="tweet.id" />
     </div>
 
-    <div v-else class="flex-1 flex items-center justify-center">
+    <div v-else class="flex-1 flex items-center justify-center text-2xl font-bold">
       <Loading v-if="isLoading" />
-      <div v-else-if="error" class="text-2xl font-bold"></div>
-      <div v-else class="text-2xl font-bold">找不到 {{ route.query.q }} 的結果。</div>
+      <div v-else-if="error"></div>
+      <div v-else>找不到 {{ route.query.q }} 的結果。</div>
     </div>
   </div>
 </template>
