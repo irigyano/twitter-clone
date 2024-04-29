@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const { content } = defineProps<{ content: string | null }>()
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/utils/shadcn'
+
+defineProps<{ content: string | null; class?: HTMLAttributes['class'] }>()
 
 function isHashtag(word: string) {
   // If word starts with `#` and its valid Chinese/Japanese/English letters
@@ -10,8 +13,8 @@ function isHashtag(word: string) {
 }
 
 function isMention(word: string) {
-  // If word starts with `@` and it only consists English letters and numbers
-  const regex = /^@[a-zA-Z0-9]+$/
+  // If word starts with `@` and it only consists English letters, numbers, underscore
+  const regex = /^@[a-zA-Z0-9_]+$/
   if (regex.test(word)) {
     return word
   }
@@ -25,7 +28,7 @@ function isUrl(word: string) {
 </script>
 
 <template>
-  <span v-if="content" class="whitespace-pre-line break-all">
+  <span v-if="content" :class="cn('whitespace-pre-line break-all', $props.class)">
     <!-- Split content into lines by newline character -->
     <template v-for="line in content.split('\n')">
       <!-- Split words from trimmed line  -->

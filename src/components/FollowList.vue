@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import PostAvatar from '@/components/PostAvatar.vue'
-import FollowButton from './FollowButton.vue'
+import FollowButton from '@/components/FollowButton.vue'
 import type { FollowWithUser } from '@/types/queries'
+import Typographer from '@/components/Typographer.vue'
 defineProps<{ targetUserFollows: FollowWithUser[] }>()
 </script>
 
 <template>
-  <div v-for="{ user, id } in targetUserFollows" class="flex flex-col gap-2 p-4" :key="id">
+  <div v-for="{ user, id } in $props.targetUserFollows" class="flex flex-col gap-2 p-4" :key="id">
     <div class="flex gap-2">
       <PostAvatar :avatar="user.avatar" :tag="user.tag" />
       <div class="flex-1">
@@ -19,7 +20,7 @@ defineProps<{ targetUserFollows: FollowWithUser[] }>()
           </div>
           <FollowButton :target-user-id="user.id" :followers="user.follows" class="py-0" />
         </div>
-        {{ user.bio }}
+        <Typographer :content="user.bio" :class="'whitespace-normal'" />
       </div>
     </div>
   </div>
