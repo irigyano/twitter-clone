@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import { getPostById } from '@/utils/services'
 import Loading from '@/components/Loading.vue'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import PostAvatar from '@/components/PostAvatar.vue'
-import { useUserStore } from '@/stores/user'
-import ResponsiveRowTextarea from '@/components/Post/ResponsiveRowTextarea.vue'
-// import Comment from '@/components/Post/Comment.vue'
 import { MessageCircleMore } from 'lucide-vue-next'
-import { Button } from '@/components/ui/button'
 import PageNav from '@/components/Layout/PageNav.vue'
 import LikeButton from '@/components/Post/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
@@ -17,14 +13,10 @@ import { useHead } from '@unhead/vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 import Typographer from '@/components/Typographer.vue'
-import { insertComment } from '@/utils/actions'
 import { timeOptions } from '@/utils/config'
+import PostPageCommentSection from '@/components/Post/PostPageCommentSection.vue'
 const router = useRouter()
 const route = useRoute()
-const userStore = useUserStore()
-const queryClient = useQueryClient()
-
-const commentContent = ref()
 
 const {
   isLoading,
@@ -35,15 +27,6 @@ const {
   queryFn: () => getPostById(route.params.postId as string),
   gcTime: 0,
   retry: 0
-})
-
-const { mutate } = useMutation({
-  mutationFn: () =>
-    insertComment(userStore.user.id, route.params.postId as string, commentContent.value),
-  onSuccess: () => {
-    commentContent.value = ''
-    queryClient.invalidateQueries({ queryKey: [route.params.postId] })
-  }
 })
 
 watch(isError, () => {
@@ -103,28 +86,7 @@ useHead({
         <LikeButton :post="post" />
       </div>
 
-      <!-- reply -->
-      <div class="flex border-b-[1px] px-4 pt-4">
-        <PostAvatar :avatar="userStore.user.avatar" :tag="userStore.user.tag" />
-        <div class="flex-1 flex flex-col">
-          <div class="pt-1">
-            <ResponsiveRowTextarea v-model="commentContent" />
-          </div>
-          <div class="self-end p-2">
-            <Button @click="mutate" :disabled="!commentContent || commentContent.trim().length <= 0"
-              >回覆</Button
-            >
-          </div>
-        </div>
-      </div>
-      <!-- <div>
-        <Comment
-          v-for="{ user, ...comment } in post.comments"
-          :user="user!"
-          :comment="comment"
-          :key="comment.id"
-        />
-      </div> -->
+      <PostPageCommentSection />
     </div>
   </div>
 </template>

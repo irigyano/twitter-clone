@@ -6,7 +6,8 @@ import {
   queryUserPostsByTag,
   queryUserRetweetsByTag,
   queryUserFollowByTag,
-  queryPostById
+  queryPostById,
+  queryCommentsByPostId
 } from '@/utils/queries'
 import { pipePostsToTweets, pipeRetweetsToTweets } from '@/utils/pipes'
 import { sortTweetsByCreatedAt } from '@/utils/helper'
@@ -71,5 +72,10 @@ export async function getUserFollowByTag(tag: string) {
 
 export async function getPostById(postId: string) {
   const data = await queryPostById(postId)
+  return data
+}
+
+export async function getCommentsByPostId(postId: string) {
+  const data = await queryCommentsByPostId(postId)
   return data
 }

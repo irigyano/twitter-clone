@@ -47,6 +47,11 @@ export async function insertComment(userId: string, postId: string, comment: str
   if (error) throw new Error(error.message)
 }
 
+export async function deleteCommentById(commentId: string) {
+  const { error } = await supabase.from('comments').delete().eq('id', commentId)
+  if (error) throw new Error(error.message)
+}
+
 export async function uploadImage(file: File, storage: 'avatar' | 'background-cover' | 'post') {
   const fileExt = file.name.split('.').pop()
   const filePath = `${String(Math.random()).slice(2)}.${fileExt}`

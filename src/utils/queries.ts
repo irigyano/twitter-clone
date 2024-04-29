@@ -1,5 +1,5 @@
 import { supabase } from '@/utils/supabase'
-import type { PostInfo, User } from '@/types/queries'
+import type { Comment, PostInfo, User } from '@/types/queries'
 import type { PostInfoWithAuthor, RetweetInfo, FollowWithUser } from '@/types/queries'
 
 // User
@@ -74,6 +74,19 @@ export async function queryPostById(postId: string) {
     .single()
   if (error) throw new Error(error.message)
   return data as PostInfo & { user: User & { follower: Array<{ follower: string }> } }
+}
+
+// Comments
+
+export async function queryCommentsByPostId(postId: string) {
+  const { data, error } = await supabase
+    .from('comments')
+    .select('*, user:users(*)')
+    .eq('postId', postId)
+    .order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+
+  return data as (Comment & { user: User })[]
 }
 
 export async function queryRetweets() {
