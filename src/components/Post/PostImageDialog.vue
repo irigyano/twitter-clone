@@ -1,16 +1,21 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from 'vue'
+import { cn } from '@/utils/shadcn'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-defineProps<{ imageUrl: string }>()
+defineProps<{
+  imageUrl: string
+  class?: HTMLAttributes['class']
+}>()
 </script>
 
 <template>
   <Dialog>
-    <DialogTrigger class="flex" @click.stop>
-      <img class="object-cover h-full w-full" :src="imageUrl" />
+    <DialogTrigger :class="cn('block min-w-0 min-h-0', $props.class)" @click.stop>
+      <img class="h-full w-full object-cover min-h-[100px] max-h-[500px]" :src="imageUrl" />
     </DialogTrigger>
-    <DialogContent class="max-w-full h-full flex justify-between p-0">
-      <div class="flex flex-1 justify-center p-4">
-        <img class="object-contain" :src="imageUrl" />
+    <DialogContent class="max-w-full h-full flex items-center justify-center">
+      <div class="h-fit max-h-full">
+        <img class="min-h-[100px] max-h-full" :src="imageUrl" />
       </div>
       <!-- <div class="hidden lg:block max-w-[300px] flex-1 border-l-[1px]">Post Metas</div> -->
     </DialogContent>

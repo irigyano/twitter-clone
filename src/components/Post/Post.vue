@@ -77,9 +77,7 @@ function goToPost() {
                 </div>
                 {{ tweet.post.comments.length }}
               </DialogTrigger>
-              <DialogContent>
-                <CommentDialog :post="props.tweet.post" :author="props.tweet.author" />
-              </DialogContent>
+              <CommentDialog :post="props.tweet.post" :author="props.tweet.author" />
             </Dialog>
           </div>
           <div class="flex-1">
