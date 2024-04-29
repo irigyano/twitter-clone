@@ -41,7 +41,9 @@ export async function insertPost({
 }
 
 export async function insertComment(userId: string, postId: string, comment: string) {
-  const { error } = await supabase.from('comments').insert({ userId, postId, comment })
+  const { error } = await supabase
+    .from('comments')
+    .insert({ userId, postId, comment: comment.trim() })
   if (error) throw new Error(error.message)
 }
 

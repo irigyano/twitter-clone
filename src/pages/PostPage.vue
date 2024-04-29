@@ -3,14 +3,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { getPostById } from '@/utils/services'
 import Loading from '@/components/Loading.vue'
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import PostAvatar from '@/components/PostAvatar.vue'
 import { useUserStore } from '@/stores/user'
 import ResponsiveRowTextarea from '@/components/Post/ResponsiveRowTextarea.vue'
-import Comment from '@/components/Post/Comment.vue'
+// import Comment from '@/components/Post/Comment.vue'
 import { MessageCircleMore } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import { supabase } from '@/utils/supabase'
 import PageNav from '@/components/Layout/PageNav.vue'
 import LikeButton from '@/components/Post/LikeButton.vue'
 import FollowButton from '@/components/FollowButton.vue'
@@ -18,56 +17,47 @@ import { useHead } from '@unhead/vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 import Typographer from '@/components/Typographer.vue'
-
+import { insertComment } from '@/utils/actions'
+import { timeOptions } from '@/utils/config'
 const router = useRouter()
-const queryClient = useQueryClient()
 const route = useRoute()
 const userStore = useUserStore()
-const timeOptions: Intl.DateTimeFormatOptions = {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: true
-}
+const queryClient = useQueryClient()
+
 const commentContent = ref()
 
-async function addComment() {
-  const { error } = await supabase.from('comments').insert({
-    comment: commentContent.value.trim(),
-    postId: route.params.postId as string,
-    userId: userStore.user.id
-  })
-  if (error) throw new Error(error.message)
-}
-
-const { isLoading, data: post } = useQuery({
+const {
+  isLoading,
+  data: post,
+  isError
+} = useQuery({
   queryKey: [route.params.postId],
-  queryFn: async () => {
-    const data = await getPostById(route.params.postId as string)
-    return data
-  },
-  gcTime: 0
-})
-
-useHead({
-  title: () => {
-    if (!post.value) return ''
-    const data = post.value
-    return `W 上的 ${data.user!.name}：「${data.content || data.imageSrc}」 / W`
-  }
+  queryFn: () => getPostById(route.params.postId as string),
+  gcTime: 0,
+  retry: 0
 })
 
 const { mutate } = useMutation({
-  mutationFn: addComment,
+  mutationFn: () =>
+    insertComment(userStore.user.id, route.params.postId as string, commentContent.value),
   onSuccess: () => {
     commentContent.value = ''
     queryClient.invalidateQueries({ queryKey: [route.params.postId] })
   }
 })
 
-const user = computed(() => post.value?.user)
+watch(isError, () => {
+  // Redirect to home page if post not found
+  router.push({ name: 'home' })
+})
+
+useHead({
+  title: () => {
+    if (!post.value) return ''
+    const data = post.value
+    return `W 上的 ${data.user.name}：「${data.content || data.imageSrc}」 / W`
+  }
+})
 </script>
 
 <template>
@@ -76,21 +66,21 @@ const user = computed(() => post.value?.user)
     <div v-if="isLoading" class="w-full h-full flex justify-center items-center">
       <Loading />
     </div>
-    <div v-else-if="post && user">
+    <div v-else-if="post">
       <!-- post body -->
       <div class="px-4 pt-4">
         <div class="flex gap-2">
-          <PostAvatar :avatar="user.avatar" :tag="user.tag" />
+          <PostAvatar :avatar="post.user.avatar" :tag="post.user.tag" />
           <div class="pb-2 flex-1">
             <div
-              @click.stop="router.push(`/${user!.tag}`)"
+              @click.stop="router.push(`/${post.user.tag}`)"
               class="font-bold inline-block cursor-pointer hover:underline"
             >
-              {{ user.name }}
+              {{ post.user.name }}
             </div>
-            <div class="text-muted-foreground">@{{ user.tag }}</div>
+            <div class="text-muted-foreground">@{{ post.user.tag }}</div>
           </div>
-          <FollowButton :targetUserId="user.id" :followers="user.follower" />
+          <FollowButton :targetUserId="post.user.id" :followers="post.user.follower" />
         </div>
         <Typographer :content="post.content" />
         <PostImagesLayout :imageUrls="post.imageSrc" />
@@ -115,7 +105,7 @@ const user = computed(() => post.value?.user)
 
       <!-- reply -->
       <div class="flex border-b-[1px] px-4 pt-4">
-        <PostAvatar :avatar="userStore.user.avatar" :tag="user.tag" />
+        <PostAvatar :avatar="userStore.user.avatar" :tag="userStore.user.tag" />
         <div class="flex-1 flex flex-col">
           <div class="pt-1">
             <ResponsiveRowTextarea v-model="commentContent" />
@@ -127,14 +117,14 @@ const user = computed(() => post.value?.user)
           </div>
         </div>
       </div>
-      <div>
+      <!-- <div>
         <Comment
           v-for="{ user, ...comment } in post.comments"
           :user="user!"
           :comment="comment"
           :key="comment.id"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
