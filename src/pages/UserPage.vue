@@ -5,32 +5,26 @@ import Loading from '@/components/Loading.vue'
 import { useQuery } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
 import TimeAgo from 'javascript-time-ago'
-import UploadCoverButton from '@/components/User/UploadCoverButton.vue'
 import { useUserStore } from '@/stores/user'
 import { defaultAvatar } from '@/utils/defaultAvatar'
 import EditPanel from '@/components/User/EditPanel.vue'
-import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
-import { computed } from 'vue'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import PageNav from '@/components/Layout/PageNav.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import UserTweets from '@/components/User/UserTweets.vue'
 import { getUserMetaByTag } from '@/utils/services'
 import Typographer from '@/components/Typographer.vue'
-
 const userStore = useUserStore()
-const timeAgo = new TimeAgo('zh-TW')
 const route = useRoute()
+const timeAgo = new TimeAgo('zh-TW')
 
 const {
   isLoading,
   isError,
   data: user
 } = useQuery({
-  queryKey: ['userMeta'],
-  queryFn: async () => {
-    const data = await getUserMetaByTag(route.params.user as string)
-    return data
-  },
+  queryKey: [route.params.user + 'User'],
+  queryFn: () => getUserMetaByTag(route.params.user as string),
   gcTime: 0,
   retry: false
 })
@@ -41,8 +35,6 @@ useHead({
     return `${user.value.name} (@${user.value.tag}) / W`
   }
 })
-
-const isUserOwner = computed(() => user.value?.id === userStore.user.id)
 </script>
 
 <template>
@@ -59,9 +51,10 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
     <PageNav :title="user.name">
       <div class="text-muted-foreground">{{ user.posts.length + user.retweets.length }} 則貼文</div>
     </PageNav>
+
+    <!-- Cover -->
     <div class="bg-secondary">
       <div class="relative pb-[33%] overflow-hidden">
-        <UploadCoverButton v-if="isUserOwner" />
         <img
           v-if="user.background_cover"
           class="h-full w-full object-cover absolute"
@@ -71,6 +64,7 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
       </div>
     </div>
 
+    <!-- User Meta -->
     <div class="px-4 border-b-[1px] border-border flex flex-col gap-1 pb-4">
       <div class="flex justify-between relative h-14">
         <div>
@@ -79,15 +73,13 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
             :src="user.avatar || defaultAvatar"
           />
         </div>
-        <Dialog v-if="isUserOwner">
+        <Dialog v-if="user.id === userStore.user.id">
           <DialogTrigger>
             <div class="py-2">
               <Button>編輯個人資料</Button>
             </div>
           </DialogTrigger>
-          <DialogContent>
-            <EditPanel :user="user" />
-          </DialogContent>
+          <EditPanel :user="user" />
         </Dialog>
         <FollowButton :target-user-id="user.id" :followers="user.follower" />
       </div>
@@ -108,6 +100,7 @@ const isUserOwner = computed(() => user.value?.id === userStore.user.id)
         </RouterLink>
       </div>
     </div>
+
     <UserTweets />
   </div>
 </template>

@@ -3,8 +3,8 @@ import { computed, ref } from 'vue'
 import { ImageUp } from 'lucide-vue-next'
 import { useToast } from '@/components/ui/toast/use-toast'
 const { toast } = useToast()
-const uploadImageButton = ref<HTMLInputElement | null>(null)
-const imagesBuffer = defineModel<File[]>('imagesBuffer')
+const uploadImageButton = ref<HTMLInputElement>()
+const imagesBuffer = defineModel<File[]>()
 const isMaxUpload = computed(() => (imagesBuffer.value?.length || 0) > 3)
 
 async function uploadPostImage(event: Event) {
