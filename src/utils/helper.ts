@@ -7,3 +7,8 @@ export function sortTweetsByCreatedAt(tweets: Tweet[]) {
     return new Date(createdA).getTime() - new Date(createdB).getTime()
   })
 }
+
+export function readFileToBlob(file: File) {
+  const blob = URL.createObjectURL(file)
+  return blob
+}

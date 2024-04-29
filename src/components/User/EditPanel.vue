@@ -2,85 +2,92 @@
 import type { User } from '@/types/queries'
 import { useQueryClient } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
-import { DialogClose, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  DialogClose,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogContent
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ref } from 'vue'
-import { defaultAvatar } from '@/utils/defaultAvatar'
-import { Camera } from 'lucide-vue-next'
 import { uploadImage } from '@/utils/actions'
 import { updateUserMetaByTag } from '@/utils/actions'
-import Loading from '@/components/Loading.vue'
+import ImageInput from '@/components/User/ImageInput.vue'
+import { defaultAvatar } from '@/utils/defaultAvatar'
 const queryClient = useQueryClient()
-const userData = defineProps<{ user: User }>()
-const username = ref(userData.user.name)
-const bio = ref(userData.user.bio!)
-const avatar = ref(userData.user.avatar || defaultAvatar)
-const uploadInput = ref()
-const isUploading = ref(false)
+const { user } = defineProps<{ user: User }>()
+
+const avatarUrl = ref(user.avatar)
+const avatarBuffer = ref<File>()
+
+const coverUrl = ref(user.background_cover)
+const coverBuffer = ref<File>()
+
+const name = ref(user.name)
+const bio = ref(user.bio)
 
 async function updateUserMeta() {
-  await updateUserMetaByTag(userData.user.tag, { name: username.value, bio: bio.value })
-  queryClient.invalidateQueries({ queryKey: ['userMeta'] })
-}
-
-async function uploadAvatar(event: Event) {
-  if (isUploading.value) return
-
-  const files = (event.target as HTMLInputElement).files
-  if (!files || files.length === 0) return
-
-  isUploading.value = true
-  try {
-    const file = files[0]
-    const url = await uploadImage(file, 'avatar')
-    await updateUserMetaByTag(userData.user.tag, { avatar: url })
-    avatar.value = url
-    isUploading.value = false
-  } catch (error) {
-    isUploading.value = false
-    console.log(error)
+  const userMeta = {
+    background_cover: coverUrl.value,
+    avatar: avatarUrl.value,
+    name: name.value,
+    bio: bio.value
   }
+
+  const imagesPromises = []
+  if (coverBuffer.value) imagesPromises.push(uploadImage(coverBuffer.value, 'background-cover'))
+  if (avatarBuffer.value) imagesPromises.push(uploadImage(avatarBuffer.value, 'avatar'))
+  const [cover, avatar] = await Promise.all(imagesPromises)
+  userMeta.background_cover = cover
+  userMeta.avatar = avatar
+
+  await updateUserMetaByTag(user.tag, userMeta)
+  // Clean up and revalidate after succeed
+  coverBuffer.value = undefined
+  avatarBuffer.value = undefined
+  queryClient.invalidateQueries({ queryKey: [user.tag + 'User'] })
 }
 </script>
 
 <template>
-  <DialogHeader>
-    <DialogTitle>編輯個人資料</DialogTitle>
-  </DialogHeader>
-  <div class="flex justify-center relative">
-    <div
-      @click="uploadInput?.click()"
-      class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
-    >
-      <Loading v-if="isUploading" />
-      <div
-        v-else-if="!isUploading"
-        class="text-primary duration-300 cursor-pointer z-10 border-2 border-primary p-4 rounded-full opacity-0 hover:opacity-100"
-      >
-        <Camera :size="30" />
-        <input
-          ref="uploadInput"
-          type="file"
-          class="visibility: hidden"
-          @change="uploadAvatar"
-          accept="image/*"
-        />
+  <DialogContent class="p-0">
+    <DialogTitle class="p-4 pb-0">編輯個人資料</DialogTitle>
+
+    <!-- Cover -->
+    <div>
+      <div class="flex h-40 relative">
+        <!-- TODO: actually figure out how img works vs flex item -->
+        <img class="w-full object-cover" v-if="coverUrl" :src="coverUrl" />
+        <ImageInput v-model:imageUrl="coverUrl" v-model:imageBuffer="coverBuffer" />
+      </div>
+
+      <!-- Avatar -->
+      <div class="flex relative h-16 px-4">
+        <div class="absolute -translate-y-1/3">
+          <div class="relative">
+            <img
+              :src="avatarUrl || defaultAvatar"
+              class="rounded-full object-cover h-32 w-32 border-border border-2 aspect-square"
+            />
+            <ImageInput v-model:imageUrl="avatarUrl" v-model:imageBuffer="avatarBuffer" />
+          </div>
+        </div>
       </div>
     </div>
-    <img
-      :src="avatar"
-      class="rounded-full object-cover h-48 w-48 border-border border-2 aspect-square"
-    />
-  </div>
-  <Label for="username">名稱</Label>
-  <Input id="username" v-model="username" type="text" />
-  <Label for="bio">自我介紹</Label>
-  <Textarea id="bio" v-model="bio" type="text" rows="5" maxlength="160"></Textarea>
-  <DialogFooter>
-    <DialogClose as-child>
-      <Button @click="updateUserMeta">儲存</Button>
-    </DialogClose>
-  </DialogFooter>
+
+    <div class="p-4 flex flex-col gap-4">
+      <Label for="name">名稱</Label>
+      <Input id="name" v-model="name" type="text" />
+      <Label for="bio">自我介紹</Label>
+      <Textarea id="bio" v-model="bio!" type="text" rows="5" maxlength="160"></Textarea>
+      <DialogFooter>
+        <DialogClose as-child>
+          <Button @click="updateUserMeta">儲存</Button>
+        </DialogClose>
+      </DialogFooter>
+    </div>
+  </DialogContent>
 </template>

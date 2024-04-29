@@ -1,19 +1,17 @@
 ## Major
 
 - [ ] Realtime notifications
-- [ ] Multiple images upload & show
 
 ## Minor
 
 - [ ] Side feed who to follow section
-- [ ] Post image page
-- [ ] Post typography (links, tag highlight, word breaks, linkifyjs)
+- [ ] PostPage Image Comments
 - [ ] Crop images before upload
 
 ## Optimizations
 
+- [ ] Vue Query Cache (maybe optimistic update)
 - [ ] Row Level Policy & (review constraints)
-- [ ] Vue Query Cache
 - [ ] User data stored in Pinia isn't reflected realtime
 - [ ] Max length for password/tag/username/post content ...etc
 - [ ] RouterView key in MainLayout [Stackoverflow](https://stackoverflow.com/questions/69638667/vue-router-is-changing-the-url-but-not-re-rendering-the-component)

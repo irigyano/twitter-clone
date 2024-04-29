@@ -6,10 +6,10 @@ import PostImages from '@/components/PostSubmission/PostImages.vue'
 import Loading from '@/components/Loading.vue'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
-const postContent = ref()
+const userStore = useUserStore()
+const postContent = ref<string>()
 const imagesBuffer = ref<File[]>([])
 const isUploading = ref(false)
-const userStore = useUserStore()
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const userStore = useUserStore()
         <PostTextArea v-model:postContent="postContent" v-model:imagesBuffer="imagesBuffer" />
         <PostImages v-model="imagesBuffer" />
         <div class="flex pt-2">
-          <UploadButton v-model:imagesBuffer="imagesBuffer" />
+          <UploadButton v-model="imagesBuffer" />
           <div class="flex-1 flex justify-end items-center">
             <SubmitButton
               v-model:postContent="postContent"
