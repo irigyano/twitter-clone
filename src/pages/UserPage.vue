@@ -63,12 +63,12 @@ useHead({
       </div>
     </div>
 
-    <!-- User Meta -->
+    <!-- UserMeta -->
     <div class="px-4 border-b-[1px] border-border flex flex-col gap-1 pb-4">
       <div class="flex justify-between relative h-14">
         <div>
           <img
-            class="absolute rounded-full border-secondary object-cover border-2 aspect-square h-28 -top-full"
+            class="absolute rounded-full border-secondary object-cover border-2 aspect-square h-28 -top-full bg-background"
             :src="user.avatar || defaultAvatar"
           />
         </div>
