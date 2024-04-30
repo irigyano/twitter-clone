@@ -16,11 +16,11 @@ const userStore = useUserStore()
 const queryClient = useQueryClient()
 const { user } = defineProps<{ user: User }>()
 
-const avatarUrl = ref(user.avatar)
-const avatarBuffer = ref<File>()
-
 const coverUrl = ref(user.background_cover)
 const coverBuffer = ref<File>()
+
+const avatarUrl = ref(user.avatar)
+const avatarBuffer = ref<File>()
 
 const name = ref(user.name)
 const bio = ref(user.bio)
@@ -33,13 +33,16 @@ async function updateUserMeta() {
     bio: bio.value
   }
 
-  const imagesPromises = []
-  if (coverBuffer.value) imagesPromises.push(uploadImage(coverBuffer.value, 'background-cover'))
-  if (avatarBuffer.value) imagesPromises.push(uploadImage(avatarBuffer.value, 'avatar'))
-  const [cover, avatar] = await Promise.all(imagesPromises)
-  // NOTE: If we do coverUrl.value = cover, coverUrl.value would be undefined even tho `cover` is a string, why?
-  userMeta.background_cover = cover
-  userMeta.avatar = avatar
+  if (coverBuffer.value) {
+    await uploadImage(coverBuffer.value, 'background-cover').then((url) => {
+      userMeta.background_cover = url
+    })
+  }
+  if (avatarBuffer.value) {
+    await uploadImage(avatarBuffer.value, 'avatar').then((url) => {
+      userMeta.avatar = url
+    })
+  }
 
   await updateUserMetaByTag(user.tag, userMeta)
   // Clean up and revalidate after succeed
@@ -48,7 +51,7 @@ async function updateUserMeta() {
 
   // Update UserPage by invalidate, and update Pinia store manually here.
   queryClient.invalidateQueries({ queryKey: [user.tag + 'UserMeta'] })
-  if (avatar) userStore.user.avatar = avatar
+  if (userMeta.avatar) userStore.user.avatar = userMeta.avatar
   userStore.user.name = name.value
 }
 </script>
