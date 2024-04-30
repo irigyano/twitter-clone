@@ -26,17 +26,27 @@ const userMeta = ref({
 const coverBuffer = ref<File>()
 const avatarBuffer = ref<File>()
 
-async function updateUserMeta() {
+function uploadImagesFromBuffer() {
+  const uploadPromises = []
   if (coverBuffer.value) {
-    await uploadImage(coverBuffer.value, 'background-cover').then((url) => {
-      userMeta.value.background_cover = url
-    })
+    const uploadCover = uploadImage(coverBuffer.value, 'background-cover').then(
+      (url) => (userMeta.value.background_cover = url)
+    )
+    uploadPromises.push(uploadCover)
   }
+
   if (avatarBuffer.value) {
-    await uploadImage(avatarBuffer.value, 'avatar').then((url) => {
-      userMeta.value.avatar = url
-    })
+    const uploadAvatar = uploadImage(avatarBuffer.value, 'avatar').then(
+      (url) => (userMeta.value.avatar = url)
+    )
+    uploadPromises.push(uploadAvatar)
   }
+  // Wait for uploaded urls
+  return Promise.all(uploadPromises)
+}
+
+async function updateUserMeta() {
+  await uploadImagesFromBuffer()
 
   await updateUserMetaByTag(user.tag, userMeta.value)
   // Clean up and revalidate after succeed
@@ -74,7 +84,7 @@ async function updateUserMeta() {
           <div class="relative">
             <img
               :src="userMeta.avatar || defaultAvatar"
-              class="rounded-full object-cover h-32 w-32 border-border border-2 aspect-square"
+              class="rounded-full object-cover h-32 w-32 border-border border-2 aspect-square bg-background"
             />
             <ImageInput v-model:imageUrl="userMeta.avatar" v-model:imageBuffer="avatarBuffer" />
           </div>
