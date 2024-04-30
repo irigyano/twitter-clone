@@ -2,13 +2,7 @@
 import type { User } from '@/types/queries'
 import { useQueryClient } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
-import {
-  DialogClose,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogContent
-} from '@/components/ui/dialog'
+import { DialogClose, DialogFooter, DialogTitle, DialogContent } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -17,6 +11,8 @@ import { uploadImage } from '@/utils/actions'
 import { updateUserMetaByTag } from '@/utils/actions'
 import ImageInput from '@/components/User/ImageInput.vue'
 import { defaultAvatar } from '@/utils/defaultAvatar'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
 const queryClient = useQueryClient()
 const { user } = defineProps<{ user: User }>()
 
@@ -41,6 +37,7 @@ async function updateUserMeta() {
   if (coverBuffer.value) imagesPromises.push(uploadImage(coverBuffer.value, 'background-cover'))
   if (avatarBuffer.value) imagesPromises.push(uploadImage(avatarBuffer.value, 'avatar'))
   const [cover, avatar] = await Promise.all(imagesPromises)
+  // NOTE: If we do coverUrl.value = cover, coverUrl.value would be undefined even tho `cover` is a string, why?
   userMeta.background_cover = cover
   userMeta.avatar = avatar
 
@@ -48,7 +45,11 @@ async function updateUserMeta() {
   // Clean up and revalidate after succeed
   coverBuffer.value = undefined
   avatarBuffer.value = undefined
-  queryClient.invalidateQueries({ queryKey: [user.tag + 'User'] })
+
+  // Update UserPage by invalidate, and update Pinia store manually here.
+  queryClient.invalidateQueries({ queryKey: [user.tag + 'UserMeta'] })
+  if (avatar) userStore.user.avatar = avatar
+  userStore.user.name = name.value
 }
 </script>
 
