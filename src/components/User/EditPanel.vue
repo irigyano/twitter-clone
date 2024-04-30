@@ -16,43 +16,37 @@ const userStore = useUserStore()
 const queryClient = useQueryClient()
 const { user } = defineProps<{ user: User }>()
 
-const coverUrl = ref(user.background_cover)
-const coverBuffer = ref<File>()
+const userMeta = ref({
+  background_cover: user.background_cover,
+  avatar: user.avatar,
+  name: user.name,
+  bio: user.bio
+})
 
-const avatarUrl = ref(user.avatar)
+const coverBuffer = ref<File>()
 const avatarBuffer = ref<File>()
 
-const name = ref(user.name)
-const bio = ref(user.bio)
-
 async function updateUserMeta() {
-  const userMeta = {
-    background_cover: coverUrl.value,
-    avatar: avatarUrl.value,
-    name: name.value,
-    bio: bio.value
-  }
-
   if (coverBuffer.value) {
     await uploadImage(coverBuffer.value, 'background-cover').then((url) => {
-      userMeta.background_cover = url
+      userMeta.value.background_cover = url
     })
   }
   if (avatarBuffer.value) {
     await uploadImage(avatarBuffer.value, 'avatar').then((url) => {
-      userMeta.avatar = url
+      userMeta.value.avatar = url
     })
   }
 
-  await updateUserMetaByTag(user.tag, userMeta)
+  await updateUserMetaByTag(user.tag, userMeta.value)
   // Clean up and revalidate after succeed
   coverBuffer.value = undefined
   avatarBuffer.value = undefined
 
   // Update UserPage by invalidate, and update Pinia store manually here.
   queryClient.invalidateQueries({ queryKey: [user.tag + 'UserMeta'] })
-  if (userMeta.avatar) userStore.user.avatar = userMeta.avatar
-  userStore.user.name = name.value
+  if (userMeta.value.avatar) userStore.user.avatar = userMeta.value.avatar
+  userStore.user.name = userMeta.value.name
 }
 </script>
 
@@ -63,9 +57,15 @@ async function updateUserMeta() {
     <!-- Cover -->
     <div>
       <div class="flex h-40 relative">
-        <!-- TODO: actually figure out how img works vs flex item -->
-        <img class="w-full object-cover" v-if="coverUrl" :src="coverUrl" />
-        <ImageInput v-model:imageUrl="coverUrl" v-model:imageBuffer="coverBuffer" />
+        <img
+          class="w-full object-cover"
+          v-if="userMeta.background_cover"
+          :src="userMeta.background_cover"
+        />
+        <ImageInput
+          v-model:imageUrl="userMeta.background_cover"
+          v-model:imageBuffer="coverBuffer"
+        />
       </div>
 
       <!-- Avatar -->
@@ -73,10 +73,10 @@ async function updateUserMeta() {
         <div class="absolute -translate-y-1/3">
           <div class="relative">
             <img
-              :src="avatarUrl || defaultAvatar"
+              :src="userMeta.avatar || defaultAvatar"
               class="rounded-full object-cover h-32 w-32 border-border border-2 aspect-square"
             />
-            <ImageInput v-model:imageUrl="avatarUrl" v-model:imageBuffer="avatarBuffer" />
+            <ImageInput v-model:imageUrl="userMeta.avatar" v-model:imageBuffer="avatarBuffer" />
           </div>
         </div>
       </div>
@@ -84,9 +84,9 @@ async function updateUserMeta() {
 
     <div class="p-4 flex flex-col gap-4">
       <Label for="name">名稱</Label>
-      <Input id="name" v-model="name" type="text" />
+      <Input id="name" v-model="userMeta.name" type="text" />
       <Label for="bio">自我介紹</Label>
-      <Textarea id="bio" v-model="bio!" type="text" rows="5" maxlength="160"></Textarea>
+      <Textarea id="bio" v-model="userMeta.bio!" type="text" rows="5" maxlength="160"></Textarea>
       <DialogFooter>
         <DialogClose as-child>
           <Button @click="updateUserMeta">儲存</Button>
