@@ -31,9 +31,13 @@
   * {
     @apply border-border;
   }
+
+  html {
+    color-scheme: dark;
+  }
+
   body {
     @apply bg-background text-foreground;
-
     overflow-y: scroll;
   }
 }
