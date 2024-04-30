@@ -8,9 +8,8 @@ import Post from '@/components/Post/Post.vue'
 const route = useRoute()
 
 const { isLoading, data: tweets } = useQuery({
-  queryKey: ['userTweets'],
+  queryKey: [route.params.user + 'UserTweets'],
   queryFn: () => getTweetsByTag(route.params.user as string),
-  gcTime: 0,
   retry: false
 })
 </script>

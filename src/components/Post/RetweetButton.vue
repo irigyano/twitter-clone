@@ -34,7 +34,7 @@ async function retweet() {
       .then()
   }
   queryClient.invalidateQueries({ queryKey: ['tweets'] })
-  queryClient.invalidateQueries({ queryKey: ['userTweets'] })
+  queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
   queryClient.invalidateQueries({ queryKey: [props.post.id] })
 }
 </script>

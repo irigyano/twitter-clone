@@ -23,9 +23,8 @@ const {
   isError,
   data: user
 } = useQuery({
-  queryKey: [route.params.user + 'User'],
+  queryKey: [route.params.user + 'UserMeta'],
   queryFn: () => getUserMetaByTag(route.params.user as string),
-  gcTime: 0,
   retry: false
 })
 

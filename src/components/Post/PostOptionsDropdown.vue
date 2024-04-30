@@ -19,7 +19,7 @@ const { mutate } = useMutation({
   mutationFn: () => deletePostById(postId),
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['tweets'] })
-    queryClient.invalidateQueries({ queryKey: ['userTweets'] })
+    queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
   }
 })
 </script>
