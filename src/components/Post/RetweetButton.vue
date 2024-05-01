@@ -5,12 +5,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
 import { Repeat2, PencilLine } from 'lucide-vue-next'
 import type { PostInfo } from '@/types/queries'
 import { computed } from 'vue'
 import { useQueryClient } from '@tanstack/vue-query'
+import { insertRetweet, deleteRetweet } from '@/utils/actions'
 const props = defineProps<{ post: PostInfo }>()
 const userStore = useUserStore()
 const queryClient = useQueryClient()
@@ -22,19 +22,15 @@ const retweets = computed(() => props.post.retweets.length)
 
 async function retweet() {
   if (isRetweeted.value) {
-    await supabase
-      .from('retweets')
-      .delete()
-      .eq('post_id', props.post.id)
-      .eq('user_id', userStore.user.id)
+    await deleteRetweet(userStore.user.id, props.post.id)
   } else if (!isRetweeted.value) {
-    await supabase
-      .from('retweets')
-      .insert({ user_id: userStore.user.id, post_id: props.post.id })
-      .then()
+    await insertRetweet(userStore.user.id, props.post.id)
   }
+  // HomePage
   queryClient.invalidateQueries({ queryKey: ['tweets'] })
+  // UserPage
   queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
+  // PostPage
   queryClient.invalidateQueries({ queryKey: [props.post.id] })
 }
 </script>

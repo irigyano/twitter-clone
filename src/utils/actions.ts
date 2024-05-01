@@ -99,3 +99,17 @@ export async function insertNotification<T extends FollowNotify | PostNotify>(in
   const { error } = await supabase.from('notifications').insert(insertion)
   if (error) throw new Error(error.message)
 }
+
+export async function insertRetweet(user_id: string, post_id: string) {
+  const { error } = await supabase.from('retweets').insert({ user_id, post_id })
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteRetweet(user_id: string, post_id: string) {
+  const { error } = await supabase
+    .from('retweets')
+    .delete()
+    .eq('user_id', user_id)
+    .eq('post_id', post_id)
+  if (error) throw new Error(error.message)
+}
