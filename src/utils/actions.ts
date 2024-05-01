@@ -128,8 +128,21 @@ export async function deleteRetweet(user_id: string, post_id: string) {
 }
 
 export async function insertLike(userId: string, postId: string) {
-  const { error } = await supabase.from('likes').insert({ userId, postId })
+  const { data, error } = await supabase
+    .from('likes')
+    .insert({ userId, postId })
+    .select('post:posts(userId)')
+    .single()
   if (error) throw new Error(error.message)
+
+  const post = data.post!
+  if (userId !== post.userId)
+    insertNotification({
+      action: 'like',
+      actioner_id: userId,
+      receiver_id: post.userId,
+      post_id: postId
+    })
 }
 
 export async function deleteLike(userId: string, postId: string) {
