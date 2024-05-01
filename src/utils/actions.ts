@@ -101,8 +101,21 @@ export async function insertNotification<T extends FollowNotify | PostNotify>(in
 }
 
 export async function insertRetweet(user_id: string, post_id: string) {
-  const { error } = await supabase.from('retweets').insert({ user_id, post_id })
+  const { data, error } = await supabase
+    .from('retweets')
+    .insert({ user_id, post_id })
+    .select('post:posts(userId)')
+    .single()
   if (error) throw new Error(error.message)
+
+  const post = data.post!
+  if (user_id !== post.userId)
+    insertNotification({
+      action: 'retweet',
+      actioner_id: user_id,
+      receiver_id: post.userId,
+      post_id
+    })
 }
 
 export async function deleteRetweet(user_id: string, post_id: string) {
