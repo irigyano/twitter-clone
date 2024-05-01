@@ -3,7 +3,7 @@ import type { Tweet } from '@/types/queries'
 import { MessageCircleMore } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import CommentDialog from '@/components/Post/CommentDialog.vue'
 import PostAvatar from '@/components/PostAvatar.vue'
 import LikeButton from '@/components/Post/LikeButton.vue'
@@ -46,12 +46,9 @@ function goToPost() {
       <div class="flex-1">
         <div class="flex justify-between">
           <div class="flex gap-1 flex-wrap">
-            <div
-              class="hover:underline font-bold"
-              @click.stop="router.push(`/${tweet.author.tag}`)"
-            >
+            <RouterLink @click.stop :to="`/${tweet.author.tag}`" class="hover:underline font-bold">
               {{ tweet.author.name }}
-            </div>
+            </RouterLink>
             <div class="flex text-muted-foreground">
               <div class="max-w-48 truncate sm:max-w-none">@{{ tweet.author.tag }}．</div>
               <time class="whitespace-nowrap"

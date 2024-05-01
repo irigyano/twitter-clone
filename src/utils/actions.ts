@@ -1,11 +1,20 @@
 import { supabase } from '@/utils/supabase'
-import type { User } from '@/types/queries'
+import type { User, FollowNotify, PostNotify } from '@/types/queries'
 
 export async function followUser(userId: string, targetUserId: string) {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('follows')
     .insert({ follower: userId, followee: targetUserId })
+    .select('id')
+    .single()
   if (error) throw new Error(error.message)
+
+  insertNotification({
+    action: 'follow',
+    actioner_id: userId,
+    receiver_id: targetUserId,
+    follow_id: data.id
+  })
 }
 
 export async function unfollowUser(userId: string, targetUserId: string) {
@@ -41,10 +50,23 @@ export async function insertPost({
 }
 
 export async function insertComment(userId: string, postId: string, comment: string) {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('comments')
     .insert({ userId, postId, comment: comment.trim() })
+    .select('post:posts(id,userId)')
+    .single()
   if (error) throw new Error(error.message)
+
+  // post is non-nullable so casting here its fine
+  const post = data.post!
+  // Insert notification to owner if its from other user
+  if (userId !== post.userId)
+    insertNotification({
+      action: 'comment',
+      actioner_id: userId,
+      receiver_id: post.userId,
+      post_id: post.id
+    })
 }
 
 export async function deleteCommentById(commentId: string) {
@@ -71,4 +93,59 @@ export async function uploadMultipleImages(imagesBuffer: File[]) {
 
   const imagesUrl = await Promise.all(uploadPromises)
   return imagesUrl
+}
+
+export async function insertNotification<T extends FollowNotify | PostNotify>(insertion: T) {
+  const { error } = await supabase.from('notifications').insert(insertion)
+  if (error) throw new Error(error.message)
+}
+
+export async function insertRetweet(user_id: string, post_id: string) {
+  const { data, error } = await supabase
+    .from('retweets')
+    .insert({ user_id, post_id })
+    .select('post:posts(userId)')
+    .single()
+  if (error) throw new Error(error.message)
+
+  const post = data.post!
+  if (user_id !== post.userId)
+    insertNotification({
+      action: 'retweet',
+      actioner_id: user_id,
+      receiver_id: post.userId,
+      post_id
+    })
+}
+
+export async function deleteRetweet(user_id: string, post_id: string) {
+  const { error } = await supabase
+    .from('retweets')
+    .delete()
+    .eq('user_id', user_id)
+    .eq('post_id', post_id)
+  if (error) throw new Error(error.message)
+}
+
+export async function insertLike(userId: string, postId: string) {
+  const { data, error } = await supabase
+    .from('likes')
+    .insert({ userId, postId })
+    .select('post:posts(userId)')
+    .single()
+  if (error) throw new Error(error.message)
+
+  const post = data.post!
+  if (userId !== post.userId)
+    insertNotification({
+      action: 'like',
+      actioner_id: userId,
+      receiver_id: post.userId,
+      post_id: postId
+    })
+}
+
+export async function deleteLike(userId: string, postId: string) {
+  const { error } = await supabase.from('likes').delete().eq('userId', userId).eq('postId', postId)
+  if (error) throw new Error(error.message)
 }

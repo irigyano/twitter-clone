@@ -32,3 +32,17 @@ export type Tweet =
       retweeter: User
       retweetedAt: string
     }
+
+export type FollowNotify = {
+  actioner_id: string
+  receiver_id: string
+  action: 'follow'
+  follow_id: string
+}
+
+export type PostNotify = {
+  actioner_id: string
+  receiver_id: string
+  action: 'comment' | 'like' | 'retweet'
+  post_id: string
+}

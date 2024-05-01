@@ -121,3 +121,14 @@ export async function queryUserRetweetsByTag(tag: string) {
   if (error) throw new Error(error.message)
   return data as RetweetInfo[]
 }
+
+export async function queryNotificationsByUserId(userId: string) {
+  const { data, error } = await supabase
+    .from('notifications')
+    .select('*, actioner:users!notifications_actioner_id_fkey(*)')
+    .eq('receiver_id', userId)
+    .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return data
+}

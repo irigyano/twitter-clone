@@ -120,6 +120,68 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          action: Database["public"]["Enums"]["user_action"]
+          actioner_id: string
+          created_at: string
+          follow_id: string | null
+          id: string
+          is_read: boolean
+          post_id: string | null
+          receiver_id: string
+        }
+        Insert: {
+          action: Database["public"]["Enums"]["user_action"]
+          actioner_id: string
+          created_at?: string
+          follow_id?: string | null
+          id?: string
+          is_read?: boolean
+          post_id?: string | null
+          receiver_id: string
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["user_action"]
+          actioner_id?: string
+          created_at?: string
+          follow_id?: string | null
+          id?: string
+          is_read?: boolean
+          post_id?: string | null
+          receiver_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_actioner_id_fkey"
+            columns: ["actioner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_follow_id_fkey"
+            columns: ["follow_id"]
+            isOneToOne: false
+            referencedRelation: "follows"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_receiver_id_fkey"
+            columns: ["receiver_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           content: string | null
@@ -237,7 +299,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_action: "follow" | "comment" | "retweet" | "like"
     }
     CompositeTypes: {
       [_ in never]: never

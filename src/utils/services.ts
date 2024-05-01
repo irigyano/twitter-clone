@@ -7,7 +7,8 @@ import {
   queryUserRetweetsByTag,
   queryUserFollowByTag,
   queryPostById,
-  queryCommentsByPostId
+  queryCommentsByPostId,
+  queryNotificationsByUserId
 } from '@/utils/queries'
 import { pipePostsToTweets, pipeRetweetsToTweets } from '@/utils/pipes'
 import { sortTweetsByCreatedAt } from '@/utils/helper'
@@ -77,5 +78,10 @@ export async function getPostById(postId: string) {
 
 export async function getCommentsByPostId(postId: string) {
   const data = await queryCommentsByPostId(postId)
+  return data
+}
+
+export async function getNotificationsByUserId(userId: string) {
+  const data = await queryNotificationsByUserId(userId)
   return data
 }
