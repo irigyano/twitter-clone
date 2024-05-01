@@ -42,8 +42,8 @@ const { user } = useUserStore()
         >
           <img :src="user.avatar" class="rounded-full w-10 h-10 object-cover" />
           <div class="hidden xl:flex gap-2 leading-5">
-            <div>
-              <div class="font-bold">{{ user.name }}</div>
+            <div class="w-36">
+              <div class="font-bold truncate">{{ user.name }}</div>
               <div class="text-muted-foreground">@{{ user.tag }}</div>
             </div>
             <SignOutButton />

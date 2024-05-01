@@ -11,14 +11,11 @@ const router = useRouter()
 const userStore = useUserStore()
 
 supabase.auth.onAuthStateChange((event, session) => {
-  // reload the page if current session expired
+  // Reload page if session expired so user redirect to Login
   if (userStore.session && !session) return router.go(0)
 
-  // update the session
+  // Update the session
   userStore.session = session
-  // for better ux, we can also refetch and update user here,
-  // so changing avatar, username would reflect immediately.
-  // ...
 })
 </script>
 
