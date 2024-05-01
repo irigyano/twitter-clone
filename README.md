@@ -5,8 +5,9 @@
 ## Minor
 
 - [ ] Side feed who to follow section
-- [ ] PostPage Image Comments
+- [ ] PostPage Image route & Comments
 - [ ] Crop images before upload
+- [ ] Quote
 
 ## Optimizations
 
