@@ -55,12 +55,13 @@ useHead({
         <div class="flex gap-2">
           <PostAvatar :avatar="post.user.avatar" :tag="post.user.tag" />
           <div class="pb-2 flex-1">
-            <div
-              @click.stop="router.push(`/${post.user.tag}`)"
+            <RouterLink
+              @click.stop
+              :to="`/${post.user.tag}`"
               class="font-bold inline-block cursor-pointer hover:underline"
             >
               {{ post.user.name }}
-            </div>
+            </RouterLink>
             <div class="text-muted-foreground">@{{ post.user.tag }}</div>
           </div>
           <FollowButton :targetUserId="post.user.id" :followers="post.user.follower" />

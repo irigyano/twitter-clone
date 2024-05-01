@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { defaultAvatar } from '@/utils/defaultAvatar'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-
 defineProps<{ avatar: string | null; tag: string }>()
 </script>
 
 <template>
-  <img
-    alt="avatar"
-    class="min-w-10 h-10 rounded-full object-cover cursor-pointer hover:brightness-75 duration-300"
-    width="40"
-    height="40"
-    :src="avatar || defaultAvatar"
-    @click.stop="router.push(`/${tag}`)"
-  />
+  <RouterLink @click.stop :to="`/${tag}`" class="inline-block">
+    <img
+      alt="avatar"
+      class="w-10 h-10 rounded-full object-cover cursor-pointer hover:brightness-75 duration-300 border-[1px] bg-background"
+      width="40"
+      height="40"
+      :src="avatar || defaultAvatar"
+    />
+  </RouterLink>
 </template>
