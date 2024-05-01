@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { supabase } from '@/utils/supabase'
+import type { PostInfo } from '@/types/queries'
 import { useUserStore } from '@/stores/user'
 import { Heart } from 'lucide-vue-next'
 import { ref } from 'vue'
-import type { PostInfo } from '@/types/queries'
-
+import { insertLike, deleteLike } from '@/utils/actions'
+const userStore = useUserStore()
 const { post } = defineProps<{ post: PostInfo }>()
 
-const userStore = useUserStore()
 const isLiked = ref(post.likes.some((like) => like.userId === userStore.user.id))
 const likes = ref(post.likes.length)
 
-async function likePost() {
+function likePost() {
   if (isLiked.value) {
-    supabase.from('likes').delete().eq('postId', post.id).eq('userId', userStore.user.id).then()
+    deleteLike(userStore.user.id, post.id)
     likes.value--
   } else {
-    supabase.from('likes').insert({ userId: userStore.user.id, postId: post.id }).then()
+    insertLike(userStore.user.id, post.id)
     likes.value++
   }
   isLiked.value = !isLiked.value

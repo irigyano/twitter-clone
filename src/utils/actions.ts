@@ -126,3 +126,13 @@ export async function deleteRetweet(user_id: string, post_id: string) {
     .eq('post_id', post_id)
   if (error) throw new Error(error.message)
 }
+
+export async function insertLike(userId: string, postId: string) {
+  const { error } = await supabase.from('likes').insert({ userId, postId })
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteLike(userId: string, postId: string) {
+  const { error } = await supabase.from('likes').delete().eq('userId', userId).eq('postId', postId)
+  if (error) throw new Error(error.message)
+}
