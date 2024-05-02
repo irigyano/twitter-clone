@@ -5,8 +5,8 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Ellipsis } from 'lucide-vue-next'
-import DeletePost from '@/components/Post/DropdownItem/DeletePost.vue'
-import Follow from '@/components/Post/DropdownItem/Follow.vue'
+import DeletePost from '@/components/Post/Dropdown/DeletePost.vue'
+import Follow from '@/components/Post/Dropdown/Follow.vue'
 defineProps<{ authorId: string; postId: string }>()
 </script>
 

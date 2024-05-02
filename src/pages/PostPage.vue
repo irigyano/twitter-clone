@@ -14,7 +14,7 @@ import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 import Typographer from '@/components/Typographer.vue'
 import { timeOptions } from '@/utils/config'
 import PostPageCommentSection from '@/components/Post/PostPageCommentSection.vue'
-import PostOptionsDropdown from '@/components/Post/PostOptionsDropdown.vue'
+import PostOptionsDropdown from '@/components/Post/Dropdown/Dropdown.vue'
 const router = useRouter()
 const route = useRoute()
 
