@@ -13,7 +13,7 @@ import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 import Typographer from '@/components/Typographer.vue'
 import { timeOptions } from '@/utils/config'
 import PostPageCommentSection from '@/components/Post/PostPageCommentSection.vue'
-import PostOptionsDropdown from '@/components/Post/Dropdown/Dropdown.vue'
+import PostDropdown from '@/components/Post/Dropdown/Dropdown.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const router = useRouter()
@@ -64,7 +64,7 @@ useHead({
               </RouterLink>
               <div class="text-muted-foreground">@{{ post.user.tag }}</div>
             </div>
-            <PostOptionsDropdown :authorId="post.user.id" :postId="post.id" />
+            <PostDropdown :authorId="post.user.id" :author-tag="post.user.tag" :postId="post.id" />
           </div>
         </div>
         <Typographer :content="post.content" />

@@ -22,7 +22,7 @@ const {
   <div class="flex flex-col items-center w-full">
     <Category />
     <PostSubmission />
-    <LoadingSpinner v-if="isLoading" />
+    <LoadingSpinner v-if="isLoading" class="h-0 flex-1" />
     <div v-else-if="tweets?.length" class="w-full flex flex-col">
       <Post v-for="tweet in tweets" :tweet="tweet" :key="tweet.id" />
     </div>

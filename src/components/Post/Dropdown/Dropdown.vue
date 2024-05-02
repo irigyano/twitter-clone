@@ -7,7 +7,7 @@ import {
 import { Ellipsis } from 'lucide-vue-next'
 import DeletePost from '@/components/Post/Dropdown/DeletePost.vue'
 import Follow from '@/components/Post/Dropdown/Follow.vue'
-defineProps<{ authorId: string; postId: string }>()
+defineProps<{ authorId: string; authorTag: string; postId: string }>()
 </script>
 
 <template>
@@ -17,9 +17,9 @@ defineProps<{ authorId: string; postId: string }>()
         <Ellipsis class="p-1" />
       </div>
     </DropdownMenuTrigger>
-    <DropdownMenuContent>
+    <DropdownMenuContent class="min-w-0">
       <DeletePost :author-id="authorId" :post-id="postId" />
-      <Follow :author-id="authorId" />
+      <Follow :author-id="authorId" :authorTag="authorTag" />
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

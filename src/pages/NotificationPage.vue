@@ -37,7 +37,7 @@ const { isLoading, data: notifications } = useQuery({
             <template #svg>
               <UserRound :size="24" class="text-blue-500 fill-blue-500" />
             </template>
-            <template #text> 追隨了你！</template>
+            <template #text> 跟隨了你！</template>
           </Notification>
 
           <Notification
