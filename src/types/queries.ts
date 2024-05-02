@@ -47,3 +47,5 @@ export type PostNotify = {
 }
 
 export type UserMeta = User & { follows: { followee: string }[] }
+
+export type FollowWithUser = Follow & { user: User & { follows: Follow[] } }

@@ -1,8 +1,6 @@
 import { supabase } from '@/utils/supabase'
 import type { Comment, PostInfo, User } from '@/types/queries'
-import type { PostInfoWithAuthor, RetweetInfo } from '@/types/queries'
-
-// User
+import type { PostInfoWithAuthor, RetweetInfo, FollowWithUser } from '@/types/queries'
 
 export async function queryUserMetaById(id: string) {
   const { data, error } = await supabase
@@ -42,12 +40,10 @@ export async function queryUserFollowByTag(tag: string) {
     .single()
   if (error) throw new Error(error.message)
   return data as User & {
-    following: { user: User }[]
-    follower: { user: User }[]
+    following: FollowWithUser[]
+    follower: FollowWithUser[]
   }
 }
-
-// Post
 
 export async function queryPosts() {
   const { data, error } = await supabase
@@ -87,8 +83,6 @@ export async function queryPostById(postId: string) {
   if (error) throw new Error(error.message)
   return data as PostInfo & { user: User & { follower: Array<{ follower: string }> } }
 }
-
-// Comments
 
 export async function queryCommentsByPostId(postId: string) {
   const { data, error } = await supabase
