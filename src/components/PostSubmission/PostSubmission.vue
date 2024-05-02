@@ -8,7 +8,7 @@ import { ref } from 'vue'
 import PostAvatar from '@/components/UserAvatar.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const userStore = useUserStore()
-const postContent = ref<string>()
+const postContent = ref<string>('')
 const imagesBuffer = ref<File[]>([])
 const isUploading = ref(false)
 </script>

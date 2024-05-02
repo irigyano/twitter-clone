@@ -34,6 +34,12 @@ async function handleImageDrop(e: DragEvent) {
     const file = fileList[i]
     imagesBuffer.value.push(file)
   }
+
+  const fileUrl = e.dataTransfer?.getData('url')
+  if (!fileList.length && fileUrl) {
+    // Add a space between content and url
+    postContent.value += postContent.value ? ' ' + fileUrl : fileUrl
+  }
 }
 </script>
 

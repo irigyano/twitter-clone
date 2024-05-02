@@ -11,14 +11,7 @@
 
 ## Optimizations
 
-- [ ] Vue Query Cache (maybe optimistic update)
+- [ ] Vue Query Key (im dumbdumb ;;)
 - [ ] Row Level Policy & (review constraints)
-- [ ] User data stored in Pinia isn't reflected realtime
 - [ ] Max length for password/tag/username/post content ...etc
 - [ ] RouterView key in MainLayout [Stackoverflow](https://stackoverflow.com/questions/69638667/vue-router-is-changing-the-url-but-not-re-rendering-the-component)
-- [ ] Search length limit & hint (UX)
-- [ ] Postgres text search sens
-
-## Refactor
-
-- [ ] Pass props into `toRefs()`
