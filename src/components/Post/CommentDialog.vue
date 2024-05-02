@@ -4,17 +4,17 @@ import { DialogContent, DialogFooter, DialogTitle, DialogClose } from '@/compone
 import { Button } from '@/components/ui/button'
 import { useUserStore } from '@/stores/user'
 import { computed, ref } from 'vue'
-import { defaultAvatar } from '@/utils/defaultAvatar'
 import { RouterLink } from 'vue-router'
 import { Image } from 'lucide-vue-next'
 import { useQueryClient } from '@tanstack/vue-query'
 import { insertComment } from '@/utils/actions'
+import PostAvatar from '@/components/PostAvatar.vue'
 const queryClient = useQueryClient()
+const userStore = useUserStore()
+const { post, author } = defineProps<{ post: PostInfo; author: User }>()
 
 const comment = ref('')
 const postContent = ref<HTMLDivElement>()
-const userStore = useUserStore()
-const { post, author } = defineProps<{ post: PostInfo; author: User }>()
 
 const lineHeight = 24
 function calculateRowsHeight() {
@@ -34,10 +34,7 @@ async function sumbitComment() {
 <template>
   <DialogContent>
     <div class="flex gap-2">
-      <img
-        class="rounded-full h-14 w-14 object-cover border-[1px] border-border"
-        :src="author.avatar || defaultAvatar"
-      />
+      <PostAvatar :avatar="author.avatar" :tag="author.tag" class="h-14 w-14" />
       <div class="flex-1 flex flex-col gap-1">
         <div>
           {{ author.name }}
@@ -57,10 +54,7 @@ async function sumbitComment() {
       </div>
     </div>
     <div class="flex gap-2">
-      <img
-        :src="userStore.user.avatar"
-        class="rounded-full h-14 w-14 object-cover border-[1px] border-border"
-      />
+      <PostAvatar :avatar="userStore.user.avatar" :tag="userStore.user.tag" class="h-14 w-14" />
       <textarea
         v-model="comment"
         placeholder="發佈你的回覆"

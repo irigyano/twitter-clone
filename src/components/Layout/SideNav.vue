@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import SignOutButton from '@/components/SignOutButton.vue'
+import PostAvatar from '@/components/PostAvatar.vue'
 const router = useRouter()
 const { user } = useUserStore()
 </script>
@@ -40,7 +41,7 @@ const { user } = useUserStore()
           @click.stop="router.push(`/${user.tag}`)"
           class="flex items-center gap-2 hover:bg-secondary p-2 rounded-full duration-300 cursor-pointer"
         >
-          <img :src="user.avatar" class="rounded-full w-10 h-10 object-cover" />
+          <PostAvatar :avatar="user.avatar" :tag="user.tag" static />
           <div class="hidden xl:flex gap-2 leading-5">
             <div class="w-36">
               <div class="font-bold truncate">{{ user.name }}</div>
