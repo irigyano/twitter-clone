@@ -80,7 +80,7 @@ useHead({
           </DialogTrigger>
           <EditPanel :user="user" />
         </Dialog>
-        <FollowButton :target-user-id="user.id" :followers="user.follower" />
+        <FollowButton :target-user-id="user.id" />
       </div>
       <div class="leading-none">
         <div class="font-bold text-lg">{{ user.name }}</div>

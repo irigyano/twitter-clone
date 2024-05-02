@@ -46,3 +46,5 @@ export type PostNotify = {
   action: 'comment' | 'like' | 'retweet'
   post_id: string
 }
+
+export type UserMeta = User & { follows: { followee: string }[] }

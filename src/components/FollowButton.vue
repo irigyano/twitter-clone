@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
+import { ref, type HTMLAttributes } from 'vue'
 import { Button } from '@/components/ui/button'
-import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { cn } from '@/utils/shadcn'
-import { useQueryClient } from '@tanstack/vue-query'
 import { followUser, unfollowUser } from '@/utils/actions'
-const queryClient = useQueryClient()
-
+const userStore = useUserStore()
 const props = defineProps<{
-  targetUserId: string
-  followers: { follower: string }[]
   class?: HTMLAttributes['class']
+  targetUserId: string
 }>()
 
-const userStore = useUserStore()
-const isFollowing = ref(props.followers.some(({ follower }) => follower === userStore.user.id))
+// Find a way to validate and update pinia store after mutation.
+// Also Q: can we directly use pinia arrays w/o creating a local ref?
+const isFollowing = ref(
+  userStore.user.follows.some(({ followee }) => followee === props.targetUserId)
+)
 
 async function follow() {
   if (isFollowing.value) {
@@ -23,10 +22,8 @@ async function follow() {
   } else {
     await followUser(userStore.user.id, props.targetUserId)
   }
-  // Toggle state for UserPage since we don't invalidate page cache here
+  // user page doesn't update in time now
   isFollowing.value = !isFollowing.value
-
-  queryClient.invalidateQueries({ queryKey: ['userRelation'] })
 }
 </script>
 

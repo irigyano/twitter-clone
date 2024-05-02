@@ -2,26 +2,12 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Ellipsis, MessageSquareOff, Trash2 } from 'lucide-vue-next'
-import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { useUserStore } from '@/stores/user'
-import { deletePostById } from '@/utils/actions'
-
-const queryClient = useQueryClient()
-const userStore = useUserStore()
-
-const { authorId, postId } = defineProps<{ authorId: string; postId: string }>()
-
-const { mutate } = useMutation({
-  mutationFn: () => deletePostById(postId),
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['tweets'] })
-    queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
-  }
-})
+import { Ellipsis } from 'lucide-vue-next'
+import DeletePost from '@/components/Post/DropdownItem/DeletePost.vue'
+import Follow from '@/components/Post/DropdownItem/Follow.vue'
+defineProps<{ authorId: string; postId: string; followers?: { follower: string }[] }>()
 </script>
 
 <template>
@@ -32,19 +18,8 @@ const { mutate } = useMutation({
       </div>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
-      <DropdownMenuItem
-        @click.stop="mutate()"
-        v-if="authorId === userStore.user.id"
-        class="text-red-500 cursor-pointer"
-      >
-        <Trash2 class="mr-2 h-4 w-4" />
-        <span>刪除</span>
-      </DropdownMenuItem>
-
-      <DropdownMenuItem disabled>
-        <MessageSquareOff class="mr-2 h-4 w-4" />
-        <span>將此對話靜音</span>
-      </DropdownMenuItem>
+      <DeletePost :author-id="authorId" :post-id="postId" />
+      <Follow disabled :author-id="authorId" />
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

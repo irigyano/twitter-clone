@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import { supabase } from '@/utils/supabase'
 import { useUserStore } from '@/stores/user'
-import { defaultAvatar } from '@/utils/defaultAvatar'
+import { queryUserMetaById } from '@/utils/queries'
 import MainLayout from '@/components/Layout/MainLayout.vue'
-
 import HomePage from '@/pages/HomePage.vue'
 import AuthPage from '@/pages/AuthPage.vue'
 import SignInForm from '@/components/Auth/SignInForm.vue'
@@ -56,6 +54,7 @@ const router = createRouter({
         },
         {
           path: '/post/:postId',
+          name: 'post',
           component: () => import('../pages/PostPage.vue')
         }
       ]
@@ -108,13 +107,9 @@ router.beforeEach(async (to, from) => {
 
   // Init user data in Pinia
   if (userStore.session && !userStore.user) {
-    const { data } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', userStore.session.user.id)
-      .single()
-    if (data) userStore.user = { ...data, avatar: data.avatar || defaultAvatar }
+    const data = await queryUserMetaById(userStore.session.user.id)
 
+    userStore.user = data
     // Redirect from login page
     if (isGoingAuthRoutes) return { name: 'home' }
   }
