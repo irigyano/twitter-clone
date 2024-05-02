@@ -3,10 +3,10 @@ import SubmitButton from '@/components/PostSubmission/SubmitButton.vue'
 import UploadButton from '@/components/PostSubmission/UploadButton.vue'
 import PostTextArea from '@/components/PostSubmission/PostTextArea.vue'
 import PostImages from '@/components/PostSubmission/PostImages.vue'
-import Loading from '@/components/Loading.vue'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
 import PostAvatar from '@/components/UserAvatar.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const userStore = useUserStore()
 const postContent = ref<string>()
 const imagesBuffer = ref<File[]>([])
@@ -15,14 +15,7 @@ const isUploading = ref(false)
 
 <template>
   <div class="relative w-full border-b-[1px]">
-    <!-- Cover if its uploading -->
-    <div
-      v-if="isUploading"
-      @click.stop
-      class="absolute h-full w-full top-0 bg-background/80 z-20 flex items-center justify-center"
-    >
-      <Loading />
-    </div>
+    <LoadingSpinner v-if="isUploading" @click.stop class="absolute top-0 bg-background/80 z-20" />
 
     <div class="flex relative px-4 pt-4">
       <PostAvatar :avatar="userStore.user.avatar" :tag="userStore.user.tag" />

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
-import Loading from '@/components/Loading.vue'
 import { useQuery } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
 import TimeAgo from 'javascript-time-ago'
@@ -14,6 +13,7 @@ import UserTweets from '@/components/User/UserTweets.vue'
 import { getUserMetaByTag } from '@/utils/services'
 import Typographer from '@/components/Typographer.vue'
 import PostAvatar from '@/components/UserAvatar.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const userStore = useUserStore()
 const route = useRoute()
 const timeAgo = new TimeAgo('zh-TW')
@@ -37,10 +37,7 @@ useHead({
 </script>
 
 <template>
-  <!-- DRY -->
-  <div v-if="isLoading" class="w-full flex items-center justify-center">
-    <Loading />
-  </div>
+  <LoadingSpinner v-if="isLoading" />
 
   <div v-else-if="isError" class="flex justify-center flex-1 items-center">
     <div>嗯…此頁面不存在。請嘗試搜尋其他內容。</div>

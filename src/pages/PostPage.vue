@@ -2,7 +2,6 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
 import { getPostById } from '@/utils/services'
-import Loading from '@/components/Loading.vue'
 import { watch } from 'vue'
 import PostAvatar from '@/components/UserAvatar.vue'
 import { MessageCircleMore } from 'lucide-vue-next'
@@ -15,6 +14,8 @@ import Typographer from '@/components/Typographer.vue'
 import { timeOptions } from '@/utils/config'
 import PostPageCommentSection from '@/components/Post/PostPageCommentSection.vue'
 import PostOptionsDropdown from '@/components/Post/Dropdown/Dropdown.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
+
 const router = useRouter()
 const route = useRoute()
 
@@ -46,9 +47,7 @@ useHead({
 <template>
   <div class="flex flex-col w-full">
     <PageNav title="貼文" />
-    <div v-if="isLoading" class="w-full h-full flex justify-center items-center">
-      <Loading />
-    </div>
+    <LoadingSpinner v-if="isLoading" />
     <div v-else-if="post">
       <!-- post body -->
       <div class="px-4 pt-4">

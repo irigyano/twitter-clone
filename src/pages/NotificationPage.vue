@@ -5,7 +5,7 @@ import { getNotificationsByUserId } from '@/utils/services'
 import { useQuery } from '@tanstack/vue-query'
 import { Heart, UserRound, Repeat2, MessageCircleMore } from 'lucide-vue-next'
 import Notification from '@/components/Notification.vue'
-import Loading from '@/components/Loading.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const userStore = useUserStore()
 
 const { isLoading, data: notifications } = useQuery({
@@ -18,10 +18,7 @@ const { isLoading, data: notifications } = useQuery({
 <template>
   <div class="flex-1">
     <PageNav :title="'通知'" />
-
-    <div v-if="isLoading" class="w-full flex items-center justify-center p-10">
-      <Loading />
-    </div>
+    <LoadingSpinner v-if="isLoading" />
 
     <div v-else-if="!notifications?.length" class="text-center font-bold text-3xl">
       還沒有可查看的資訊
