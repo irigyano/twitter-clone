@@ -8,10 +8,12 @@ import {
   queryUserFollowByTag,
   queryPostById,
   queryCommentsByPostId,
-  queryNotificationsByUserId
+  queryNotificationsByUserId,
+  queryFollowTweetsByUserId
 } from '@/utils/queries'
 import { pipePostsToTweets, pipeRetweetsToTweets } from '@/utils/pipes'
 import { sortTweetsByCreatedAt } from '@/utils/helper'
+import type { PostInfoWithAuthor, RetweetInfo } from '@/types/queries'
 
 async function getPipedTweets() {
   const data = await queryPosts()
@@ -84,4 +86,24 @@ export async function getCommentsByPostId(postId: string) {
 export async function getNotificationsByUserId(userId: string) {
   const data = await queryNotificationsByUserId(userId)
   return data
+}
+
+export async function getFollowTweetsByUserId(userId: string) {
+  const data = await queryFollowTweetsByUserId(userId)
+
+  const posts = []
+  const retweets = []
+  for (let { user } of data) {
+    const userPosts = user!.posts
+    for (let p of userPosts) posts.push(p)
+    const userRetweets = user!.retweets
+    for (let rt of userRetweets) retweets.push(rt)
+  }
+
+  const piped = pipePostsToTweets(posts as PostInfoWithAuthor[])
+  const pipedRt = pipeRetweetsToTweets(retweets as RetweetInfo[])
+  const tweets = piped.concat(pipedRt)
+  sortTweetsByCreatedAt(tweets)
+
+  return tweets
 }
