@@ -2,21 +2,37 @@
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useUserStore } from '@/stores/user'
 import { UserPlus, UserMinus } from 'lucide-vue-next'
+import { followUser, unfollowUser } from '@/utils/actions'
+import { computed } from 'vue'
 const userStore = useUserStore()
-
 const { authorId } = defineProps<{ authorId: string }>()
-const amIReactive = userStore.user.follows.some(({ followee }) => followee === authorId)
+
+// computed is not needed here because the MenuItem would mount/unmount after click anyway.
+const isFollowing = computed(() => userStore.getIsFollowing(authorId))
+
+async function follow() {
+  await followUser(userStore.user.id, authorId)
+  userStore.addFollowing(authorId)
+}
+
+async function unfollow() {
+  await unfollowUser(userStore.user.id, authorId)
+  userStore.removeFollowing(authorId)
+}
 </script>
 
-<template>
-  <DropdownMenuItem v-if="userStore.user.id !== authorId">
-    <template v-if="amIReactive">
-      <UserMinus class="mr-2 h-4 w-4" />
-      <span>取消跟隨</span>
-    </template>
-    <template v-if="!amIReactive">
+<template v-if="userStore.user.id !== authorId">
+  <DropdownMenuItem @click="follow" v-if="!isFollowing" class="cursor-pointer">
+    <div class="flex items-center">
       <UserPlus class="mr-2 h-4 w-4" />
       <span>跟隨</span>
-    </template>
+    </div>
+  </DropdownMenuItem>
+
+  <DropdownMenuItem @click="unfollow" v-if="isFollowing" class="cursor-pointer">
+    <div class="flex items-center">
+      <UserMinus class="mr-2 h-4 w-4" />
+      <span>取消跟隨</span>
+    </div>
   </DropdownMenuItem>
 </template>

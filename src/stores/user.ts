@@ -16,5 +16,11 @@ export const useUserStore = defineStore('user', {
       const index = this.user.follows.findIndex(({ followee }) => followee === userId)
       this.user.follows.splice(index, 1)
     }
+  },
+
+  getters: {
+    getIsFollowing: (state) => {
+      return (userId: string) => state.user.follows.some(({ followee }) => followee === userId)
+    }
   }
 })

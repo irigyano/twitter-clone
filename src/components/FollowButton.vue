@@ -10,9 +10,7 @@ const { targetUserId } = defineProps<{
   targetUserId: string
 }>()
 
-const isFollowing = computed(() =>
-  userStore.user.follows.some(({ followee }) => followee === targetUserId)
-)
+const isFollowing = computed(() => userStore.getIsFollowing(targetUserId))
 
 async function follow() {
   await followUser(userStore.user.id, targetUserId)
