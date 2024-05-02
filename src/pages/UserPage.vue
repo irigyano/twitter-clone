@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
 import TimeAgo from 'javascript-time-ago'
 import { useUserStore } from '@/stores/user'
-import { defaultAvatar } from '@/utils/defaultAvatar'
 import EditPanel from '@/components/User/EditPanel.vue'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import PageNav from '@/components/Layout/PageNav.vue'
@@ -14,6 +13,7 @@ import FollowButton from '@/components/FollowButton.vue'
 import UserTweets from '@/components/User/UserTweets.vue'
 import { getUserMetaByTag } from '@/utils/services'
 import Typographer from '@/components/Typographer.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 const userStore = useUserStore()
 const route = useRoute()
 const timeAgo = new TimeAgo('zh-TW')
@@ -67,9 +67,11 @@ useHead({
     <div class="px-4 border-b-[1px] border-border flex flex-col gap-1 pb-4">
       <div class="flex justify-between relative h-14">
         <div>
-          <img
-            class="absolute rounded-full border-secondary object-cover border-2 aspect-square h-28 -top-full bg-background"
-            :src="user.avatar || defaultAvatar"
+          <PostAvatar
+            :avatar="user.avatar"
+            :tag="user.tag"
+            static
+            class="h-28 w-28 absolute -top-full border-2"
           />
         </div>
         <Dialog v-if="user.id === userStore.user.id">
@@ -80,7 +82,7 @@ useHead({
           </DialogTrigger>
           <EditPanel :user="user" />
         </Dialog>
-        <FollowButton :target-user-id="user.id" :followers="user.follower" />
+        <FollowButton :target-user-id="user.id" />
       </div>
       <div class="leading-none">
         <div class="font-bold text-lg">{{ user.name }}</div>

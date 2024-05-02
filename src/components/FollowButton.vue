@@ -1,39 +1,32 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
+import { computed, type HTMLAttributes } from 'vue'
 import { Button } from '@/components/ui/button'
-import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { cn } from '@/utils/shadcn'
-import { useQueryClient } from '@tanstack/vue-query'
 import { followUser, unfollowUser } from '@/utils/actions'
-const queryClient = useQueryClient()
-
-const props = defineProps<{
-  targetUserId: string
-  followers: { follower: string }[]
+const userStore = useUserStore()
+const { targetUserId } = defineProps<{
   class?: HTMLAttributes['class']
+  targetUserId: string
 }>()
 
-const userStore = useUserStore()
-const isFollowing = ref(props.followers.some(({ follower }) => follower === userStore.user.id))
+const isFollowing = computed(() => userStore.getIsFollowing(targetUserId))
 
 async function follow() {
-  if (isFollowing.value) {
-    await unfollowUser(userStore.user.id, props.targetUserId)
-  } else {
-    await followUser(userStore.user.id, props.targetUserId)
-  }
-  // Toggle state for UserPage since we don't invalidate page cache here
-  isFollowing.value = !isFollowing.value
+  await followUser(userStore.user.id, targetUserId)
+  userStore.addFollowing(targetUserId)
+}
 
-  queryClient.invalidateQueries({ queryKey: ['userRelation'] })
+async function unfollow() {
+  await unfollowUser(userStore.user.id, targetUserId)
+  userStore.removeFollowing(targetUserId)
 }
 </script>
 
 <template>
-  <div :class="cn('py-2 w-24', props.class)" v-if="props.targetUserId !== userStore.user.id">
+  <div :class="cn('py-2 w-24', $props.class)" v-if="targetUserId !== userStore.user.id">
     <Button @click="follow" v-if="!isFollowing" class="w-full">追隨</Button>
-    <Button @click="follow" v-if="isFollowing" class="w-full bg-secondary duration-300"
+    <Button @click="unfollow" v-if="isFollowing" class="w-full bg-secondary duration-300"
       >正在追隨</Button
     >
   </div>

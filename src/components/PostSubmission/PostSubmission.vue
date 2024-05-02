@@ -6,6 +6,7 @@ import PostImages from '@/components/PostSubmission/PostImages.vue'
 import Loading from '@/components/Loading.vue'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 const userStore = useUserStore()
 const postContent = ref<string>()
 const imagesBuffer = ref<File[]>([])
@@ -24,7 +25,7 @@ const isUploading = ref(false)
     </div>
 
     <div class="flex relative px-4 pt-4">
-      <img class="h-10 w-10 rounded-full object-cover" :src="userStore.user.avatar" alt="avatar" />
+      <PostAvatar :avatar="userStore.user.avatar" :tag="userStore.user.tag" />
       <div class="flex-1 p-2">
         <PostTextArea v-model:postContent="postContent" v-model:imagesBuffer="imagesBuffer" />
         <PostImages v-model="imagesBuffer" />

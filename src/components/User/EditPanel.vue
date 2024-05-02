@@ -10,8 +10,8 @@ import { ref } from 'vue'
 import { uploadImage } from '@/utils/actions'
 import { updateUserMetaByTag } from '@/utils/actions'
 import ImageInput from '@/components/User/ImageInput.vue'
-import { defaultAvatar } from '@/utils/defaultAvatar'
 import { useUserStore } from '@/stores/user'
+import PostAvatar from '@/components/UserAvatar.vue'
 const userStore = useUserStore()
 const queryClient = useQueryClient()
 const { user } = defineProps<{ user: User }>()
@@ -82,9 +82,10 @@ async function updateUserMeta() {
       <div class="flex relative h-16 px-4">
         <div class="absolute -translate-y-1/3">
           <div class="relative">
-            <img
-              :src="userMeta.avatar || defaultAvatar"
-              class="rounded-full object-cover h-32 w-32 border-border border-2 aspect-square bg-background"
+            <PostAvatar
+              :avatar="userMeta.avatar"
+              :tag="userStore.user.tag"
+              class="h-32 w-32 border-2"
             />
             <ImageInput v-model:imageUrl="userMeta.avatar" v-model:imageBuffer="avatarBuffer" />
           </div>

@@ -4,6 +4,16 @@ import type { PostInfoWithAuthor, RetweetInfo, FollowWithUser } from '@/types/qu
 
 // User
 
+export async function queryUserMetaById(id: string) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*, follows!follower(followee)')
+    .eq('id', id)
+    .single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
 export async function queryUserMetaByTag(tag: string) {
   const { data, error } = await supabase
     .from('users')

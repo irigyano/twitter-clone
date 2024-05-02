@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user'
 import { Trash2 } from 'lucide-vue-next'
 import { useRoute, useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 import { deleteCommentById } from '@/utils/actions'
 const timeAgo = new TimeAgo('zh-TW')
 const userStore = useUserStore()

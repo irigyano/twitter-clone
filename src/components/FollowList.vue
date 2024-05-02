@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import type { FollowWithUser } from '@/types/queries'
 import Typographer from '@/components/Typographer.vue'
@@ -18,7 +18,7 @@ defineProps<{ targetUserFollows: FollowWithUser[] }>()
             }}</RouterLink>
             <div class="text-muted-foreground leading-4">@{{ user.tag }}</div>
           </div>
-          <FollowButton :target-user-id="user.id" :followers="user.follows" class="py-0" />
+          <FollowButton class="py-0" :target-user-id="user.id" />
         </div>
         <Typographer :content="user.bio" :class="'whitespace-normal'" />
       </div>

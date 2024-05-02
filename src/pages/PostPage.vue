@@ -4,17 +4,17 @@ import { useQuery } from '@tanstack/vue-query'
 import { getPostById } from '@/utils/services'
 import Loading from '@/components/Loading.vue'
 import { watch } from 'vue'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 import { MessageCircleMore } from 'lucide-vue-next'
 import PageNav from '@/components/Layout/PageNav.vue'
 import LikeButton from '@/components/Post/LikeButton.vue'
-import FollowButton from '@/components/FollowButton.vue'
 import { useHead } from '@unhead/vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 import Typographer from '@/components/Typographer.vue'
 import { timeOptions } from '@/utils/config'
 import PostPageCommentSection from '@/components/Post/PostPageCommentSection.vue'
+import PostOptionsDropdown from '@/components/Post/Dropdown/Dropdown.vue'
 const router = useRouter()
 const route = useRoute()
 
@@ -54,17 +54,19 @@ useHead({
       <div class="px-4 pt-4">
         <div class="flex gap-2">
           <PostAvatar :avatar="post.user.avatar" :tag="post.user.tag" />
-          <div class="pb-2 flex-1">
-            <RouterLink
-              @click.stop
-              :to="`/${post.user.tag}`"
-              class="font-bold inline-block cursor-pointer hover:underline"
-            >
-              {{ post.user.name }}
-            </RouterLink>
-            <div class="text-muted-foreground">@{{ post.user.tag }}</div>
+          <div class="pb-2 flex-1 flex justify-between">
+            <div>
+              <RouterLink
+                @click.stop
+                :to="`/${post.user.tag}`"
+                class="font-bold inline-block cursor-pointer hover:underline"
+              >
+                {{ post.user.name }}
+              </RouterLink>
+              <div class="text-muted-foreground">@{{ post.user.tag }}</div>
+            </div>
+            <PostOptionsDropdown :authorId="post.user.id" :postId="post.id" />
           </div>
-          <FollowButton :targetUserId="post.user.id" :followers="post.user.follower" />
         </div>
         <Typographer :content="post.content" />
         <PostImagesLayout :imageUrls="post.imageSrc" />
