@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defaultAvatar } from '@/utils/defaultAvatar'
 import type { HTMLAttributes } from 'vue'
+import monkaW from '@/assets/images/monkaW.webp'
 import { cn } from '@/utils/shadcn'
 defineProps<{
   avatar: string | null
@@ -22,7 +22,7 @@ defineProps<{
       "
       width="40"
       height="40"
-      :src="avatar || defaultAvatar"
+      :src="avatar || monkaW"
     />
   </RouterLink>
 
@@ -37,7 +37,7 @@ defineProps<{
       "
       width="40"
       height="40"
-      :src="avatar || defaultAvatar"
+      :src="avatar || monkaW"
     />
   </div>
 </template>
