@@ -1,36 +1,34 @@
 <script setup lang="ts">
-import { ref, type HTMLAttributes } from 'vue'
+import { computed, type HTMLAttributes } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useUserStore } from '@/stores/user'
 import { cn } from '@/utils/shadcn'
 import { followUser, unfollowUser } from '@/utils/actions'
 const userStore = useUserStore()
-const props = defineProps<{
+const { targetUserId } = defineProps<{
   class?: HTMLAttributes['class']
   targetUserId: string
 }>()
 
-// Find a way to validate and update pinia store after mutation.
-// Also Q: can we directly use pinia arrays w/o creating a local ref?
-const isFollowing = ref(
-  userStore.user.follows.some(({ followee }) => followee === props.targetUserId)
+const isFollowing = computed(() =>
+  userStore.user.follows.some(({ followee }) => followee === targetUserId)
 )
 
 async function follow() {
-  if (isFollowing.value) {
-    await unfollowUser(userStore.user.id, props.targetUserId)
-  } else {
-    await followUser(userStore.user.id, props.targetUserId)
-  }
-  // user page doesn't update in time now
-  isFollowing.value = !isFollowing.value
+  await followUser(userStore.user.id, targetUserId)
+  userStore.addFollowing(targetUserId)
+}
+
+async function unfollow() {
+  await unfollowUser(userStore.user.id, targetUserId)
+  userStore.removeFollowing(targetUserId)
 }
 </script>
 
 <template>
-  <div :class="cn('py-2 w-24', props.class)" v-if="props.targetUserId !== userStore.user.id">
+  <div :class="cn('py-2 w-24', $props.class)" v-if="targetUserId !== userStore.user.id">
     <Button @click="follow" v-if="!isFollowing" class="w-full">追隨</Button>
-    <Button @click="follow" v-if="isFollowing" class="w-full bg-secondary duration-300"
+    <Button @click="unfollow" v-if="isFollowing" class="w-full bg-secondary duration-300"
       >正在追隨</Button
     >
   </div>
