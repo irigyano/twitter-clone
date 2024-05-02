@@ -1,6 +1,6 @@
 import { supabase } from '@/utils/supabase'
 import type { Comment, PostInfo, User } from '@/types/queries'
-import type { PostInfoWithAuthor, RetweetInfo, FollowWithUser } from '@/types/queries'
+import type { PostInfoWithAuthor, RetweetInfo } from '@/types/queries'
 
 // User
 
@@ -31,17 +31,19 @@ export async function queryUserMetaByTag(tag: string) {
 export async function queryUserFollowByTag(tag: string) {
   const { data, error } = await supabase
     .from('users')
+    // join `follows` table with `user.id` in follower/followee column to find its followers/followees
+    // then find targetUser data by join targetUser.id to previous joinned table??
     .select(
       '*, \
-      following:follows!follower(*, user:users!public_follows_followee_fkey(*, follows!public_follows_followee_fkey(*))), \
-      follower:follows!followee(*, user:users!public_follows_follower_fkey(*, follows!public_follows_followee_fkey(*)))'
+      following:follows!follower(user:users!public_follows_followee_fkey(*)), \
+      follower:follows!followee(user:users!public_follows_follower_fkey(*))'
     )
     .eq('tag', tag)
     .single()
   if (error) throw new Error(error.message)
   return data as User & {
-    following: Array<FollowWithUser>
-    follower: Array<FollowWithUser>
+    following: { user: User }[]
+    follower: { user: User }[]
   }
 }
 
