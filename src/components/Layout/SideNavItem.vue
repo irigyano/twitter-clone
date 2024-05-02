@@ -6,7 +6,7 @@ defineProps<{ location: string; title?: string }>()
 <template>
   <RouterLink
     :to="location"
-    exact-active-class="text-xl bg-secondary"
+    exact-active-class="text-xl bg-secondary text-primary"
     class="flex rounded-full overflow-hidden duration-300 hover:bg-secondary"
   >
     <div class="flex items-center xl:px-4 px-2 py-2">

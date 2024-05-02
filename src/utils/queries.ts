@@ -2,8 +2,6 @@ import { supabase } from '@/utils/supabase'
 import type { Comment, PostInfo, User } from '@/types/queries'
 import type { PostInfoWithAuthor, RetweetInfo, FollowWithUser } from '@/types/queries'
 
-// User
-
 export async function queryUserMetaById(id: string) {
   const { data, error } = await supabase
     .from('users')
@@ -31,21 +29,21 @@ export async function queryUserMetaByTag(tag: string) {
 export async function queryUserFollowByTag(tag: string) {
   const { data, error } = await supabase
     .from('users')
+    // join `follows` table with `user.id` in follower/followee column to find its followers/followees
+    // then find targetUser data by join targetUser.id to previous joinned table??
     .select(
       '*, \
-      following:follows!follower(*, user:users!public_follows_followee_fkey(*, follows!public_follows_followee_fkey(*))), \
-      follower:follows!followee(*, user:users!public_follows_follower_fkey(*, follows!public_follows_followee_fkey(*)))'
+      following:follows!follower(user:users!public_follows_followee_fkey(*)), \
+      follower:follows!followee(user:users!public_follows_follower_fkey(*))'
     )
     .eq('tag', tag)
     .single()
   if (error) throw new Error(error.message)
   return data as User & {
-    following: Array<FollowWithUser>
-    follower: Array<FollowWithUser>
+    following: FollowWithUser[]
+    follower: FollowWithUser[]
   }
 }
-
-// Post
 
 export async function queryPosts() {
   const { data, error } = await supabase
@@ -85,8 +83,6 @@ export async function queryPostById(postId: string) {
   if (error) throw new Error(error.message)
   return data as PostInfo & { user: User & { follower: Array<{ follower: string }> } }
 }
-
-// Comments
 
 export async function queryCommentsByPostId(postId: string) {
   const { data, error } = await supabase
@@ -138,6 +134,19 @@ export async function queryNotificationsByUserId(userId: string) {
     .select('*, actioner:users!notifications_actioner_id_fkey(*)')
     .eq('receiver_id', userId)
     .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function queryFollowTweetsByUserId(userId: string) {
+  const { data, error } = await supabase
+    .from('follows')
+    .select(
+      'user:users!public_follows_followee_fkey(posts(*, user:users(*), comments(*), likes(*), retweets(*)),\
+      retweets(*, retweeter:users(*), retweetedPost:posts(*, user:users(*), comments(*), likes(*), retweets(*))))'
+    )
+    .eq('follower', userId)
 
   if (error) throw new Error(error.message)
   return data

@@ -4,7 +4,7 @@ import { useHead } from '@unhead/vue'
 import PageNav from '@/components/Layout/PageNav.vue'
 import { getPostsByTextSearch } from '@/utils/services'
 import { useQuery } from '@tanstack/vue-query'
-import Loading from '@/components/Loading.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import Post from '@/components/Post/Post.vue'
 import SearchBar from '@/components/SearchBar.vue'
 const route = useRoute()
@@ -36,7 +36,7 @@ useHead({
     </div>
 
     <div v-else class="flex-1 flex items-center justify-center text-2xl font-bold">
-      <Loading v-if="isLoading" />
+      <LoadingSpinner v-if="isLoading" />
       <div v-else-if="error"></div>
       <div v-else>找不到 {{ route.query.q }} 的結果。</div>
     </div>

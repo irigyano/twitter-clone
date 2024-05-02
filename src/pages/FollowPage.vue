@@ -5,9 +5,10 @@ import { useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import Loading from '@/components/Loading.vue'
 import FollowList from '@/components/FollowList.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const route = useRoute()
+
 const category = ref(route.name)
 
 const { isLoading, data: user } = useQuery({
@@ -16,6 +17,16 @@ const { isLoading, data: user } = useQuery({
   gcTime: 0,
   retry: false
 })
+
+// computed when updateUrl calledd
+const isFollowersCategory = computed(() => category.value === 'followers')
+const isFollowingCategory = computed(() => category.value === 'following')
+
+function updateUrl(path: string) {
+  if (!user.value?.tag) return
+  history.replaceState({}, '', `/${user.value.tag}/${path}`)
+  category.value = path
+}
 
 useHead({
   title: () => {
@@ -31,16 +42,6 @@ useHead({
     return title
   }
 })
-
-// computed when updateUrl calledd
-const isFollowersCategory = computed(() => category.value === 'followers')
-const isFollowingCategory = computed(() => category.value === 'following')
-
-function updateUrl(path: string) {
-  if (!user.value?.tag) return
-  history.replaceState({}, '', `/${user.value.tag}/${path}`)
-  category.value = path
-}
 </script>
 
 <template>
@@ -70,10 +71,7 @@ function updateUrl(path: string) {
       </div>
     </div>
 
-    <!-- DRY? -->
-    <div v-if="isLoading" class="flex-1 flex items-center justify-center">
-      <Loading />
-    </div>
+    <LoadingSpinner v-if="isLoading" />
 
     <div v-else-if="user">
       <FollowList v-if="isFollowersCategory" :target-user-follows="user.follower" />

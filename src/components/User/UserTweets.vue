@@ -2,8 +2,8 @@
 import { getTweetsByTag } from '@/utils/services'
 import { useQuery } from '@tanstack/vue-query'
 import { useRoute } from 'vue-router'
-import Loading from '@/components/Loading.vue'
 import Post from '@/components/Post/Post.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const route = useRoute()
 
@@ -15,9 +15,7 @@ const { isLoading, data: tweets } = useQuery({
 </script>
 
 <template>
-  <div v-if="isLoading" class="w-full flex items-center justify-center p-10">
-    <Loading />
-  </div>
+  <LoadingSpinner v-if="isLoading" />
 
   <div v-else-if="tweets?.length" class="flex flex-col">
     <Post v-for="tweet in tweets" :tweet="tweet" :key="tweet.id" />

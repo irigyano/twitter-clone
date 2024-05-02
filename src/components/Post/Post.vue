@@ -8,7 +8,7 @@ import CommentDialog from '@/components/Post/CommentDialog.vue'
 import PostAvatar from '@/components/UserAvatar.vue'
 import LikeButton from '@/components/Post/LikeButton.vue'
 import RetweetButton from '@/components/Post/RetweetButton.vue'
-import PostOptionsDropdown from '@/components/Post/Dropdown/Dropdown.vue'
+import PostDropdown from '@/components/Post/Dropdown/Dropdown.vue'
 import { Repeat2 } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/user'
 import Typographer from '@/components/Typographer.vue'
@@ -56,7 +56,11 @@ function goToPost() {
               </time>
             </div>
           </div>
-          <PostOptionsDropdown :authorId="tweet.author.id" :postId="tweet.post.id" />
+          <PostDropdown
+            :authorId="tweet.author.id"
+            :author-tag="tweet.author.tag"
+            :postId="tweet.post.id"
+          />
         </div>
         <Typographer :content="tweet.post.content" />
         <PostImagesLayout :imageUrls="tweet.post.imageSrc" />

@@ -25,9 +25,9 @@ async function unfollow() {
 
 <template>
   <div :class="cn('py-2 w-24', $props.class)" v-if="targetUserId !== userStore.user.id">
-    <Button @click="follow" v-if="!isFollowing" class="w-full">追隨</Button>
+    <Button @click="follow" v-if="!isFollowing" class="w-full">跟隨</Button>
     <Button @click="unfollow" v-if="isFollowing" class="w-full bg-secondary duration-300"
-      >正在追隨</Button
+      >正在跟隨</Button
     >
   </div>
 </template>
