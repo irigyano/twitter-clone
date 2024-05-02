@@ -6,7 +6,7 @@ import PostImages from '@/components/PostSubmission/PostImages.vue'
 import Loading from '@/components/Loading.vue'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 const userStore = useUserStore()
 const postContent = ref<string>()
 const imagesBuffer = ref<File[]>([])

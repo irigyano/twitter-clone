@@ -2,7 +2,7 @@
 import { RouterLink } from 'vue-router'
 import SignOutButton from '@/components/SignOutButton.vue'
 import { useUserStore } from '@/stores/user'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 import { Home, Search } from 'lucide-vue-next'
 import FooterItem from '@/components/Layout/Mobile/FooterItem.vue'
 const userStore = useUserStore()

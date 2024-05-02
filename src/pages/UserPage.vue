@@ -13,7 +13,7 @@ import FollowButton from '@/components/FollowButton.vue'
 import UserTweets from '@/components/User/UserTweets.vue'
 import { getUserMetaByTag } from '@/utils/services'
 import Typographer from '@/components/Typographer.vue'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 const userStore = useUserStore()
 const route = useRoute()
 const timeAgo = new TimeAgo('zh-TW')

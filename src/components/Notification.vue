@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 defineProps<{ avatar: string | null; tag: string; name: string; isRead: boolean }>()
 </script>
 

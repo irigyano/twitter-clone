@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router'
 import { Image } from 'lucide-vue-next'
 import { useQueryClient } from '@tanstack/vue-query'
 import { insertComment } from '@/utils/actions'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 const queryClient = useQueryClient()
 const userStore = useUserStore()
 const { post, author } = defineProps<{ post: PostInfo; author: User }>()

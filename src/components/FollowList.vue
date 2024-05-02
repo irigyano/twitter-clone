@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 import FollowButton from '@/components/FollowButton.vue'
 import type { FollowWithUser } from '@/types/queries'
 import Typographer from '@/components/Typographer.vue'

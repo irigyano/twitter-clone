@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import SignOutButton from '@/components/SignOutButton.vue'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 const router = useRouter()
 const { user } = useUserStore()
 </script>

@@ -11,7 +11,7 @@ import { uploadImage } from '@/utils/actions'
 import { updateUserMetaByTag } from '@/utils/actions'
 import ImageInput from '@/components/User/ImageInput.vue'
 import { useUserStore } from '@/stores/user'
-import PostAvatar from '@/components/PostAvatar.vue'
+import PostAvatar from '@/components/UserAvatar.vue'
 const userStore = useUserStore()
 const queryClient = useQueryClient()
 const { user } = defineProps<{ user: User }>()
