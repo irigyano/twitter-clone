@@ -21,18 +21,19 @@ async function unfollow() {
 }
 </script>
 
-<template v-if="userStore.user.id !== authorId">
-  <DropdownMenuItem @click="follow" v-if="!isFollowing" class="cursor-pointer">
-    <div class="flex items-center">
-      <UserPlus class="mr-2 h-4 w-4" />
-      <span>跟隨</span>
-    </div>
-  </DropdownMenuItem>
-
-  <DropdownMenuItem @click="unfollow" v-if="isFollowing" class="cursor-pointer">
-    <div class="flex items-center">
-      <UserMinus class="mr-2 h-4 w-4" />
-      <span>取消跟隨</span>
-    </div>
-  </DropdownMenuItem>
+<template>
+  <div v-if="userStore.user.id !== authorId">
+    <DropdownMenuItem @click="follow" v-if="!isFollowing" class="cursor-pointer">
+      <div class="flex items-center">
+        <UserPlus class="mr-2 h-4 w-4" />
+        <span>跟隨</span>
+      </div>
+    </DropdownMenuItem>
+    <DropdownMenuItem @click="unfollow" v-if="isFollowing" class="cursor-pointer">
+      <div class="flex items-center">
+        <UserMinus class="mr-2 h-4 w-4" />
+        <span>取消跟隨</span>
+      </div>
+    </DropdownMenuItem>
+  </div>
 </template>
