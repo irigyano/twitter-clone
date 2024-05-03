@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user'
 import PostAvatar from '@/components/UserAvatar.vue'
 import { Home, Search } from 'lucide-vue-next'
 import FooterItem from '@/components/Layout/Mobile/FooterItem.vue'
+import PostSubmissionDialog from '@/components/PostSubmission/PostSubmissionDialog.vue'
 const userStore = useUserStore()
 </script>
 
@@ -31,5 +32,9 @@ const userStore = useUserStore()
     <FooterItem>
       <SignOutButton />
     </FooterItem>
+
+    <div class="absolute right-5 top-0 -translate-y-[150%]">
+      <PostSubmissionDialog />
+    </div>
   </div>
 </template>

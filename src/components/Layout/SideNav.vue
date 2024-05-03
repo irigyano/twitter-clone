@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import SignOutButton from '@/components/SignOutButton.vue'
 import PostAvatar from '@/components/UserAvatar.vue'
+import PostSubmissionDialog from '@/components/PostSubmission/PostSubmissionDialog.vue'
 const router = useRouter()
 const { user } = useUserStore()
 </script>
@@ -32,6 +33,7 @@ const { user } = useUserStore()
         <SideNavItem :location="`/search`" title="" class="block lg:hidden">
           <Search :size="24" />
         </SideNavItem>
+        <PostSubmissionDialog />
       </div>
 
       <div class="flex flex-col items-center gap-2">

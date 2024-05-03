@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button'
 import { useUserStore } from '@/stores/user'
 import { insertPost } from '@/utils/actions'
 import { uploadMultipleImages } from '@/utils/actions'
+const userStore = useUserStore()
 const queryClient = useQueryClient()
 const postContent = defineModel<string>('postContent')
 const imagesBuffer = defineModel<File[]>('imagesBuffer')
 const isUploading = defineModel<boolean>('isUploading')
-const emit = defineEmits(['submit'])
-const userStore = useUserStore()
+const showModal = defineModel<boolean>('showModal')
 const { mutate } = useMutation({
   mutationFn: async () => {
     isUploading.value = true
@@ -27,9 +27,11 @@ const { mutate } = useMutation({
   },
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['tweets'] })
+    queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
     postContent.value = ''
     imagesBuffer.value = []
     isUploading.value = false
+    showModal.value = false
   }
 })
 </script>

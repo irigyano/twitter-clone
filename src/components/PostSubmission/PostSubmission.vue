@@ -8,6 +8,8 @@ import { ref } from 'vue'
 import PostAvatar from '@/components/UserAvatar.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const userStore = useUserStore()
+// For SideNav & Mobile Floating
+const showModal = defineModel<boolean>()
 const postContent = ref<string>('')
 const imagesBuffer = ref<File[]>([])
 const isUploading = ref(false)
@@ -29,6 +31,7 @@ const isUploading = ref(false)
               v-model:postContent="postContent"
               v-model:imagesBuffer="imagesBuffer"
               v-model:isUploading="isUploading"
+              v-model:showModal="showModal"
             />
           </div>
         </div>
