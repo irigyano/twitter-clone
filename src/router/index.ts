@@ -5,6 +5,11 @@ import { queryUserMetaById } from '@/utils/queries'
 import MainLayout from '@/components/Layout/MainLayout.vue'
 import HomePage from '@/pages/HomePage.vue'
 import AuthPage from '@/pages/AuthPage.vue'
+import UserPage from '@/pages/UserPage.vue'
+import FollowPage from '@/pages/FollowPage.vue'
+import NotificationPage from '@/pages/NotificationPage.vue'
+import SearchPage from '@/pages/SearchPage.vue'
+import PostPage from '@/pages/PostPage.vue'
 import SignInForm from '@/components/Auth/SignInForm.vue'
 import SignUpForm from '@/components/Auth/SignUpForm.vue'
 
@@ -27,17 +32,17 @@ const router = createRouter({
             {
               path: '',
               name: 'user',
-              component: () => import('../pages/UserPage.vue')
+              component: UserPage
             },
             {
               path: '/:user/following',
               name: 'following',
-              component: () => import('../pages/FollowPage.vue')
+              component: FollowPage
             },
             {
               path: '/:user/followers',
               name: 'followers',
-              component: () => import('../pages/FollowPage.vue')
+              component: FollowPage
             }
           ]
         },
@@ -45,17 +50,17 @@ const router = createRouter({
           path: '/notifications',
           name: 'notifications',
           meta: { title: '通知' },
-          component: () => import('../pages/NotificationPage.vue')
+          component: NotificationPage
         },
         {
           path: '/search',
           name: 'search',
-          component: () => import('../pages/SearchPage.vue')
+          component: SearchPage
         },
         {
           path: '/post/:postId',
           name: 'post',
-          component: () => import('../pages/PostPage.vue')
+          component: PostPage
         }
       ]
     },
