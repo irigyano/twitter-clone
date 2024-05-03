@@ -67,7 +67,7 @@ useHead({
             <PostDropdown :authorId="post.user.id" :author-tag="post.user.tag" :postId="post.id" />
           </div>
         </div>
-        <Typographer :content="post.content" />
+        <Typographer :content="post.content" media />
         <PostImagesLayout :imageUrls="post.imageSrc" />
         <div class="py-2 text-muted-foreground text-sm">
           <time class="whitespace-nowrap"

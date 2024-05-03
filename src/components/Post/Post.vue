@@ -62,7 +62,7 @@ function goToPost() {
             :postId="tweet.post.id"
           />
         </div>
-        <Typographer :content="tweet.post.content" />
+        <Typographer :content="tweet.post.content" media />
         <PostImagesLayout :imageUrls="tweet.post.imageSrc" />
         <div class="flex justify-evenly gap-1 p-1 text-muted-foreground">
           <div class="flex-1">
