@@ -14,9 +14,11 @@ const {
   data: tweets,
   error
 } = useQuery({
-  queryKey: [route.query.q],
+  queryKey: ['SearchTweets'],
   queryFn: () => getPostsByTextSearch(route.query.q as string),
-  retry: false
+  retry: false,
+  // Cache would cause mismatch if using same queryKey for every search.
+  gcTime: 0
 })
 
 useHead({
@@ -26,7 +28,11 @@ useHead({
 
 <template>
   <div class="flex flex-col w-full">
-    <PageNav :title="`搜尋`" />
+    <PageNav :title="`搜尋`">
+      <div class="text-muted-foreground">
+        {{ route.query.q }}
+      </div>
+    </PageNav>
     <div class="p-4 lg:hidden">
       <SearchBar />
     </div>

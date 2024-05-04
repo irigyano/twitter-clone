@@ -17,6 +17,7 @@ const { mutate } = useMutation({
     if (route.name === 'post') router.push({ name: 'home' })
     queryClient.invalidateQueries({ queryKey: ['tweets'] })
     queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
+    queryClient.invalidateQueries({ queryKey: ['SearchTweets'] })
   }
 })
 </script>
