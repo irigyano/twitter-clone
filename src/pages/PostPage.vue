@@ -15,7 +15,6 @@ import { timeOptions } from '@/utils/config'
 import PostPageCommentSection from '@/components/Post/PostPageCommentSection.vue'
 import PostDropdown from '@/components/Post/Dropdown/Dropdown.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
-
 const router = useRouter()
 const route = useRoute()
 
@@ -47,9 +46,10 @@ useHead({
 <template>
   <div class="flex flex-col w-full">
     <PageNav title="貼文" />
+
     <LoadingSpinner v-if="isLoading" />
+
     <div v-else-if="post">
-      <!-- post body -->
       <div class="px-4 pt-4">
         <div class="flex gap-2">
           <PostAvatar :avatar="post.user.avatar" :tag="post.user.tag" />
