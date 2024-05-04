@@ -7,10 +7,13 @@ import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
 import PostAvatar from '@/components/UserAvatar.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import { useTextareaAutosize } from '@vueuse/core'
 const userStore = useUserStore()
 // For SideNav & Mobile Floating
 const showModal = defineModel<boolean>()
-const postContent = ref<string>('')
+const { textarea: textareaRef, input: postContent } = useTextareaAutosize({
+  styleProp: 'minHeight'
+})
 const imagesBuffer = ref<File[]>([])
 const isUploading = ref(false)
 </script>
@@ -22,7 +25,11 @@ const isUploading = ref(false)
     <div class="flex relative px-4 pt-4">
       <PostAvatar :avatar="userStore.user.avatar" :tag="userStore.user.tag" />
       <div class="flex-1 p-2">
-        <PostTextArea v-model:postContent="postContent" v-model:imagesBuffer="imagesBuffer" />
+        <PostTextArea
+          v-model:postContent="postContent"
+          v-model:imagesBuffer="imagesBuffer"
+          v-model:textareaRef="textareaRef"
+        />
         <PostImages v-model="imagesBuffer" />
         <div class="flex pt-2">
           <UploadButton v-model="imagesBuffer" />
