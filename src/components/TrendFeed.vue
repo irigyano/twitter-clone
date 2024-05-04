@@ -20,9 +20,9 @@ const { isLoading, data: trends } = useQuery({
       <RouterLink
         v-for="trend in trends"
         :to="`/search?q=${trend.word}`"
-        class="hover:bg-secondary duration-300 truncate flex flex-col p-2 px-4"
+        class="hover:bg-secondary duration-300 flex flex-col p-2 px-4"
       >
-        <span class="text-primary font-bold">
+        <span class="text-primary font-bold truncate">
           {{ trend.word }}
         </span>
         <span class="text-muted-foreground text-sm"> {{ trend.ndoc }} 則貼文 </span>

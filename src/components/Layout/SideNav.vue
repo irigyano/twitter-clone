@@ -12,8 +12,8 @@ const { user } = useUserStore()
 </script>
 
 <template>
-  <header class="hidden sm:flex flex-[0.25] justify-end">
-    <div class="p-4 flex w-fit flex-col justify-between h-[100dvh] sticky top-0">
+  <header class="hidden sm:block">
+    <div class="p-4 flex flex-col justify-between h-[100dvh] sticky top-0">
       <div class="flex flex-col gap-2 items-center xl:items-start font-bold">
         <RouterLink
           to="/"
