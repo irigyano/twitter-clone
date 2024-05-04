@@ -66,15 +66,26 @@ export function splitContentToWords(content: string | null, media: boolean = fal
     for (let word of words) {
       if (isYoutube(word) && media) {
         youtubeCache.add(word)
-      } else article.push(word)
+      } else {
+        article.push(word)
+      }
     }
+    article.push('\n')
   }
 
   if (youtubeCache.size) {
     youtubeCache.forEach((a) => {
       article.push(a as string)
     })
-  } else article.push('\n')
+  }
+
+  // Remove leading linebreaks accidentally added for youtubeCache
+  let lb = 0
+  for (let w of article) {
+    if (w !== '\n') break
+    else lb++
+  }
+  article.splice(0, lb)
 
   return article
 }
