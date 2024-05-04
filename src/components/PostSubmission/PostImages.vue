@@ -13,7 +13,7 @@ function removeImageFile(index: number) {
     <div class="relative flex-1" v-for="(image, index) in imagesBuffer" :key="index">
       <img
         :src="readFileToBlob(image)"
-        class="max-h-[500px] object-cover rounded-2xl border-[1px] h-full"
+        class="object-cover rounded-2xl border-[1px] w-full h-full"
       />
       <button
         class="absolute top-2 left-2 text-primary hover:bg-secondary rounded-full duration-300 p-1"
