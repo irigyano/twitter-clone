@@ -296,7 +296,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      word_frequencies: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          word: string
+          ndoc: number
+          nentry: number
+        }[]
+      }
     }
     Enums: {
       user_action: "follow" | "comment" | "retweet" | "like"
