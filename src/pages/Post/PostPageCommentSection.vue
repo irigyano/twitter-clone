@@ -6,9 +6,9 @@ import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { Button } from '@/components/ui/button'
 import { getCommentsByPostId } from '@/utils/services'
-import ResponsiveRowTextarea from '@/components/Post/ResponsiveRowTextarea.vue'
 import PostAvatar from '@/components/UserAvatar.vue'
-import Comment from '@/components/Post/Comment.vue'
+import ResponsiveRowTextarea from '@/pages/Post/ResponsiveRowTextarea.vue'
+import Comment from '@/pages/Post/Comment.vue'
 const route = useRoute()
 const queryClient = useQueryClient()
 const userStore = useUserStore()

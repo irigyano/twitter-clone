@@ -12,7 +12,7 @@ import RetweetButton from '@/components/Post/RetweetButton.vue'
 import PostImagesLayout from '@/components/Post/PostImagesLayout.vue'
 import Typographer from '@/components/Typographer.vue'
 import { timeOptions } from '@/utils/config'
-import PostPageCommentSection from '@/components/Post/PostPageCommentSection.vue'
+import PostPageCommentSection from '@/pages/Post/PostPageCommentSection.vue'
 import PostDropdown from '@/components/Post/Dropdown/Dropdown.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const router = useRouter()
