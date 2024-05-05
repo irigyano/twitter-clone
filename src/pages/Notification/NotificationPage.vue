@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { getNotificationsByUserId } from '@/utils/services'
 import { useQuery } from '@tanstack/vue-query'
 import { Heart, UserRound, Repeat2, MessageCircleMore } from 'lucide-vue-next'
-import Notification from '@/components/Notification.vue'
+import Notification from '@/pages/Notification/Notification.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const userStore = useUserStore()
 

@@ -6,7 +6,7 @@ import MainLayout from '@/components/Layout/MainLayout.vue'
 import HomePage from '@/pages/Home/HomePage.vue'
 import UserPage from '@/pages/User/UserPage.vue'
 import FollowPage from '@/pages/Follow/FollowPage.vue'
-import NotificationPage from '@/pages/NotificationPage.vue'
+import NotificationPage from '@/pages/Notification/NotificationPage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
 import PostPage from '@/pages/PostPage.vue'
 
