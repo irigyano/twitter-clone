@@ -4,14 +4,15 @@ import { useUserStore } from '@/stores/user'
 import { queryUserMetaById } from '@/utils/queries'
 import MainLayout from '@/components/Layout/MainLayout.vue'
 import HomePage from '@/pages/HomePage.vue'
-import AuthPage from '@/pages/AuthPage.vue'
 import UserPage from '@/pages/UserPage.vue'
 import FollowPage from '@/pages/FollowPage.vue'
 import NotificationPage from '@/pages/NotificationPage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
 import PostPage from '@/pages/PostPage.vue'
-import SignInForm from '@/components/Auth/SignInForm.vue'
-import SignUpForm from '@/components/Auth/SignUpForm.vue'
+
+import AuthPage from '@/pages/Auth/AuthPage.vue'
+import SignInForm from '@/pages/Auth/SignInForm.vue'
+import SignUpForm from '@/pages/Auth/SignUpForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
