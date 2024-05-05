@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { ref } from 'vue'
 import { uploadImage } from '@/utils/actions'
 import { updateUserMetaByTag } from '@/utils/actions'
-import ImageInput from '@/components/User/ImageInput.vue'
+import ImageInput from '@/pages/User/ImageInput.vue'
 import { useUserStore } from '@/stores/user'
 import PostAvatar from '@/components/UserAvatar.vue'
 const userStore = useUserStore()
