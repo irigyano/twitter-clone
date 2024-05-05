@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import FollowList from '@/components/FollowList.vue'
+import FollowList from '@/pages/Follow/FollowList.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const route = useRoute()
 
