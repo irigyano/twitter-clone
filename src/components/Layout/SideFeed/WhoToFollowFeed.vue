@@ -26,6 +26,7 @@ const { isLoading, data: users } = useQuery({
       <div
         v-if="users?.length"
         v-for="user in users"
+        :key="user.tag"
         @click.stop="router.push(`/${user.tag}`)"
         class="flex items-center hover:bg-secondary duration-300 cursor-pointer gap-2 p-3"
       >
