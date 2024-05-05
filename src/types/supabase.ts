@@ -296,6 +296,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_unfollow_by_user_id: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: {
+          id: string
+          avatar: string
+          name: string
+          tag: string
+        }[]
+      }
       word_frequencies: {
         Args: Record<PropertyKey, never>
         Returns: {

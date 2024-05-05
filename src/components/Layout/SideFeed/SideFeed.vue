@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SearchBar from '@/components/SearchBar.vue'
-import TrendFeed from '@/components/TrendFeed.vue'
+import TrendFeed from '@/components/Layout/SideFeed/TrendFeed.vue'
+import WhoToFollowFeed from '@/components/Layout/SideFeed/WhoToFollowFeed.vue'
 import { ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 
@@ -17,8 +18,15 @@ watch(height, (height) => {
     <div class="sticky top-0 bg-background py-2 z-10">
       <SearchBar />
     </div>
-    <div ref="$trend" class="sticky">
+    <div ref="$trend" class="sticky flex flex-col gap-2">
       <TrendFeed />
+      <WhoToFollowFeed />
+      <span class="pb-20 text-xs text-muted-foreground"
+        >© 2024 irigyano
+        <a href="https://github.com/irigyano" class="underline hover:text-primary duration-300"
+          >GitHub</a
+        >
+      </span>
     </div>
   </footer>
 </template>

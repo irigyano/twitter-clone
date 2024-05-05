@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import SideNav from '@/components/Layout/SideNav.vue'
-import SideFeed from '@/components/Layout/SideFeed.vue'
+import SideFeed from '@/components/Layout/SideFeed/SideFeed.vue'
 import Footer from '@/components/Layout/Mobile/Footer.vue'
 const route = useRoute()
 </script>
