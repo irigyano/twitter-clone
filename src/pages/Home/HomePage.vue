@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import PostSubmission from '@/components/PostSubmission/PostSubmission.vue'
 import Category from '@/components/Layout/Category.vue'
-import TweetsFeed from '@/components/TweetsFeed.vue'
-import FollowFeed from '@/components/FollowFeed.vue'
+import TweetsFeed from '@/pages/Home/TweetsFeed.vue'
+import FollowFeed from '@/pages/Home/FollowFeed.vue'
 import { ref } from 'vue'
 const showFollow = ref(false)
 </script>
