@@ -6,28 +6,41 @@ import { cn } from '@/utils/shadcn'
 import { followUser, unfollowUser } from '@/utils/actions'
 const userStore = useUserStore()
 const { targetUserId } = defineProps<{
-  class?: HTMLAttributes['class']
   targetUserId: string
+  class?: HTMLAttributes['class']
 }>()
 
 const isFollowing = computed(() => userStore.getIsFollowing(targetUserId))
 
-async function follow() {
-  await followUser(userStore.user.id, targetUserId)
-  userStore.addFollowing(targetUserId)
-}
-
-async function unfollow() {
-  await unfollowUser(userStore.user.id, targetUserId)
-  userStore.removeFollowing(targetUserId)
+// Optimistic Experiment
+async function handleFollowClick() {
+  if (isFollowing.value) {
+    // Update UI first
+    userStore.removeFollowing(targetUserId)
+    try {
+      await unfollowUser(userStore.user.id, targetUserId)
+    } catch (error) {
+      // If error, revert UI
+      userStore.addFollowing(targetUserId)
+    }
+  } else {
+    userStore.addFollowing(targetUserId)
+    try {
+      await followUser(userStore.user.id, targetUserId)
+    } catch (error) {
+      userStore.removeFollowing(targetUserId)
+    }
+  }
 }
 </script>
 
 <template>
   <div :class="cn('py-2 w-24', $props.class)" v-if="targetUserId !== userStore.user.id">
-    <Button @click="follow" v-if="!isFollowing" class="w-full">跟隨</Button>
-    <Button @click="unfollow" v-if="isFollowing" class="w-full bg-secondary duration-300"
-      >正在跟隨</Button
+    <Button
+      @click="handleFollowClick"
+      class="w-full duration-300"
+      :class="isFollowing && 'bg-secondary'"
+      >{{ isFollowing ? '正在跟隨' : '跟隨' }}</Button
     >
   </div>
 </template>
