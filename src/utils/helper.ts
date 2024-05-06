@@ -74,18 +74,15 @@ export function splitContentToWords(content: string | null, media: boolean = fal
   }
 
   if (youtubeCache.size) {
+    // Trim the linebreaks before appending youtube links
+    while (article[article.length - 1] === '\n' || article[article.length - 1] === '') {
+      article.pop()
+    }
+
     youtubeCache.forEach((a) => {
       article.push(a as string)
     })
   }
-
-  // Remove leading linebreaks accidentally added for youtubeCache
-  let lb = 0
-  for (let w of article) {
-    if (w !== '\n') break
-    else lb++
-  }
-  article.splice(0, lb)
 
   return article
 }
