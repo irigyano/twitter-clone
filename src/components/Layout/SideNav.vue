@@ -7,8 +7,16 @@ import { RouterLink } from 'vue-router'
 import SignOutButton from '@/components/SignOutButton.vue'
 import PostAvatar from '@/components/UserAvatar.vue'
 import PostSubmissionDialog from '@/components/PostSubmission/PostSubmissionDialog.vue'
+import { useQuery } from '@tanstack/vue-query'
+import { getNotificationsByUserId } from '@/utils/services'
 const router = useRouter()
 const { user } = useUserStore()
+
+const { data: notifications } = useQuery({
+  queryKey: ['Notifications'],
+  queryFn: () => getNotificationsByUserId(user.id),
+  retry: false
+})
 </script>
 
 <template>
@@ -25,7 +33,13 @@ const { user } = useUserStore()
           <Home :size="24" />
         </SideNavItem>
         <SideNavItem :location="`/notifications`" title="通知">
-          <Bell :size="24" />
+          <div class="relative">
+            <Bell :size="24" />
+            <div
+              v-if="notifications?.find(({ is_read }) => !is_read)"
+              class="absolute top-0 right-0 bg-red-500 rounded-full h-1 w-1"
+            ></div>
+          </div>
         </SideNavItem>
         <SideNavItem :location="`/${user.tag}`" title="個人資料">
           <UserRound :size="24" />

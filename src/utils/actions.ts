@@ -100,6 +100,11 @@ export async function insertNotification<T extends FollowNotify | PostNotify>(in
   if (error) throw new Error(error.message)
 }
 
+export async function updateNotification(id: string) {
+  const { error } = await supabase.from('notifications').update({ is_read: true }).eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 export async function insertRetweet(user_id: string, post_id: string) {
   const { data, error } = await supabase
     .from('retweets')

@@ -9,7 +9,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const userStore = useUserStore()
 
 const { isLoading, data: notifications } = useQuery({
-  queryKey: [userStore.user.id + 'Notifications'],
+  queryKey: ['Notifications'],
   queryFn: () => getNotificationsByUserId(userStore.user.id),
   retry: false
 })
@@ -25,7 +25,7 @@ const { isLoading, data: notifications } = useQuery({
     </div>
 
     <div v-else-if="notifications" class="flex flex-col border-b-[1px]">
-      <template v-for="notification in notifications">
+      <template v-for="notification in notifications" :key="notification.id">
         <template v-if="notification.actioner">
           <Notification
             v-if="notification.action === 'follow'"
@@ -33,6 +33,7 @@ const { isLoading, data: notifications } = useQuery({
             :tag="notification.actioner.tag"
             :name="notification.actioner.name"
             :isRead="notification.is_read"
+            :id="notification.id"
           >
             <template #svg>
               <UserRound :size="24" class="text-blue-500 fill-blue-500" />
@@ -46,6 +47,7 @@ const { isLoading, data: notifications } = useQuery({
             :tag="notification.actioner.tag"
             :name="notification.actioner.name"
             :isRead="notification.is_read"
+            :id="notification.id"
           >
             <template #svg>
               <MessageCircleMore :size="24" class="text-yellow-500" />
@@ -65,6 +67,7 @@ const { isLoading, data: notifications } = useQuery({
             :tag="notification.actioner.tag"
             :name="notification.actioner.name"
             :isRead="notification.is_read"
+            :id="notification.id"
           >
             <template #svg>
               <Repeat2 :size="24" class="text-green-500" />
@@ -84,6 +87,7 @@ const { isLoading, data: notifications } = useQuery({
             :tag="notification.actioner.tag"
             :name="notification.actioner.name"
             :isRead="notification.is_read"
+            :id="notification.id"
           >
             <template #svg>
               <Heart :size="24" class="text-red-500 fill-red-500" />
