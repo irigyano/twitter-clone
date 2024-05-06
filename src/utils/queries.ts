@@ -138,16 +138,3 @@ export async function queryNotificationsByUserId(userId: string) {
   if (error) throw new Error(error.message)
   return data
 }
-
-export async function queryFollowTweetsByUserId(userId: string) {
-  const { data, error } = await supabase
-    .from('follows')
-    .select(
-      'user:users!public_follows_followee_fkey(posts(*, user:users(*), comments(*), likes(*), retweets(*)),\
-      retweets(*, retweeter:users(*), retweetedPost:posts(*, user:users(*), comments(*), likes(*), retweets(*))))'
-    )
-    .eq('follower', userId)
-
-  if (error) throw new Error(error.message)
-  return data
-}
