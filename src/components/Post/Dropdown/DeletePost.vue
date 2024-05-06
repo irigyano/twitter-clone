@@ -9,14 +9,13 @@ const queryClient = useQueryClient()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
-// TODO: refactor delete logic
 const { postId } = defineProps<{ authorId: string; postId: string }>()
 const { mutate } = useMutation({
   mutationFn: () => deletePostById(postId),
   onSuccess: () => {
     if (route.name === 'post') router.push({ name: 'home' })
     queryClient.invalidateQueries({ queryKey: ['tweets'] })
-    queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
+    queryClient.invalidateQueries({ queryKey: ['UserTweets'] })
     queryClient.invalidateQueries({ queryKey: ['SearchTweets'] })
   }
 })

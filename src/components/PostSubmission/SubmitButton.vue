@@ -27,7 +27,7 @@ const { mutate } = useMutation({
   },
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['tweets'] })
-    queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
+    queryClient.invalidateQueries({ queryKey: ['UserTweets'] })
     postContent.value = ''
     imagesBuffer.value = []
     isUploading.value = false

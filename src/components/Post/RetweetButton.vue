@@ -29,7 +29,7 @@ async function retweet() {
   // HomePage
   queryClient.invalidateQueries({ queryKey: ['tweets'] })
   // UserPage
-  queryClient.invalidateQueries({ queryKey: [userStore.user.tag + 'UserTweets'] })
+  queryClient.invalidateQueries({ queryKey: ['UserTweets'] })
   // PostPage
   queryClient.invalidateQueries({ queryKey: [props.post.id] })
 }
