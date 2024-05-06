@@ -22,7 +22,8 @@ function handleImageDrop(e: DragEvent) {
   const fileUrl = e.dataTransfer?.getData('url')
   if (!fileList.length && fileUrl) {
     // Add a space between content and url
-    postContent.value += postContent.value ? '\n' + fileUrl : fileUrl
+    if (postContent.value) postContent.value += '\n' + fileUrl
+    else postContent.value = fileUrl
   }
 }
 
