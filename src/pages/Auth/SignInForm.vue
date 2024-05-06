@@ -8,8 +8,8 @@ import { ref, watch } from 'vue'
 import PasswordInput from '@/pages/Auth/PasswordInput.vue'
 const router = useRouter()
 
-const email = ref('aintnoway@w.com')
-const password = ref('AINTNOWAY')
+const email = ref('104guest@w.com')
+const password = ref('(querykey[\\s\\S\\n]*usermeta)')
 const authError = ref('')
 
 async function SignIn() {
