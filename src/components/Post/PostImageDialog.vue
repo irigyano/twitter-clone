@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref, type HTMLAttributes } from 'vue'
+import { type HTMLAttributes } from 'vue'
 import { cn } from '@/utils/shadcn'
 import { Dialog, DialogContent, DialogTrigger, DialogClose } from '@/components/ui/dialog'
 defineProps<{
   imageUrl: string
   class?: HTMLAttributes['class']
 }>()
-
-const showComment = ref(false)
 </script>
 
 <template>
@@ -23,22 +21,12 @@ const showComment = ref(false)
             <!-- Img: Why tf is this h-0 needed..... -->
             <div class="flex-1 h-0 flex justify-center">
               <img
-                @click.stop="showComment = !showComment"
+                @click.stop
                 class="min-h-[20%] max-h-full self-center object-contain"
                 :src="imageUrl"
               />
             </div>
           </DialogClose>
-          <!-- Meta -->
-          <div class="h-10 flex justify-center gap-2">
-            <div>Comments</div>
-            <div>RT</div>
-            <div>LIKE</div>
-          </div>
-        </div>
-        <!-- Right: Comments -->
-        <div class="border-l-2 w-[350px] bg-background" :class="!showComment && 'hidden'">
-          Comments
         </div>
       </div>
     </DialogContent>

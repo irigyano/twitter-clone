@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useUserStore } from '@/stores/user'
-import { Repeat2, PencilLine } from 'lucide-vue-next'
+import { Repeat2 } from 'lucide-vue-next'
 import type { PostInfo } from '@/types/queries'
 import { computed } from 'vue'
 import { useQueryClient } from '@tanstack/vue-query'
@@ -53,12 +53,7 @@ async function retweet() {
     <DropdownMenuContent class="min-w-0">
       <DropdownMenuItem @click.stop="retweet" class="cursor-pointer flex gap-2 text-base">
         <Repeat2 />
-        <span v-if="!isRetweeted">轉發</span>
-        <span v-else-if="isRetweeted">取消轉發</span>
-      </DropdownMenuItem>
-      <DropdownMenuItem disabled class="flex gap-2 text-base">
-        <PencilLine />
-        <span>引用</span>
+        <span>{{ isRetweeted ? '取消轉發' : '轉發' }}</span>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
