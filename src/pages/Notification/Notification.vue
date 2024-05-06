@@ -34,7 +34,7 @@ const { mutate } = useMutation({
     </div>
     <div
       v-if="!isRead"
-      @click="mutate"
+      @click="mutate()"
       class="absolute right-2 hover:text-green-500 cursor-pointer duration-300"
     >
       <Check />
