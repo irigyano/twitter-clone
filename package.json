@@ -17,6 +17,7 @@
     "@supabase/supabase-js": "^2.42.0",
     "@tanstack/vue-query": "^5.28.4",
     "@unhead/vue": "^1.9.5",
+    "@vercel/analytics": "^1.2.2",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",

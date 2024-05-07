@@ -6,9 +6,12 @@ import { useRouter } from 'vue-router'
 import TimeAgo from 'javascript-time-ago'
 import zh from 'javascript-time-ago/locale/zh-Hant'
 import Toaster from '@/components/ui/toast/Toaster.vue'
+import { inject } from '@vercel/analytics'
 TimeAgo.addDefaultLocale(zh)
 const router = useRouter()
 const userStore = useUserStore()
+
+inject()
 
 supabase.auth.onAuthStateChange((event, session) => {
   // Reload page if session expired so user redirect to Login
