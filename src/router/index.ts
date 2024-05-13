@@ -17,9 +17,8 @@ import SignUpForm from '@/pages/Auth/SignUpForm.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior(to, from, savedPosition) {
-    // Always scroll to top for PostPage
-    if (to.name === 'post') return { top: 0 }
-    else if (savedPosition) return savedPosition
+    if (to.name === 'home' && savedPosition) return savedPosition
+    else return { top: 0 }
   },
 
   routes: [
