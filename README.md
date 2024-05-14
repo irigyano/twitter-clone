@@ -37,16 +37,46 @@ Webber is a social app inspired by Twitter, built with Vue 3 Composition API wri
 
 ## Local Setup
 
-### 1. Create a `.env` file
-
-Provide your values as needed in `.env.example`.
-
-### 2. Make sure Bun is installed and then run
+### 1. Make sure Bun is installed then run
 
 ```
 bun install
 ```
 
-### 3. Setup Supabase project and link with local client
+### 2. Create Supabase project
 
-TBA
+Create your Supabase project at [Supabase Dashboard](https://supabase.com/dashboard/projects).
+
+### 3. Setup `.env.local`
+
+Create `.env.local` and paste your Supabase ANON key and project ID from dashboard.
+
+### 4. Connect to Supabase project
+
+#### 1. Login from CLI
+
+```
+bunx supabase login
+```
+
+#### 2. Select Project Created at Step 2.
+
+```
+bunx supabase link
+```
+
+#### 3. Push Migrations at ./supbase/migrations
+
+```
+bunx supabase db push
+```
+
+### 5. Create Buckets
+
+Since Supabase hasn't support migrations for Storages, we have to manually do it here.
+
+1. Go to supabase.com/dashboard/project/**<project_id>**/storage/buckets
+
+2. Click `New bucket` and check `Public bucket`
+
+3. Create 3 buckets named `post`, `avatar` and `background-cover`.
