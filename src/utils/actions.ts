@@ -81,7 +81,7 @@ export async function uploadImage(file: File, storage: 'avatar' | 'background-co
   const { data, error } = await supabase.storage.from(storage).upload(filePath, file)
   if (error) throw new Error(error.message)
 
-  return `${import.meta.env.VITE_SUPABASE_BUCKETS}/${storage}/${data.path}`
+  return `${import.meta.env.VITE_SUPABASE_ENDPOINT}/storage/v1/object/public/${storage}/${data.path}`
 }
 
 export async function uploadMultipleImages(imagesBuffer: File[]) {
