@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 const route = useRoute()
 
 const { isLoading, data: tweets } = useQuery({
-  queryKey: ['UserTweets'],
+  queryKey: ['UserTweets', route.params.user],
   queryFn: () => getTweetsByTag(route.params.user as string),
   retry: false
 })
