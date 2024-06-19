@@ -1,8 +1,6 @@
-# Webber
+# Twitter Clone
 
-Webber is a social app inspired by Twitter, built with Vue 3 Composition API written in TypeScript, styled with Tailwind CSS, and uses Supabase as BaaS to handle authentication and database management.
-
-<a style='font-size:large;font-weight:700;' href="https://webber-nine.vercel.app/">Live Demo</a>
+Social app inspired by Twitter, built with Vue 3 Composition API written in TypeScript, styled with Tailwind CSS, and uses Supabase as BaaS to handle authentication and database management.
 
 ## Features
 
